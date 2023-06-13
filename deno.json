@@ -1,5 +1,4 @@
 {
-  "lock": false,
   "tasks": {
     "start": "deno run -A --unstable --watch=static/,routes/ dev.ts"
   },
