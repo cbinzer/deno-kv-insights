@@ -1,0 +1,24 @@
+.kv-entries-list {
+    padding: 24px 9px;
+    border: solid var(--bs-border-color) 1px;
+    border-radius: var(--bs-border-radius);
+}
+
+.kv-entries-list .table-container {
+    max-height: 615px;
+    overflow-y: auto;
+    padding: 0 15px;
+}
+
+.kv-entries-list .table-header {
+    position: sticky;
+    top: 0;
+}
+
+.kv-entries-list .type-col {
+    width: 10%;
+}
+
+.kv-entries-list .key-col {
+    width: 50%;
+}

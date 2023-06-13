@@ -2,5 +2,8 @@
   "deno.unstable": true,
   "deno.enable": true,
   "deno.lint": true,
-  "editor.defaultFormatter": "denoland.vscode-deno"
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

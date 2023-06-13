@@ -1,6 +1,6 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { getAllEntries } from '../../../lib/kv/kvEntryService.ts';
-import { Pagination, StrippedKvEntry } from '../../../lib/kv/models.ts';
+import { HTTPStrippedKvEntries, Pagination, StrippedKvEntry } from '../../../lib/kv/models.ts';
 
 export const handler: Handlers = {
   GET: async (request: Request): Promise<Response> => {
@@ -48,15 +48,4 @@ export function createHTTPStrippedKvEntries(
     entries: slicedEntries,
     totalCount,
   };
-}
-
-export interface HTTPStrippedKvEntries {
-  pageInfo: PageInfo;
-  totalCount: number;
-  entries: StrippedKvEntry[];
-}
-
-export interface PageInfo {
-  hasNextPage: boolean;
-  endCursor?: string;
 }

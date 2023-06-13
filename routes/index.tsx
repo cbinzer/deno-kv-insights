@@ -1,7 +1,8 @@
-import KvEntriesList from '../islands/kvEntriesList.tsx';
 import { HandlerContext } from '$fresh/src/server/types.ts';
+import KvEntriesList from '../islands/kvEntriesList.tsx';
 import { getAllEntries } from '../lib/kv/kvEntryService.ts';
-import { createHTTPStrippedKvEntries, HTTPStrippedKvEntries } from './api/entries/index.ts';
+import { HTTPStrippedKvEntries } from '../lib/kv/models.ts';
+import { createHTTPStrippedKvEntries } from './api/entries/index.ts';
 
 export const handler = async (request: Request, context: HandlerContext) => {
   const first = 25;
@@ -12,5 +13,5 @@ export const handler = async (request: Request, context: HandlerContext) => {
 };
 
 export default function MainPage(props: { data: { entries: HTTPStrippedKvEntries } }) {
-  return <KvEntriesList httpEntries={props.data.entries} />;
+  return <KvEntriesList initialEntries={props.data.entries} />;
 }

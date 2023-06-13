@@ -28,3 +28,14 @@ export interface Pagination {
   first?: number;
   after?: string;
 }
+
+export interface HTTPStrippedKvEntries {
+  pageInfo: PageInfo;
+  totalCount: number;
+  entries: StrippedKvEntry[];
+}
+
+export interface PageInfo {
+  hasNextPage: boolean;
+  endCursor?: string;
+}
