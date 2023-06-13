@@ -4,7 +4,9 @@ export interface StrippedKvEntry {
   valueType: KvValueType;
 }
 
-export interface KvEntry extends StrippedKvEntry {}
+export interface KvEntry extends StrippedKvEntry {
+  value: unknown;
+}
 
 export type KvKeyPart = Uint8Array | string | number | bigint | boolean;
 
