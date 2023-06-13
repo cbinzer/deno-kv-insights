@@ -1,3 +1,4 @@
+import { EntryAlreadyExistsError, ValidationError } from '../common/errors.ts';
 import { entryExists, findAllEntries, saveEntry } from './kvEntryRepository.ts';
 import { DBKvEntry, KvEntry, KvKeyPart, KvValueType, Pagination, StrippedKvEntry } from './models.ts';
 
@@ -7,8 +8,14 @@ export async function getAllEntries(pagination?: Pagination): Promise<StrippedKv
 }
 
 export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
-  if (!(await entryExists(key))) {
-    throw new Error(`Can't create entry with key: [${key.join(', ')}] because an entry already exists.`);
+  if (!Array.isArray(key) || key.length === 0) {
+    throw new ValidationError('Invalid key.');
+  }
+
+  if (await entryExists(key)) {
+    throw new EntryAlreadyExistsError(
+      `Can't create entry with key: [${key.join(', ')}] because an entry already exists.`,
+    );
   }
 
   const newEntry = await saveEntry(key, value);

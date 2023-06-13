@@ -41,3 +41,8 @@ export interface PageInfo {
   hasNextPage: boolean;
   endCursor?: string;
 }
+
+export interface HTTPError {
+  status: number;
+  message: string;
+}
