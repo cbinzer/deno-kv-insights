@@ -5,16 +5,19 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry }) => {
   if (!entry) {
     return (
       <div class='entry-detail'>
-        <p class="info-text fs-4">No entry selected</p>
+        <p class='info-text fs-4'>No entry selected</p>
       </div>
     );
   }
 
-  return <div class='entry-detail'></div>;
+  return (
+    <div class='entry-detail'>
+    </div>
+  );
 };
 
 export interface EntryDetailProps {
-  entry: KvEntry;
+  entry: KvEntry | undefined;
 }
 
 export default EntryDetail;

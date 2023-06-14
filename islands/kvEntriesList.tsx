@@ -4,7 +4,7 @@ import { getAllEntries } from '../lib/kv/kvEntryClientService.ts';
 import { HTTPStrippedKvEntries, KvValueType, StrippedKvEntry } from '../lib/kv/models.ts';
 import CreateEntryModal from './createEntryModal.tsx';
 
-const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }) => {
+const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, onSelect = () => {} }) => {
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
@@ -20,7 +20,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }
         setEntries({
           ...nextEntries,
           entries: [...entries.entries, ...nextEntries.entries],
-        }); 
+        });
         setIsLoading(false);
       });
     }
@@ -42,6 +42,11 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }
     if (scrollEndReached) {
       loadMoreEntries();
     }
+  };
+
+  const selectEntry = (entry: StrippedKvEntry) => {
+    setSelectedEntry(entry);
+    onSelect(entry);
   };
 
   const getBadgeColor = (valueType: KvValueType): string => {
@@ -85,7 +90,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }
                 <tr
                   key={entry.id}
                   class={entry.id === selectedEntry?.id ? 'table-active' : ''}
-                  onClick={() => setSelectedEntry(entry)}
+                  onClick={() => selectEntry(entry)}
                 >
                   <td>
                     <span class={`badge ${getBadgeColor(entry.valueType)}`}>{entry.valueType}</span>
@@ -110,6 +115,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }
 
 export interface KvEntriesListProps {
   initialEntries: HTTPStrippedKvEntries;
+  onSelect?: (entry: StrippedKvEntry) => void;
 }
 
 export default KvEntriesList;

@@ -15,6 +15,11 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedKvEn
   return fetch(url).then((response) => response.json());
 }
 
+export function getEntryByCursor(cursor: string): Promise<KvEntry> {
+  const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  return fetch(url).then((response) => response.json());
+}
+
 export function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
   const url = new URL(ENDPOINT_URL);
   const entry = { key, value };
