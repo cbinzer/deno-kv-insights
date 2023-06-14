@@ -1,10 +1,19 @@
-import { EntryAlreadyExistsError, ValidationError } from '../common/errors.ts';
-import { entryExists, findAllEntries, saveEntry } from './kvEntryRepository.ts';
+import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
+import { entryExists, findAllEntries, findEntryByCursor, saveEntry } from './kvEntryRepository.ts';
 import { DBKvEntry, KvEntry, KvKeyPart, KvValueType, Pagination, StrippedKvEntry } from './models.ts';
 
 export async function getAllEntries(pagination?: Pagination): Promise<StrippedKvEntry[]> {
   const entries = await findAllEntries(pagination);
   return entries.map(mapToKvStrippedEntry);
+}
+
+export async function getEntryByCursor(cursor: string): Promise<KvEntry> {
+  const entry = await findEntryByCursor(cursor);
+  if (!entry) {
+    throw new EntryNotFoundError(`Entry with cursor ${cursor} not found.`);
+  }
+
+  return mapToKvEntry(entry);
 }
 
 export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {

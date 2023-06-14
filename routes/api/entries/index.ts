@@ -1,8 +1,8 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
-import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../../../lib/common/errors.ts';
+import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/kv/kvEntryService.ts';
-import { HTTPError, HTTPStrippedKvEntries, KvKeyPart, Pagination, StrippedKvEntry } from '../../../lib/kv/models.ts';
+import { HTTPStrippedKvEntries, KvKeyPart, Pagination, StrippedKvEntry } from '../../../lib/kv/models.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -65,33 +65,5 @@ export function createHTTPStrippedKvEntries(
     },
     entries: slicedEntries,
     totalCount,
-  };
-}
-
-function mapToHTTPError(error: Error): HTTPError {
-  if (error instanceof ValidationError) {
-    return {
-      status: Status.BadRequest,
-      message: error.message,
-    };
-  }
-
-  if (error instanceof EntryNotFoundError) {
-    return {
-      status: Status.NotFound,
-      message: error.message,
-    };
-  }
-
-  if (error instanceof EntryAlreadyExistsError) {
-    return {
-      status: Status.Conflict,
-      message: error.message,
-    };
-  }
-
-  return {
-    status: Status.InternalServerError,
-    message: 'An unknown error occurred.',
   };
 }
