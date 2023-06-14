@@ -10,6 +10,7 @@ const CreateEntryModal: FunctionComponent<
 ) => {
   const [entry, setEntry] = useState<{ key: KvKeyPart[]; value: unknown }>({ key: [], value: undefined });
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const setKey = (event: Event) => {
     const inputElement = event.target as HTMLInputElement;
@@ -47,10 +48,20 @@ const CreateEntryModal: FunctionComponent<
     onClose();
   };
 
-  useEffect(() => setIsOpen(open), [open]);
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
+
+  useEffect(() => {
+    setIsVisible(open);
+  }, [isOpen]);
 
   return (
-    <div class={`create-entry-modal modal fade ${isOpen ? 'show' : ''}`} tabIndex={-1}>
+    <div
+      class={`create-entry-modal modal fade ${isVisible ? 'show' : ''}`}
+      tabIndex={-1}
+      style={{ display: isOpen ? 'block' : undefined }}
+    >
       <div class='modal-dialog'>
         <div class='modal-content'>
           <div class='modal-header'>

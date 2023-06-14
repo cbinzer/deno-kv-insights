@@ -20,7 +20,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries }
         setEntries({
           ...nextEntries,
           entries: [...entries.entries, ...nextEntries.entries],
-        });
+        }); 
         setIsLoading(false);
       });
     }

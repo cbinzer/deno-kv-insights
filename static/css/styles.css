@@ -1,3 +1,15 @@
+.page {
+    display: grid;
+    grid-template-rows: 100px auto;
+    row-gap: 25px;
+}
+
+.entries-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 25px;
+}
+
 .kv-entries-list {
     display: grid;
     grid-template-rows: auto auto;
@@ -33,10 +45,19 @@
     width: 50%;
 }
 
-.modal.fade.show {
-    display: block;
-}
-
 .create-entry-modal .value-form-control {
     min-height: 210px;
+}
+
+.entry-detail {
+    display: grid;
+    height: 100%;
+    padding: 24px 9px;
+    border: solid var(--bs-border-color) 1px;
+    border-radius: var(--bs-border-radius);
+}
+
+.entry-detail .info-text {
+    align-self: center;
+    justify-self: center;
 }

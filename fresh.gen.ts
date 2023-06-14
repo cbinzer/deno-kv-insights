@@ -7,7 +7,8 @@ import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/api/entries/index.ts';
 import * as $2 from './routes/index.tsx';
 import * as $$0 from './islands/createEntryModal.tsx';
-import * as $$1 from './islands/kvEntriesList.tsx';
+import * as $$1 from './islands/entryDetail.tsx';
+import * as $$2 from './islands/kvEntriesList.tsx';
 
 const manifest = {
   routes: {
@@ -17,7 +18,8 @@ const manifest = {
   },
   islands: {
     './islands/createEntryModal.tsx': $$0,
-    './islands/kvEntriesList.tsx': $$1,
+    './islands/entryDetail.tsx': $$1,
+    './islands/kvEntriesList.tsx': $$2,
   },
   baseUrl: import.meta.url,
   config,
