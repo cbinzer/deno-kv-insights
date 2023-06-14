@@ -4,6 +4,28 @@
     row-gap: 25px;
 }
 
+.header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.header .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.deno-logo {
+    height: 60px;
+    width: 60px;
+}
+
+.footer {
+    margin: auto;
+}
+
 .entries-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -35,6 +57,10 @@
 .kv-entries-list .table-header {
     position: sticky;
     top: 0;
+}
+
+.kv-entries-list .table-row {
+    cursor: pointer;
 }
 
 .kv-entries-list .type-col {

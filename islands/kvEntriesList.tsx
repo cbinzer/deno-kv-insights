@@ -71,7 +71,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
               {entries.entries.map((entry) => (
                 <tr
                   key={entry.id}
-                  class={entry.id === selectedEntry?.id ? 'table-active' : ''}
+                  class={`table-row ${entry.id === selectedEntry?.id ? 'table-active' : ''}`}
                   onClick={() => selectEntry(entry)}
                 >
                   <td>
