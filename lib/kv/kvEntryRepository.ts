@@ -1,6 +1,6 @@
+import { encode } from 'https://deno.land/std@0.191.0/encoding/base64.ts';
 import { db } from '../common/db.ts';
 import { DBKvEntry, KvKeyPart, Pagination } from './models.ts';
-import { decode, encode } from 'https://deno.land/std@0.191.0/encoding/base64.ts';
 
 export async function findAllEntries(pagination?: Pagination): Promise<DBKvEntry[]> {
   const entries: DBKvEntry[] = [];
@@ -14,6 +14,27 @@ export async function findAllEntries(pagination?: Pagination): Promise<DBKvEntry
   }
 
   return entries;
+}
+
+export async function findEntryByCursor(cursor: string): Promise<DBKvEntry | null> {
+  try {
+    let entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor });
+    await entriesIterator.next();
+
+    entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor: entriesIterator.cursor, reverse: true });
+    for await (const entry of entriesIterator) {
+      return {
+        ...entry,
+        id: cursor,
+      };
+    }
+  } catch (e) {
+    if (e.message !== 'invalid cursor') {
+      throw e;
+    }
+  }
+
+  return null;
 }
 
 export async function saveEntry(key: KvKeyPart[], value: unknown): Promise<DBKvEntry> {
