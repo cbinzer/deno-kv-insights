@@ -1,4 +1,4 @@
-import { HTTPStrippedKvEntries, Pagination } from './models.ts';
+import { HTTPStrippedKvEntries, KvEntry, KvKeyPart, Pagination } from './models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -13,4 +13,14 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedKvEn
   }
 
   return fetch(url).then((response) => response.json());
+}
+
+export function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
+  const url = new URL(ENDPOINT_URL);
+  const entry = { key, value };
+
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(entry),
+  }).then((response) => response.json());
 }

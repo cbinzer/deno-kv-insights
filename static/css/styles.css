@@ -1,7 +1,17 @@
 .kv-entries-list {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-row-gap: 24px;
+
     padding: 24px 9px;
     border: solid var(--bs-border-color) 1px;
     border-radius: var(--bs-border-radius);
+}
+
+.kv-entries-list .action-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 0 15px;
 }
 
 .kv-entries-list .table-container {
@@ -21,4 +31,12 @@
 
 .kv-entries-list .key-col {
     width: 50%;
+}
+
+.modal.fade.show {
+    display: block;
+}
+
+.create-entry-modal .value-form-control {
+    min-height: 210px;
 }
