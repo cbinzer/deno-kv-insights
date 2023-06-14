@@ -81,7 +81,7 @@ const CreateEntryModal: FunctionComponent<
             </form>
           </div>
           <div class='modal-footer'>
-            <button class='btn btn-secondary' onClick={closeModal}>Close</button>
+            <button class='btn btn-secondary' onClick={closeModal}>Cancel</button>
             <button class='btn btn-primary' onClick={createNewEntry}>Create</button>
           </div>
         </div>

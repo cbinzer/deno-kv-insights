@@ -8,9 +8,10 @@ import * as $1 from './routes/api/entries/[cursor].ts';
 import * as $2 from './routes/api/entries/index.ts';
 import * as $3 from './routes/index.tsx';
 import * as $$0 from './islands/createEntryModal.tsx';
-import * as $$1 from './islands/entriesPage.tsx';
-import * as $$2 from './islands/entryDetail.tsx';
-import * as $$3 from './islands/kvEntriesList.tsx';
+import * as $$1 from './islands/deleteEntryModal.tsx';
+import * as $$2 from './islands/entriesPage.tsx';
+import * as $$3 from './islands/entryDetail.tsx';
+import * as $$4 from './islands/kvEntriesList.tsx';
 
 const manifest = {
   routes: {
@@ -21,9 +22,10 @@ const manifest = {
   },
   islands: {
     './islands/createEntryModal.tsx': $$0,
-    './islands/entriesPage.tsx': $$1,
-    './islands/entryDetail.tsx': $$2,
-    './islands/kvEntriesList.tsx': $$3,
+    './islands/deleteEntryModal.tsx': $$1,
+    './islands/entriesPage.tsx': $$2,
+    './islands/entryDetail.tsx': $$3,
+    './islands/kvEntriesList.tsx': $$4,
   },
   baseUrl: import.meta.url,
   config,

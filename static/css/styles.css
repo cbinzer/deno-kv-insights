@@ -99,6 +99,11 @@
     padding: 0 15px;
 }
 
+.entry-detail .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
 .entry-detail .form {
     display: grid;
     grid-template-rows: auto auto 1fr auto;
