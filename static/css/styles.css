@@ -49,7 +49,8 @@
     min-height: 210px;
 }
 
-.entry-detail {
+.entry-detail,
+.entry-detail-empty {
     display: grid;
     height: 100%;
     padding: 24px 9px;
@@ -57,7 +58,26 @@
     border-radius: var(--bs-border-radius);
 }
 
-.entry-detail .info-text {
+.entry-detail {
+    grid-template-rows: auto 1fr;
+    row-gap: 28px;
+}
+
+.entry-detail-empty .info-text {
     align-self: center;
     justify-self: center;
+}
+
+.entry-detail .header,
+.entry-detail .form {
+    padding: 0 15px;
+}
+
+.entry-detail .form {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+}
+
+.entry-detail .value-form-control {
+    height: 355px;
 }

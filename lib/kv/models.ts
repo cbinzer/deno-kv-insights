@@ -6,6 +6,7 @@ export interface StrippedKvEntry {
 
 export interface KvEntry extends StrippedKvEntry {
   value: unknown;
+  version: string;
 }
 
 export type KvKeyPart = Uint8Array | string | number | bigint | boolean;

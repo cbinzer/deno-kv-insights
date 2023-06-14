@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import { getAllEntries } from '../lib/kv/kvEntryClientService.ts';
-import { HTTPStrippedKvEntries, KvValueType, StrippedKvEntry } from '../lib/kv/models.ts';
+import { HTTPStrippedKvEntries, StrippedKvEntry } from '../lib/kv/models.ts';
+import { getBadgeColor } from '../lib/kv/utils.ts';
 import CreateEntryModal from './createEntryModal.tsx';
 
 const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, onSelect = () => {} }) => {
@@ -47,25 +48,6 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
   const selectEntry = (entry: StrippedKvEntry) => {
     setSelectedEntry(entry);
     onSelect(entry);
-  };
-
-  const getBadgeColor = (valueType: KvValueType): string => {
-    switch (valueType) {
-      case KvValueType.NUMBER:
-        return 'text-bg-primary';
-      case KvValueType.STRING:
-        return 'text-bg-secondary';
-      case KvValueType.BOOLEAN:
-        return 'text-bg-success';
-      case KvValueType.OBJECT:
-        return 'text-bg-danger';
-      case KvValueType.UNDEFINED:
-        return 'text-bg-warning';
-      case KvValueType.NULL:
-        return 'text-bg-info';
-      default:
-        return 'text-bg-light';
-    }
   };
 
   return (

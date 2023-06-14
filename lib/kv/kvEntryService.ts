@@ -46,6 +46,7 @@ function mapToKvEntry(kvEntry: DBKvEntry): KvEntry {
     key: kvEntry.key,
     valueType: getValueType(kvEntry.value),
     value: kvEntry.value,
+    version: kvEntry.versionstamp,
   };
 }
 
