@@ -1,4 +1,4 @@
-import { Status } from 'https://deno.land/std/http/http_status.ts';
+import { Status } from '$std/http/http_status.ts';
 import { HTTPError } from '../entry/models.ts';
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from './errors.ts';
 

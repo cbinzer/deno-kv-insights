@@ -1,4 +1,4 @@
-import { encode } from 'https://deno.land/std@0.191.0/encoding/base64.ts';
+import { encode } from '$std/encoding/base64.ts';
 import { db } from '../common/db.ts';
 import { DBEntry, KeyPart, Pagination } from './models.ts';
 
