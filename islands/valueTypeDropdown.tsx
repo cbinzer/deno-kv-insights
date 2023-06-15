@@ -9,7 +9,9 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
   const [selectedValueType, setSelectedValueType] = useState<ValueType>(valueType);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const changeSelectedValueType = (valueType: ValueType) => {
+  const changeSelectedValueType = (event: Event, valueType: ValueType) => {
+    event.preventDefault();
+
     setSelectedValueType(valueType);
     setMenuVisible(false);
     onSelect(valueType);
@@ -26,12 +28,12 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
       </button>
       <ul class={`dropdown-menu ${menuVisible ? 'show' : ''}`} style={{ top: '35px' }}>
         <li>
-          <a class='dropdown-item' href='#' onClick={() => changeSelectedValueType(ValueType.STRING)}>
+          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.STRING)}>
             {ValueType.STRING}
           </a>
         </li>
         <li>
-          <a class='dropdown-item' href='#' onClick={() => changeSelectedValueType(ValueType.OBJECT)}>
+          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.OBJECT)}>
             {ValueType.OBJECT}
           </a>
         </li>
