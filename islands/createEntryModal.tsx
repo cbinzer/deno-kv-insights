@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { KvEntry, KvKeyPart } from '../lib/kv/models.ts';
 import { createEntry } from '../lib/kv/kvEntryClientService.ts';
 
@@ -11,8 +11,13 @@ const CreateEntryModal: FunctionComponent<
   const [entry, setEntry] = useState<{ key: KvKeyPart[]; value: unknown }>({ key: [], value: undefined });
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isKeyInvalid, setIsKeyInvalid] = useState(false);
+  const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
+  const valueFormControlRef = useRef<HTMLTextAreaElement | undefined>(undefined);
 
   const setKey = (event: Event) => {
+    setIsKeyInvalid(false);
+
     const inputElement = event.target as HTMLInputElement;
     let newKey: KvKeyPart[] = [];
     if (inputElement.value) {
@@ -38,12 +43,30 @@ const CreateEntryModal: FunctionComponent<
   };
 
   const createNewEntry = async () => {
-    const createdEntry = await createEntry(entry.key, entry.value);
-    onCreate(createdEntry);
-    closeModal();
+    if (!entry.key.length) {
+      setIsKeyInvalid(true);
+      setInvalidKeyFeedback('Please provide a valid key.')
+      return;
+    }
+
+    try {
+      const createdEntry = await createEntry(entry.key, entry.value);
+      onCreate(createdEntry);
+      closeModal();
+    } catch (e) {
+      setIsKeyInvalid(true);
+      setInvalidKeyFeedback('Entry with this key already exist.')
+    }
   };
 
   const closeModal = () => {
+    setEntry({ key: [], value: undefined });
+    setIsKeyInvalid(false);
+
+    if (valueFormControlRef.current) {
+      valueFormControlRef.current.value = '';
+    }
+
     setIsOpen(false);
     onClose();
   };
@@ -72,11 +95,24 @@ const CreateEntryModal: FunctionComponent<
             <form>
               <div class='mb-3'>
                 <label for='key' class='col-form-label'>Key:</label>
-                <input type='text' class='form-control' id='key' onChange={setKey} />
+                <input
+                  type='text'
+                  class={`form-control ${isKeyInvalid ? 'is-invalid' : ''}`}
+                  id='key'
+                  value={entry.key.join(', ')}
+                  onChange={setKey}
+                />
+                <div class='invalid-feedback'>{invalidKeyFeedback}</div>
               </div>
               <div class='mb-3'>
                 <label for='value' class='col-form-label'>Value:</label>
-                <textarea class='form-control value-form-control' id='value' onChange={setValue}></textarea>
+                <textarea
+                  ref={valueFormControlRef}
+                  class='form-control value-form-control'
+                  id='value'
+                  value={entry?.value as string}
+                  onChange={setValue}
+                />
               </div>
             </form>
           </div>

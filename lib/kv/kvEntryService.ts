@@ -23,7 +23,7 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
 
   if (await entryExists(key)) {
     throw new EntryAlreadyExistsError(
-      `Can't create entry with key: [${key.join(', ')}] because an entry already exists.`,
+      `Can't create entry with key [${key.join(', ')}] because an entry already exists.`,
     );
   }
 

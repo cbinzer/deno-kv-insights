@@ -1,3 +1,4 @@
+import { EntryAlreadyExistsError } from '../common/errors.ts';
 import { HTTPError, HTTPStrippedKvEntries, KvEntry, KvKeyPart, Pagination } from './models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
@@ -29,7 +30,12 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
     body: JSON.stringify(entry),
   });
 
-  return response.json();
+  const result = await response.json();
+  if (result.status === 409) {
+    throw new EntryAlreadyExistsError(result.message);
+  }
+
+  return result;
 }
 
 export async function updateEntryValue(cursor: string, value: unknown): Promise<KvEntry> {
