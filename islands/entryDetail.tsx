@@ -3,7 +3,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { updateEntryValue } from '../lib/entry/entryClientService.ts';
 import { Entry, ValueType } from '../lib/entry/models.ts';
-import { getValueTypeColorClass } from '../lib/entry/utils.ts';
+import { convertEntryValueToString, getValueTypeColorClass } from '../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = () => {} }) => {
@@ -67,7 +67,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
           <textarea
             class='form-control value-form-control'
             id='value'
-            value={updateSupported ? internalEntry.value?.toString() : ''}
+            value={convertEntryValueToString(internalEntry)}
             disabled={!updateSupported}
             onChange={setValue}
           />
