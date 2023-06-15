@@ -1,5 +1,5 @@
 export interface StrippedEntry {
-  id: string;
+  cursor: string;
   key: KeyPart[];
   valueType: ValueType;
 }
@@ -21,7 +21,7 @@ export enum ValueType {
 }
 
 export interface DBEntry {
-  id: string;
+  cursor: string;
   key: KeyPart[];
   value: unknown;
   versionstamp: string;

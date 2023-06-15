@@ -45,7 +45,7 @@ export async function deleteEntryByCursor(cursor: string): Promise<void> {
 
 function mapToStrippedEntry(entry: DBEntry): StrippedEntry {
   return {
-    id: entry.id,
+    cursor: entry.cursor,
     key: entry.key,
     valueType: getValueType(entry.value),
   };
@@ -53,7 +53,7 @@ function mapToStrippedEntry(entry: DBEntry): StrippedEntry {
 
 function mapToEntry(entry: DBEntry): Entry {
   return {
-    id: entry.id,
+    cursor: entry.cursor,
     key: entry.key,
     valueType: getValueType(entry.value),
     value: entry.value,

@@ -22,7 +22,7 @@ const EntriesPage: FunctionComponent<EntriesPageProps> = ({ initialEntries }) =>
 
   return (
     <div class='entries-container'>
-      <EntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.id)} doReload={doReload} />
+      <EntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.cursor)} doReload={doReload} />
       <EntryDetail entry={selectedEntry} onDelete={removeSelectedEntry} />
     </div>
   );

@@ -84,15 +84,15 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                 <tbody>
                   {entries.entries.map((entry) => (
                     <tr
-                      key={entry.id}
-                      class={`table-row ${entry.id === selectedEntry?.id ? 'table-active' : ''}`}
+                      key={entry.cursor}
+                      class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
                       onClick={() => selectEntry(entry)}
                     >
                       <td>
                         <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                       </td>
                       <td>[{entry.key.join(', ')}]</td>
-                      <td>{entry.id}</td>
+                      <td>{entry.cursor}</td>
                     </tr>
                   ))}
                 </tbody>

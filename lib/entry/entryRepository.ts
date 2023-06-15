@@ -9,7 +9,7 @@ export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]
   for await (const entry of entriesIterator) {
     entries.push({
       ...entry,
-      id: entriesIterator.cursor,
+      cursor: entriesIterator.cursor,
     });
   }
 
@@ -25,7 +25,7 @@ export async function findEntryByCursor(cursor: string): Promise<DBEntry | null>
     for await (const entry of entriesIterator) {
       return {
         ...entry,
-        id: cursor,
+        cursor: cursor,
       };
     }
   } catch (e) {
@@ -44,9 +44,9 @@ export async function saveEntry(key: KeyPart[], value: unknown): Promise<DBEntry
   }
 
   // TODO change
-  const id = encode(Uint8Array.of(2, ...new TextEncoder().encode(key.join('')), 0));
+  const cursor = encode(Uint8Array.of(2, ...new TextEncoder().encode(key.join('')), 0));
   return {
-    id,
+    cursor,
     versionstamp: commitResult.versionstamp,
     key,
     value,

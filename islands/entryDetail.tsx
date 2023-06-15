@@ -30,7 +30,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
   };
 
   const updateEntry = async () => {
-    const updatedEntry = await updateEntryValue(internalEntry.id, internalEntry.value);
+    const updatedEntry = await updateEntryValue(internalEntry.cursor, internalEntry.value);
     setInternalEntry(updatedEntry);
   };
 
@@ -56,7 +56,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
       <form class='form' onSubmit={saveEntry}>
         <div class='mb-3'>
           <label for='cursor' class='form-label'>Cursor</label>
-          <input type='text' class='form-control' id='cursor' disabled={true} value={internalEntry.id} />
+          <input type='text' class='form-control' id='cursor' disabled={true} value={internalEntry.cursor} />
         </div>
         <div class='mb-3'>
           <label for='version' class='form-label'>Version</label>

@@ -10,7 +10,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   const [isVisible, setIsVisible] = useState(false);
 
   const deleteEntry = async () => {
-    await deleteEntryByCursor(entry?.id as string);
+    await deleteEntryByCursor(entry?.cursor as string);
     onDelete();
     closeModal();
   };
