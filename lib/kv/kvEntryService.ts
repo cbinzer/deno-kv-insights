@@ -32,6 +32,12 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
   return mapToKvEntry(newEntry);
 }
 
+export async function updateEntryValue(cursor: string, value: unknown): Promise<KvEntry> {
+  const entry = await getEntryByCursor(cursor);
+  const updatedEntry = await saveEntry(entry.key, value);
+  return mapToKvEntry(updatedEntry);
+}
+
 export async function deleteEntryByCursor(cursor: string): Promise<void> {
   const entry = await getEntryByCursor(cursor);
   await deleteEntry(entry.key);
