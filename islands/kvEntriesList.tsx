@@ -65,30 +65,39 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
         </div>
 
         <div class='table-container' onScroll={loadMoreEntriesOnScrollEnd}>
-          <table class='table table-hover'>
-            <thead class='table-header table-light'>
-              <tr>
-                <th class='type-col' scope='col'>Type</th>
-                <th class='key-col' scope='col'>Key</th>
-                <th scope='col'>Cursor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.entries.map((entry) => (
-                <tr
-                  key={entry.id}
-                  class={`table-row ${entry.id === selectedEntry?.id ? 'table-active' : ''}`}
-                  onClick={() => selectEntry(entry)}
-                >
-                  <td>
-                    <span class={`badge ${getBadgeColor(entry.valueType)}`}>{entry.valueType}</span>
-                  </td>
-                  <td>[{entry.key.join(', ')}]</td>
-                  <td>{entry.id}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {entries.entries.length === 0
+            ? (
+              <div class='empty-table'>
+                <p class='info-text fs-4'>No entries available</p>
+              </div>
+            )
+            : (
+              <table class='table table-hover'>
+                <thead class='table-header table-light'>
+                  <tr>
+                    <th class='type-col' scope='col'>Type</th>
+                    <th class='key-col' scope='col'>Key</th>
+                    <th scope='col'>Cursor</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {entries.entries.map((entry) => (
+                    <tr
+                      key={entry.id}
+                      class={`table-row ${entry.id === selectedEntry?.id ? 'table-active' : ''}`}
+                      onClick={() => selectEntry(entry)}
+                    >
+                      <td>
+                        <span class={`badge ${getBadgeColor(entry.valueType)}`}>{entry.valueType}</span>
+                      </td>
+                      <td>[{entry.key.join(', ')}]</td>
+                      <td>{entry.id}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
         </div>
       </div>
 
