@@ -1,5 +1,5 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
-import { entryExists, findAllEntries, findEntryByCursor, saveEntry } from './kvEntryRepository.ts';
+import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './kvEntryRepository.ts';
 import { DBKvEntry, KvEntry, KvKeyPart, KvValueType, Pagination, StrippedKvEntry } from './models.ts';
 
 export async function getAllEntries(pagination?: Pagination): Promise<StrippedKvEntry[]> {
@@ -30,6 +30,11 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
   const newEntry = await saveEntry(key, value);
 
   return mapToKvEntry(newEntry);
+}
+
+export async function deleteEntryByCursor(cursor: string): Promise<void> {
+  const entry = await getEntryByCursor(cursor);
+  await deleteEntry(entry.key);
 }
 
 function mapToKvStrippedEntry(kvEntry: DBKvEntry): StrippedKvEntry {

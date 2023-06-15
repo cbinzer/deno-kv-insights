@@ -57,3 +57,7 @@ export async function entryExists(key: KvKeyPart[]): Promise<boolean> {
   const { versionstamp } = await db.get(key);
   return !!versionstamp;
 }
+
+export async function deleteEntry(key: KvKeyPart[]): Promise<void> {
+  await db.delete(key);
+}
