@@ -1,9 +1,9 @@
 import { EntryAlreadyExistsError } from '../common/errors.ts';
-import { HTTPError, HTTPStrippedKvEntries, KvEntry, KvKeyPart, Pagination } from './models.ts';
+import { HTTPError, HTTPStrippedEntries, Entry, KeyPart, Pagination } from './models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
-export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedKvEntries> {
+export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedEntries> {
   const url = new URL(ENDPOINT_URL);
   if (pagination?.first && pagination.first > 0) {
     url.searchParams.set('first', pagination.first.toString());
@@ -16,13 +16,13 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedKvEn
   return fetch(url).then((response) => response.json());
 }
 
-export async function getEntryByCursor(cursor: string): Promise<KvEntry> {
+export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url);
   return response.json();
 }
 
-export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
+export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry> {
   const url = new URL(ENDPOINT_URL);
   const entry = { key, value };
   const response = await fetch(url, {
@@ -38,7 +38,7 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
   return result;
 }
 
-export async function updateEntryValue(cursor: string, value: unknown): Promise<KvEntry> {
+export async function updateEntryValue(cursor: string, value: unknown): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url, {
     method: 'PATCH',

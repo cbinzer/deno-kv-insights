@@ -1,18 +1,18 @@
-import { KvValueType } from './models.ts';
+import { ValueType } from './models.ts';
 
-export function getBadgeColor(valueType: KvValueType): string {
+export function getBadgeColor(valueType: ValueType): string {
   switch (valueType) {
-    case KvValueType.NUMBER:
+    case ValueType.NUMBER:
       return 'text-bg-primary';
-    case KvValueType.STRING:
+    case ValueType.STRING:
       return 'text-bg-secondary';
-    case KvValueType.BOOLEAN:
+    case ValueType.BOOLEAN:
       return 'text-bg-success';
-    case KvValueType.OBJECT:
+    case ValueType.OBJECT:
       return 'text-bg-danger';
-    case KvValueType.UNDEFINED:
+    case ValueType.UNDEFINED:
       return 'text-bg-warning';
-    case KvValueType.NULL:
+    case ValueType.NULL:
       return 'text-bg-info';
     default:
       return 'text-bg-light';

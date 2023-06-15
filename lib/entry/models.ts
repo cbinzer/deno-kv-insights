@@ -1,17 +1,17 @@
-export interface StrippedKvEntry {
+export interface StrippedEntry {
   id: string;
-  key: KvKeyPart[];
-  valueType: KvValueType;
+  key: KeyPart[];
+  valueType: ValueType;
 }
 
-export interface KvEntry extends StrippedKvEntry {
+export interface Entry extends StrippedEntry {
   value: unknown;
   version: string;
 }
 
-export type KvKeyPart = Uint8Array | string | number | bigint | boolean;
+export type KeyPart = Uint8Array | string | number | bigint | boolean;
 
-export enum KvValueType {
+export enum ValueType {
   NUMBER = 'NUMBER',
   STRING = 'STRING',
   BOOLEAN = 'BOOLEAN',
@@ -20,9 +20,9 @@ export enum KvValueType {
   NULL = 'NULL',
 }
 
-export interface DBKvEntry {
+export interface DBEntry {
   id: string;
-  key: KvKeyPart[];
+  key: KeyPart[];
   value: unknown;
   versionstamp: string;
 }
@@ -32,10 +32,10 @@ export interface Pagination {
   after?: string;
 }
 
-export interface HTTPStrippedKvEntries {
+export interface HTTPStrippedEntries {
   pageInfo: PageInfo;
   totalCount: number;
-  entries: StrippedKvEntry[];
+  entries: StrippedEntry[];
 }
 
 export interface PageInfo {

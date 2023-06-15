@@ -1,9 +1,9 @@
 import { encode } from 'https://deno.land/std@0.191.0/encoding/base64.ts';
 import { db } from '../common/db.ts';
-import { DBKvEntry, KvKeyPart, Pagination } from './models.ts';
+import { DBEntry, KeyPart, Pagination } from './models.ts';
 
-export async function findAllEntries(pagination?: Pagination): Promise<DBKvEntry[]> {
-  const entries: DBKvEntry[] = [];
+export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]> {
+  const entries: DBEntry[] = [];
 
   const entriesIterator = await db.list({ prefix: [] }, { limit: pagination?.first, cursor: pagination?.after });
   for await (const entry of entriesIterator) {
@@ -16,7 +16,7 @@ export async function findAllEntries(pagination?: Pagination): Promise<DBKvEntry
   return entries;
 }
 
-export async function findEntryByCursor(cursor: string): Promise<DBKvEntry | null> {
+export async function findEntryByCursor(cursor: string): Promise<DBEntry | null> {
   try {
     let entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor });
     await entriesIterator.next();
@@ -37,7 +37,7 @@ export async function findEntryByCursor(cursor: string): Promise<DBKvEntry | nul
   return null;
 }
 
-export async function saveEntry(key: KvKeyPart[], value: unknown): Promise<DBKvEntry> {
+export async function saveEntry(key: KeyPart[], value: unknown): Promise<DBEntry> {
   const commitResult: { ok: boolean; versionstamp: string } = await db.set(key, value);
   if (!commitResult.ok) {
     throw new Error('An unknown error occurred on saving entry.');
@@ -53,11 +53,11 @@ export async function saveEntry(key: KvKeyPart[], value: unknown): Promise<DBKvE
   };
 }
 
-export async function entryExists(key: KvKeyPart[]): Promise<boolean> {
+export async function entryExists(key: KeyPart[]): Promise<boolean> {
   const { versionstamp } = await db.get(key);
   return !!versionstamp;
 }
 
-export async function deleteEntry(key: KvKeyPart[]): Promise<void> {
+export async function deleteEntry(key: KeyPart[]): Promise<void> {
   await db.delete(key);
 }

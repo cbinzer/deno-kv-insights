@@ -1,13 +1,13 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
 import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './kvEntryRepository.ts';
-import { DBKvEntry, KvEntry, KvKeyPart, KvValueType, Pagination, StrippedKvEntry } from './models.ts';
+import { DBEntry, Entry, KeyPart, ValueType, Pagination, StrippedEntry } from './models.ts';
 
-export async function getAllEntries(pagination?: Pagination): Promise<StrippedKvEntry[]> {
+export async function getAllEntries(pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(pagination);
   return entries.map(mapToKvStrippedEntry);
 }
 
-export async function getEntryByCursor(cursor: string): Promise<KvEntry> {
+export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const entry = await findEntryByCursor(cursor);
   if (!entry) {
     throw new EntryNotFoundError(`Entry with cursor ${cursor} not found.`);
@@ -16,7 +16,7 @@ export async function getEntryByCursor(cursor: string): Promise<KvEntry> {
   return mapToKvEntry(entry);
 }
 
-export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
+export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry> {
   if (!Array.isArray(key) || key.length === 0) {
     throw new ValidationError('Invalid key.');
   }
@@ -32,7 +32,7 @@ export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvE
   return mapToKvEntry(newEntry);
 }
 
-export async function updateEntryValue(cursor: string, value: unknown): Promise<KvEntry> {
+export async function updateEntryValue(cursor: string, value: unknown): Promise<Entry> {
   const entry = await getEntryByCursor(cursor);
   const updatedEntry = await saveEntry(entry.key, value);
   return mapToKvEntry(updatedEntry);
@@ -43,7 +43,7 @@ export async function deleteEntryByCursor(cursor: string): Promise<void> {
   await deleteEntry(entry.key);
 }
 
-function mapToKvStrippedEntry(kvEntry: DBKvEntry): StrippedKvEntry {
+function mapToKvStrippedEntry(kvEntry: DBEntry): StrippedEntry {
   return {
     id: kvEntry.id,
     key: kvEntry.key,
@@ -51,7 +51,7 @@ function mapToKvStrippedEntry(kvEntry: DBKvEntry): StrippedKvEntry {
   };
 }
 
-function mapToKvEntry(kvEntry: DBKvEntry): KvEntry {
+function mapToKvEntry(kvEntry: DBEntry): Entry {
   return {
     id: kvEntry.id,
     key: kvEntry.key,
@@ -61,21 +61,21 @@ function mapToKvEntry(kvEntry: DBKvEntry): KvEntry {
   };
 }
 
-function getValueType(value: unknown): KvValueType {
+function getValueType(value: unknown): ValueType {
   if (value === null) {
-    return KvValueType.NULL;
+    return ValueType.NULL;
   }
 
   switch (typeof value) {
     case 'object':
-      return KvValueType.OBJECT;
+      return ValueType.OBJECT;
     case 'boolean':
-      return KvValueType.BOOLEAN;
+      return ValueType.BOOLEAN;
     case 'number':
-      return KvValueType.NUMBER;
+      return ValueType.NUMBER;
     case 'undefined':
-      return KvValueType.UNDEFINED;
+      return ValueType.UNDEFINED;
     default:
-      return KvValueType.STRING;
+      return ValueType.STRING;
   }
 }
