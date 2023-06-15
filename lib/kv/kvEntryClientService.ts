@@ -15,30 +15,42 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedKvEn
   return fetch(url).then((response) => response.json());
 }
 
-export function getEntryByCursor(cursor: string): Promise<KvEntry> {
+export async function getEntryByCursor(cursor: string): Promise<KvEntry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
-  return fetch(url).then((response) => response.json());
+  const response = await fetch(url);
+  return response.json();
 }
 
-export function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
+export async function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> {
   const url = new URL(ENDPOINT_URL);
   const entry = { key, value };
-
-  return fetch(url, {
+  const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(entry),
-  }).then((response) => response.json());
+  });
+
+  return response.json();
 }
 
-export function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
+export async function updateEntryValue(cursor: string, value: unknown): Promise<KvEntry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
-  return fetch(url, {
-    method: 'DELETE',
-  }).then((response) => {
-    if (!response.ok) {
-      return response.json();
-    }
-
-    return undefined;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    body: JSON.stringify({ value }),
   });
+
+  return response.json();
+}
+
+export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
+  const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  const response = await fetch(url, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    return response.json();
+  }
+
+  return undefined;
 }
