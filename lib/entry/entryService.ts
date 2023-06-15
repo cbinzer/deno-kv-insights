@@ -4,7 +4,7 @@ import { DBEntry, Entry, KeyPart, Pagination, StrippedEntry, ValueType } from '.
 
 export async function getAllEntries(pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(pagination);
-  return entries.map(mapToKvStrippedEntry);
+  return entries.map(mapToStrippedEntry);
 }
 
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
@@ -13,7 +13,7 @@ export async function getEntryByCursor(cursor: string): Promise<Entry> {
     throw new EntryNotFoundError(`Entry with cursor ${cursor} not found.`);
   }
 
-  return mapToKvEntry(entry);
+  return mapToEntry(entry);
 }
 
 export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry> {
@@ -29,13 +29,13 @@ export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry
 
   const newEntry = await saveEntry(key, value);
 
-  return mapToKvEntry(newEntry);
+  return mapToEntry(newEntry);
 }
 
 export async function updateEntryValue(cursor: string, value: unknown): Promise<Entry> {
   const entry = await getEntryByCursor(cursor);
   const updatedEntry = await saveEntry(entry.key, value);
-  return mapToKvEntry(updatedEntry);
+  return mapToEntry(updatedEntry);
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<void> {
@@ -43,21 +43,21 @@ export async function deleteEntryByCursor(cursor: string): Promise<void> {
   await deleteEntry(entry.key);
 }
 
-function mapToKvStrippedEntry(kvEntry: DBEntry): StrippedEntry {
+function mapToStrippedEntry(entry: DBEntry): StrippedEntry {
   return {
-    id: kvEntry.id,
-    key: kvEntry.key,
-    valueType: getValueType(kvEntry.value),
+    id: entry.id,
+    key: entry.key,
+    valueType: getValueType(entry.value),
   };
 }
 
-function mapToKvEntry(kvEntry: DBEntry): Entry {
+function mapToEntry(entry: DBEntry): Entry {
   return {
-    id: kvEntry.id,
-    key: kvEntry.key,
-    valueType: getValueType(kvEntry.value),
-    value: kvEntry.value,
-    version: kvEntry.versionstamp,
+    id: entry.id,
+    key: entry.key,
+    valueType: getValueType(entry.value),
+    value: entry.value,
+    version: entry.versionstamp,
   };
 }
 

@@ -9,7 +9,7 @@ export const handler: Handlers = {
     const pagination = createPagination(request.url);
     const first = pagination.first as number;
     const entries = await getAllEntries({ ...pagination, first: first + 1 });
-    const httpEntries = createHTTPStrippedKvEntries(entries, 0, first);
+    const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
     return new Response(JSON.stringify(httpEntries));
   },
@@ -51,7 +51,7 @@ function createPagination(urlString: string): Pagination {
   return pagination;
 }
 
-export function createHTTPStrippedKvEntries(
+export function createHTTPStrippedEntries(
   entries: StrippedEntry[],
   totalCount: number,
   first: number,

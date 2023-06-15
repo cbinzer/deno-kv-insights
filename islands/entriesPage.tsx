@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import { getEntryByCursor } from '../lib/entry/entryClientService.ts';
-import { HTTPStrippedEntries } from '../lib/entry/models.ts';
+import { Entry, HTTPStrippedEntries } from '../lib/entry/models.ts';
 import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
 
 const EntriesPage: FunctionComponent<EntriesPageProps> = ({ initialEntries }) => {
-  const [selectedEntry, setSelectedEntry] = useState<KvEntry | undefined>(undefined);
+  const [selectedEntry, setSelectedEntry] = useState<Entry | undefined>(undefined);
   const [doReload, setDoReload] = useState<boolean>(false);
 
   const loadEntry = async (cursor: string) => {
