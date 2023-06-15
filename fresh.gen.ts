@@ -12,6 +12,7 @@ import * as $$1 from './islands/deleteEntryModal.tsx';
 import * as $$2 from './islands/entriesList.tsx';
 import * as $$3 from './islands/entriesPage.tsx';
 import * as $$4 from './islands/entryDetail.tsx';
+import * as $$5 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -26,6 +27,7 @@ const manifest = {
     './islands/entriesList.tsx': $$2,
     './islands/entriesPage.tsx': $$3,
     './islands/entryDetail.tsx': $$4,
+    './islands/valueTypeDropdown.tsx': $$5,
   },
   baseUrl: import.meta.url,
   config,

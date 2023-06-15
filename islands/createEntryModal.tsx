@@ -1,56 +1,70 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { createEntry } from '../lib/entry/entryClientService.ts';
-import { Entry, KeyPart } from '../lib/entry/models.ts';
+import { Entry, ValueType } from '../lib/entry/models.ts';
+import ValueTypeDropdown from './valueTypeDropdown.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
 > = (
   { open = false, onClose = () => {}, onCreate = () => {} },
 ) => {
-  const [entry, setEntry] = useState<{ key: KeyPart[]; value: unknown }>({ key: [], value: undefined });
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isKeyInvalid, setIsKeyInvalid] = useState(false);
+  const [isValueInvalid, setIsValueInvalid] = useState(false);
   const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
+  const [key, setKey] = useState('');
+  const [value, setValue] = useState('');
+  const [valueType, setValueType] = useState(ValueType.STRING);
+
   const valueFormControlRef = useRef<HTMLTextAreaElement | undefined>(undefined);
 
-  const setKey = (event: Event) => {
-    setIsKeyInvalid(false);
-
+  const setEntryKey = (event: Event) => {
     const inputElement = event.target as HTMLInputElement;
-    let newKey: KeyPart[] = [];
-    if (inputElement.value) {
-      newKey = inputElement.value.split(' ');
-    }
-
-    setEntry((previousEntry) => {
-      return {
-        ...previousEntry,
-        key: newKey,
-      };
-    });
+    setIsKeyInvalid(false);
+    setKey(inputElement.value);
   };
 
-  const setValue = (event: Event) => {
-    const inputElement = event.target as HTMLInputElement;
-    setEntry((previousEntry) => {
-      return {
-        ...previousEntry,
-        value: inputElement.value,
-      };
-    });
+  const setEntryValue = (event: Event) => {
+    const inputElement = event.target as HTMLTextAreaElement;
+    setIsValueInvalid(false);
+    setValue(inputElement.value);
+  };
+
+  const convertValue = (value: string): Record<string, unknown> | string | undefined => {
+    if (valueType === ValueType.OBJECT) {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return undefined;
+      }
+    }
+
+    return value;
+  };
+
+  const changeValueType = (valueType: ValueType) => {
+    setIsValueInvalid(false);
+    setValueType(valueType);
   };
 
   const createNewEntry = async () => {
-    if (!entry.key.length) {
+    const newKey = key?.split(' ');
+    if (!key || !newKey || newKey.length === 0) {
       setIsKeyInvalid(true);
       setInvalidKeyFeedback('Please provide a valid key.');
       return;
     }
 
+    const newValue = convertValue(value);
+    if (newValue === undefined) {
+      setIsValueInvalid(true);
+      return;
+    }
+
     try {
-      const createdEntry = await createEntry(entry.key, entry.value);
+      const createdEntry = await createEntry(newKey, newValue);
       onCreate(createdEntry);
       closeModal();
     } catch (e) {
@@ -60,8 +74,11 @@ const CreateEntryModal: FunctionComponent<
   };
 
   const closeModal = () => {
-    setEntry({ key: [], value: undefined });
     setIsKeyInvalid(false);
+    setIsValueInvalid(false);
+
+    setKey('');
+    setValue('');
 
     if (valueFormControlRef.current) {
       valueFormControlRef.current.value = '';
@@ -99,20 +116,27 @@ const CreateEntryModal: FunctionComponent<
                   type='text'
                   class={`form-control ${isKeyInvalid ? 'is-invalid' : ''}`}
                   id='key'
-                  value={entry.key.join(', ')}
-                  onChange={setKey}
+                  value={key}
+                  onChange={setEntryKey}
                 />
                 <div class='invalid-feedback'>{invalidKeyFeedback}</div>
+              </div>
+              <div class='mb-3'>
+                <label for='type' class='col-form-label'>Type:</label>
+                <div id='type'>
+                  <ValueTypeDropdown valueType={valueType} onSelect={changeValueType} />
+                </div>
               </div>
               <div class='mb-3'>
                 <label for='value' class='col-form-label'>Value:</label>
                 <textarea
                   ref={valueFormControlRef}
-                  class='form-control value-form-control'
+                  class={`form-control value-form-control ${isValueInvalid ? 'is-invalid' : ''}`}
                   id='value'
-                  value={entry?.value as string}
-                  onChange={setValue}
+                  value={value}
+                  onChange={setEntryValue}
                 />
+                <div class='invalid-feedback'>Could not parse object.</div>
               </div>
             </form>
           </div>
