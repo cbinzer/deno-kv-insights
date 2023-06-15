@@ -1,11 +1,13 @@
+import { asset } from '$fresh/runtime.ts';
 import { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import { KvEntry } from '../lib/kv/models.ts';
 import { getBadgeColor } from '../lib/kv/utils.ts';
-import { asset } from '$fresh/runtime.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
 
-const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry }) => {
+const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = () => {} }) => {
+  const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
+
   if (!entry) {
     return (
       <div class='entry-detail-empty'>
@@ -14,10 +16,13 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry }) => {
     );
   }
 
-  const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
-
   const saveEntry = (event: Event) => {
     event.preventDefault();
+  };
+
+  const deleteEntry = () => {
+    setIsDeleteEntryModalOpen(false);
+    onDelete();
   };
 
   return (
@@ -50,13 +55,19 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry }) => {
         </div>
       </form>
 
-      <DeleteEntryModal open={isDeleteEntryModalOpen} entry={entry} onClose={() => setIsDeleteEntryModalOpen(false)} />
+      <DeleteEntryModal
+        open={isDeleteEntryModalOpen}
+        entry={entry}
+        onDelete={deleteEntry}
+        onClose={() => setIsDeleteEntryModalOpen(false)}
+      />
     </div>
   );
 };
 
 export interface EntryDetailProps {
   entry: KvEntry | undefined;
+  onDelete?: () => void;
 }
 
 export default EntryDetail;

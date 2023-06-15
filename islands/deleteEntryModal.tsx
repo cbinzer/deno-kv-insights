@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { KvEntry } from '../lib/kv/models.ts';
+import { deleteEntryByCursor } from '../lib/kv/kvEntryClientService.ts';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   { open = false, entry, onClose = () => {}, onDelete = () => {} },
@@ -9,6 +10,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   const [isVisible, setIsVisible] = useState(false);
 
   const deleteEntry = async () => {
+    await deleteEntryByCursor(entry?.id as string);
     onDelete();
     closeModal();
   };

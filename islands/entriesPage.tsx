@@ -7,18 +7,23 @@ import EntryDetail from './entryDetail.tsx';
 
 const EntriesPage: FunctionComponent<EntriesPageProps> = ({ initialEntries }) => {
   const [selectedEntry, setSelectedEntry] = useState<KvEntry | undefined>(undefined);
+  const [doReload, setDoReload] = useState<boolean>(false);
 
   const loadEntry = async (cursor: string) => {
     const entry = await getEntryByCursor(cursor);
-    console.log(entry);
-
+    setDoReload(false);
     setSelectedEntry(entry);
+  };
+
+  const removeSelectedEntry = () => {
+    setDoReload(true);
+    setSelectedEntry(undefined);
   };
 
   return (
     <div class='entries-container'>
-      <KvEntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.id)} />
-      <EntryDetail entry={selectedEntry} />
+      <KvEntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.id)} doReload={doReload} />
+      <EntryDetail entry={selectedEntry} onDelete={removeSelectedEntry} />
     </div>
   );
 };

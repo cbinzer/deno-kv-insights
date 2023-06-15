@@ -1,11 +1,13 @@
 import { FunctionComponent } from 'preact';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { getAllEntries } from '../lib/kv/kvEntryClientService.ts';
 import { HTTPStrippedKvEntries, StrippedKvEntry } from '../lib/kv/models.ts';
 import { getBadgeColor } from '../lib/kv/utils.ts';
 import CreateEntryModal from './createEntryModal.tsx';
 
-const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, onSelect = () => {} }) => {
+const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
+  { initialEntries, onSelect = () => {}, doReload = false },
+) => {
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
@@ -27,14 +29,12 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
     }
   };
 
-  const reloadEntries = () => {
+  const reloadEntries = async (first: number) => {
     setIsLoading(true);
-    getAllEntries({
-      first: entries.entries.length + 1,
-    }).then((nextEntries) => {
-      setEntries(nextEntries);
-      setIsLoading(false);
-    });
+
+    const nextEntries = await getAllEntries({ first });
+    setEntries(nextEntries);
+    setIsLoading(false);
   };
 
   const loadMoreEntriesOnScrollEnd = (event: Event) => {
@@ -49,6 +49,12 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
     setSelectedEntry(entry);
     onSelect(entry);
   };
+
+  useEffect(() => {
+    if (doReload) {
+      reloadEntries(entries.entries.length);
+    }
+  }, [doReload]);
 
   return (
     <>
@@ -89,7 +95,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
       <CreateEntryModal
         open={isCreateEntryModalOpen}
         onClose={() => setIsCreateEntryModalOpen(false)}
-        onCreate={reloadEntries}
+        onCreate={() => reloadEntries(entries.entries.length + 1)}
       />
     </>
   );
@@ -97,6 +103,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = ({ initialEntries, 
 
 export interface KvEntriesListProps {
   initialEntries: HTTPStrippedKvEntries;
+  doReload?: boolean;
   onSelect?: (entry: StrippedKvEntry) => void;
 }
 

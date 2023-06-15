@@ -1,4 +1,4 @@
-import { HTTPStrippedKvEntries, KvEntry, KvKeyPart, Pagination } from './models.ts';
+import { HTTPError, HTTPStrippedKvEntries, KvEntry, KvKeyPart, Pagination } from './models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -28,4 +28,17 @@ export function createEntry(key: KvKeyPart[], value: unknown): Promise<KvEntry> 
     method: 'POST',
     body: JSON.stringify(entry),
   }).then((response) => response.json());
+}
+
+export function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
+  const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  return fetch(url, {
+    method: 'DELETE',
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json();
+    }
+
+    return undefined;
+  });
 }
