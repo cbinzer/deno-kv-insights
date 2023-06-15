@@ -1,14 +1,14 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { KvEntry, KvKeyPart } from '../lib/kv/models.ts';
-import { createEntry } from '../lib/kv/kvEntryClientService.ts';
+import { createEntry } from '../lib/entry/entryClientService.ts';
+import { Entry, KeyPart } from '../lib/entry/models.ts';
 
 const CreateEntryModal: FunctionComponent<
-  { open: boolean; onClose?: () => void; onCreate?: (entry: KvEntry) => void }
+  { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
 > = (
   { open = false, onClose = () => {}, onCreate = () => {} },
 ) => {
-  const [entry, setEntry] = useState<{ key: KvKeyPart[]; value: unknown }>({ key: [], value: undefined });
+  const [entry, setEntry] = useState<{ key: KeyPart[]; value: unknown }>({ key: [], value: undefined });
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isKeyInvalid, setIsKeyInvalid] = useState(false);
@@ -19,7 +19,7 @@ const CreateEntryModal: FunctionComponent<
     setIsKeyInvalid(false);
 
     const inputElement = event.target as HTMLInputElement;
-    let newKey: KvKeyPart[] = [];
+    let newKey: KeyPart[] = [];
     if (inputElement.value) {
       newKey = inputElement.value.split(' ');
     }
@@ -45,7 +45,7 @@ const CreateEntryModal: FunctionComponent<
   const createNewEntry = async () => {
     if (!entry.key.length) {
       setIsKeyInvalid(true);
-      setInvalidKeyFeedback('Please provide a valid key.')
+      setInvalidKeyFeedback('Please provide a valid key.');
       return;
     }
 
@@ -55,7 +55,7 @@ const CreateEntryModal: FunctionComponent<
       closeModal();
     } catch (e) {
       setIsKeyInvalid(true);
-      setInvalidKeyFeedback('Entry with this key already exist.')
+      setInvalidKeyFeedback('Entry with this key already exist.');
     }
   };
 

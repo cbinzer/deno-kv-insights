@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
-import { HTTPStrippedKvEntries, KvEntry } from '../lib/kv/models.ts';
 import { useState } from 'preact/hooks';
-import { getEntryByCursor } from '../lib/kv/kvEntryClientService.ts';
-import KvEntriesList from './kvEntriesList.tsx';
+import { getEntryByCursor } from '../lib/entry/entryClientService.ts';
+import { HTTPStrippedEntries } from '../lib/entry/models.ts';
+import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
 
 const EntriesPage: FunctionComponent<EntriesPageProps> = ({ initialEntries }) => {
@@ -22,14 +22,14 @@ const EntriesPage: FunctionComponent<EntriesPageProps> = ({ initialEntries }) =>
 
   return (
     <div class='entries-container'>
-      <KvEntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.id)} doReload={doReload} />
+      <EntriesList initialEntries={initialEntries} onSelect={(entry) => loadEntry(entry.id)} doReload={doReload} />
       <EntryDetail entry={selectedEntry} onDelete={removeSelectedEntry} />
     </div>
   );
 };
 
 export interface EntriesPageProps {
-  initialEntries: HTTPStrippedKvEntries;
+  initialEntries: HTTPStrippedEntries;
 }
 
 export default EntriesPage;

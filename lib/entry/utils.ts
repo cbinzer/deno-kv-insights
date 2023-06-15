@@ -1,6 +1,6 @@
 import { ValueType } from './models.ts';
 
-export function getBadgeColor(valueType: ValueType): string {
+export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
     case ValueType.NUMBER:
       return 'text-bg-primary';

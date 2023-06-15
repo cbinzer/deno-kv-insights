@@ -1,10 +1,10 @@
 import { HandlerContext } from '$fresh/src/server/types.ts';
 import EntriesPage from '../islands/entriesPage.tsx';
-import { getAllEntries } from '../lib/kv/kvEntryService.ts';
-import { HTTPStrippedKvEntries } from '../lib/kv/models.ts';
+import { getAllEntries } from '../lib/entry/entryService.ts';
+import { HTTPStrippedEntries } from '../lib/entry/models.ts';
 import { createHTTPStrippedKvEntries } from './api/entries/index.ts';
 
-export const handler = async (request: Request, context: HandlerContext) => {
+export const handler = async (_, context: HandlerContext) => {
   const first = 25;
   const entries = await getAllEntries({ first: first + 1 });
   const httpEntries = createHTTPStrippedKvEntries(entries, 0, first);
@@ -12,6 +12,6 @@ export const handler = async (request: Request, context: HandlerContext) => {
   return context.render({ entries: httpEntries });
 };
 
-export default function EntriesPageRoute(props: { data: { entries: HTTPStrippedKvEntries } }) {
+export default function EntriesPageRoute(props: { data: { entries: HTTPStrippedEntries } }) {
   return <EntriesPage initialEntries={props.data.entries} />;
 }

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { KvEntry } from '../lib/kv/models.ts';
-import { deleteEntryByCursor } from '../lib/kv/kvEntryClientService.ts';
+import { deleteEntryByCursor } from '../lib/entry/entryClientService.ts';
+import { Entry } from '../lib/entry/models.ts';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   { open = false, entry, onClose = () => {}, onDelete = () => {} },
@@ -55,7 +55,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
 
 export interface DeleteEntryModalProps {
   open: boolean;
-  entry: KvEntry | undefined;
+  entry: Entry | undefined;
   onClose?: () => void;
   onDelete?: () => void;
 }

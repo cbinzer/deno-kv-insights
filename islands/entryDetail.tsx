@@ -1,13 +1,13 @@
 import { asset } from '$fresh/runtime.ts';
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { KvEntry, KvValueType } from '../lib/kv/models.ts';
-import { getBadgeColor } from '../lib/kv/utils.ts';
+import { updateEntryValue } from '../lib/entry/entryClientService.ts';
+import { Entry, ValueType } from '../lib/entry/models.ts';
+import { getValueTypeColorClass } from '../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
-import { updateEntryValue } from '../lib/kv/kvEntryClientService.ts';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = () => {} }) => {
-  const [internalEntry, setInternalEntry] = useState<KvEntry | undefined>(entry);
+  const [internalEntry, setInternalEntry] = useState<Entry | undefined>(entry);
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
 
   useEffect(() => setInternalEntry(entry), [entry]);
@@ -36,16 +36,16 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
 
   const setValue = (event: Event) => {
     const textarea = event.target as HTMLTextAreaElement;
-    setInternalEntry((previousEntry) => ({ ...previousEntry as KvEntry, value: textarea.value }));
+    setInternalEntry((previousEntry) => ({ ...previousEntry as Entry, value: textarea.value }));
   };
 
-  const updateSupported = internalEntry.valueType === KvValueType.STRING;
+  const updateSupported = internalEntry.valueType === ValueType.STRING;
 
   return (
     <div class='entry-detail'>
       <div class='header'>
         <p class='h5'>
-          <span class={`badge ${getBadgeColor(internalEntry.valueType)}`}>{internalEntry.valueType}</span>{' '}
+          <span class={`badge ${getValueTypeColorClass(internalEntry.valueType)}`}>{internalEntry.valueType}</span>{' '}
           [{internalEntry.key.join(', ')}]
         </p>
         <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)}>
@@ -96,7 +96,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
 };
 
 export interface EntryDetailProps {
-  entry: KvEntry | undefined;
+  entry: Entry | undefined;
   onDelete?: () => void;
 }
 

@@ -1,17 +1,17 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { getAllEntries } from '../lib/kv/kvEntryClientService.ts';
-import { HTTPStrippedKvEntries, StrippedKvEntry } from '../lib/kv/models.ts';
-import { getBadgeColor } from '../lib/kv/utils.ts';
+import { getAllEntries } from '../lib/entry/entryClientService.ts';
+import { HTTPStrippedEntries, StrippedEntry } from '../lib/entry/models.ts';
+import { getValueTypeColorClass } from '../lib/entry/utils.ts';
 import CreateEntryModal from './createEntryModal.tsx';
 
-const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
+const EntriesList: FunctionComponent<EntriesListProps> = (
   { initialEntries, onSelect = () => {}, doReload = false },
 ) => {
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
-  const [selectedEntry, setSelectedEntry] = useState<StrippedKvEntry>();
+  const [selectedEntry, setSelectedEntry] = useState<StrippedEntry>();
 
   const loadMoreEntries = () => {
     if (entries.pageInfo.hasNextPage && !isLoading) {
@@ -45,7 +45,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
     }
   };
 
-  const selectEntry = (entry: StrippedKvEntry) => {
+  const selectEntry = (entry: StrippedEntry) => {
     setSelectedEntry(entry);
     onSelect(entry);
   };
@@ -58,7 +58,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
 
   return (
     <>
-      <div class='kv-entries-list'>
+      <div class='entries-list'>
         <div class='action-container'>
           <div></div>
           <button class='btn btn-primary' onClick={() => setIsCreateEntryModalOpen(true)}>+ Entry</button>
@@ -89,7 +89,7 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
                       onClick={() => selectEntry(entry)}
                     >
                       <td>
-                        <span class={`badge ${getBadgeColor(entry.valueType)}`}>{entry.valueType}</span>
+                        <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                       </td>
                       <td>[{entry.key.join(', ')}]</td>
                       <td>{entry.id}</td>
@@ -110,10 +110,10 @@ const KvEntriesList: FunctionComponent<KvEntriesListProps> = (
   );
 };
 
-export interface KvEntriesListProps {
-  initialEntries: HTTPStrippedKvEntries;
+export interface EntriesListProps {
+  initialEntries: HTTPStrippedEntries;
   doReload?: boolean;
-  onSelect?: (entry: StrippedKvEntry) => void;
+  onSelect?: (entry: StrippedEntry) => void;
 }
 
-export default KvEntriesList;
+export default EntriesList;

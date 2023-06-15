@@ -1,8 +1,8 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
-import { createEntry, getAllEntries } from '../../../lib/kv/kvEntryService.ts';
-import { HTTPStrippedKvEntries, KvKeyPart, Pagination, StrippedKvEntry } from '../../../lib/kv/models.ts';
+import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
+import { HTTPStrippedEntries, KeyPart, Pagination, StrippedEntry } from '../../../lib/entry/models.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -16,7 +16,7 @@ export const handler: Handlers = {
 
   POST: async (request): Promise<Response> => {
     try {
-      const { key, value } = (await request.json()) as { key: KvKeyPart[]; value: unknown };
+      const { key, value } = (await request.json()) as { key: KeyPart[]; value: unknown };
       const newEntry = await createEntry(key, value);
 
       return Response.json(newEntry, { status: Status.Created });
@@ -52,10 +52,10 @@ function createPagination(urlString: string): Pagination {
 }
 
 export function createHTTPStrippedKvEntries(
-  entries: StrippedKvEntry[],
+  entries: StrippedEntry[],
   totalCount: number,
   first: number,
-): HTTPStrippedKvEntries {
+): HTTPStrippedEntries {
   const slicedEntries = entries.slice(0, first);
 
   return {

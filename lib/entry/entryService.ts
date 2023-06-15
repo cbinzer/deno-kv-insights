@@ -1,6 +1,6 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
-import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './kvEntryRepository.ts';
-import { DBEntry, Entry, KeyPart, ValueType, Pagination, StrippedEntry } from './models.ts';
+import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './entryRepository.ts';
+import { DBEntry, Entry, KeyPart, Pagination, StrippedEntry, ValueType } from './models.ts';
 
 export async function getAllEntries(pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(pagination);

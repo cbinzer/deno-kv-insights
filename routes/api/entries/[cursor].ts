@@ -1,6 +1,6 @@
 import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
-import { deleteEntryByCursor, getEntryByCursor, updateEntryValue } from '../../../lib/kv/kvEntryService.ts';
+import { deleteEntryByCursor, getEntryByCursor, updateEntryValue } from '../../../lib/entry/entryService.ts';
 
 export const handler: Handlers = {
   GET: async (_, context): Promise<Response> => {
