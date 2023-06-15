@@ -10,13 +10,16 @@ export default function App(props: AppProps) {
 
         <title>Deno KV Insights</title>
       </Head>
+
       <header class='header'>
         <img class='deno-logo' src={asset('images/deno-logo.png')} />
         <span class='title'>Deno KV Insights</span>
       </header>
+
       <main>
         <props.Component />
       </main>
+
       <footer class='footer'>
         <a href='https://fresh.deno.dev'>
           <img
