@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { createEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
+import BooleanValueFormControl from './booleanValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -15,7 +16,7 @@ const CreateEntryModal: FunctionComponent<
   const [isValueInvalid, setIsValueInvalid] = useState(false);
   const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [key, setKey] = useState('');
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string | boolean>('');
   const [valueType, setValueType] = useState(ValueType.STRING);
 
   const valueFormControlRef = useRef<HTMLTextAreaElement | undefined>(undefined);
@@ -32,8 +33,8 @@ const CreateEntryModal: FunctionComponent<
     setValue(inputElement.value);
   };
 
-  const convertValue = (value: string): Record<string, unknown> | string | undefined => {
-    if (valueType === ValueType.OBJECT) {
+  const convertValue = (value: string | boolean): Record<string, unknown> | string | boolean | undefined => {
+    if (valueType === ValueType.OBJECT && typeof value === 'string') {
       try {
         return JSON.parse(value);
       } catch (e) {
@@ -47,6 +48,17 @@ const CreateEntryModal: FunctionComponent<
   const changeValueType = (valueType: ValueType) => {
     setIsValueInvalid(false);
     setValueType(valueType);
+
+    switch (valueType) {
+      case ValueType.BOOLEAN:
+        setValue(true);
+        break;
+      case ValueType.OBJECT:
+        setValue('{}');
+        break;
+      default:
+        setValue('');
+    }
   };
 
   const createNewEntry = async () => {
@@ -78,7 +90,7 @@ const CreateEntryModal: FunctionComponent<
     setIsValueInvalid(false);
 
     setKey('');
-    setValue('');
+    changeValueType(ValueType.STRING);
 
     if (valueFormControlRef.current) {
       valueFormControlRef.current.value = '';
@@ -128,15 +140,21 @@ const CreateEntryModal: FunctionComponent<
                 </div>
               </div>
               <div class='mb-3'>
-                <label for='value' class='col-form-label'>Value:</label>
-                <textarea
-                  ref={valueFormControlRef}
-                  class={`form-control value-form-control ${isValueInvalid ? 'is-invalid' : ''}`}
-                  id='value'
-                  value={value}
-                  onChange={setEntryValue}
-                />
-                <div class='invalid-feedback'>Could not parse object.</div>
+                {valueType === ValueType.BOOLEAN
+                  ? <BooleanValueFormControl value={value as boolean} onSelect={setValue} />
+                  : (
+                    <>
+                      <label for='value' class='col-form-label'>Value:</label>
+                      <textarea
+                        ref={valueFormControlRef}
+                        class={`form-control value-form-control ${isValueInvalid ? 'is-invalid' : ''}`}
+                        id='value'
+                        value={value as string}
+                        onChange={setEntryValue}
+                      />
+                      <div class='invalid-feedback'>Could not parse object.</div>
+                    </>
+                  )}
               </div>
             </form>
           </div>

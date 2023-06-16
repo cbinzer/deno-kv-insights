@@ -37,6 +37,11 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
             {ValueType.OBJECT}
           </a>
         </li>
+        <li>
+          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.BOOLEAN)}>
+            {ValueType.BOOLEAN}
+          </a>
+        </li>
       </ul>
     </div>
   );

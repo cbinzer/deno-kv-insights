@@ -7,12 +7,13 @@ import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/api/entries/[cursor].ts';
 import * as $2 from './routes/api/entries/index.ts';
 import * as $3 from './routes/index.tsx';
-import * as $$0 from './islands/createEntryModal.tsx';
-import * as $$1 from './islands/deleteEntryModal.tsx';
-import * as $$2 from './islands/entriesList.tsx';
-import * as $$3 from './islands/entriesPage.tsx';
-import * as $$4 from './islands/entryDetail.tsx';
-import * as $$5 from './islands/valueTypeDropdown.tsx';
+import * as $$0 from './islands/booleanValueFormControl.tsx';
+import * as $$1 from './islands/createEntryModal.tsx';
+import * as $$2 from './islands/deleteEntryModal.tsx';
+import * as $$3 from './islands/entriesList.tsx';
+import * as $$4 from './islands/entriesPage.tsx';
+import * as $$5 from './islands/entryDetail.tsx';
+import * as $$6 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -22,12 +23,13 @@ const manifest = {
     './routes/index.tsx': $3,
   },
   islands: {
-    './islands/createEntryModal.tsx': $$0,
-    './islands/deleteEntryModal.tsx': $$1,
-    './islands/entriesList.tsx': $$2,
-    './islands/entriesPage.tsx': $$3,
-    './islands/entryDetail.tsx': $$4,
-    './islands/valueTypeDropdown.tsx': $$5,
+    './islands/booleanValueFormControl.tsx': $$0,
+    './islands/createEntryModal.tsx': $$1,
+    './islands/deleteEntryModal.tsx': $$2,
+    './islands/entriesList.tsx': $$3,
+    './islands/entriesPage.tsx': $$4,
+    './islands/entryDetail.tsx': $$5,
+    './islands/valueTypeDropdown.tsx': $$6,
   },
   baseUrl: import.meta.url,
   config,
