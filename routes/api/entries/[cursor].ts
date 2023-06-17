@@ -1,12 +1,13 @@
-import { Handlers } from '$fresh/server.ts';
-import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
-import { deleteEntryByCursor, getEntryByCursor, updateEntryValue } from '../../../lib/entry/entryService.ts';
+import {Handlers} from '$fresh/server.ts';
+import {mapToHTTPError} from '../../../lib/common/httpUtils.ts';
+import {deleteEntryByCursor, getEntryByCursor, updateEntryValue} from '../../../lib/entry/entryService.ts';
+import {Entry} from '../../../lib/entry/models.ts';
 
 export const handler: Handlers = {
   GET: async (_, context): Promise<Response> => {
     try {
       const entry = await getEntryByCursor(context.params.cursor);
-      return new Response(JSON.stringify(entry));
+      return new Response(JSON.stringify(removeUndefinedValue(entry)));
     } catch (e) {
       console.error(e);
 
@@ -23,7 +24,7 @@ export const handler: Handlers = {
       const { value } = await request.json();
       const updatedEntry = await updateEntryValue(cursor, value);
 
-      return new Response(JSON.stringify(updatedEntry));
+      return new Response(JSON.stringify(removeUndefinedValue(updatedEntry)));
     } catch (e) {
       console.error(e);
 
@@ -48,3 +49,15 @@ export const handler: Handlers = {
     }
   },
 };
+
+function removeUndefinedValue(entry: Entry): Entry {
+  const newEntry: Entry = {
+    ...entry,
+  };
+
+  if (newEntry.value === undefined) {
+    delete newEntry.value;
+  }
+
+  return newEntry;
+}

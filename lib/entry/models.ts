@@ -5,7 +5,7 @@ export interface StrippedEntry {
 }
 
 export interface Entry extends StrippedEntry {
-  value: unknown;
+  value?: EntryValue;
   version: string;
 }
 
@@ -37,7 +37,7 @@ export enum ValueType {
 export interface DBEntry {
   cursor: string;
   key: KeyPart[];
-  value: unknown;
+  value?: EntryValue;
   versionstamp: string;
 }
 
