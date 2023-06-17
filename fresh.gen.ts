@@ -14,10 +14,11 @@ import * as $$3 from './islands/deleteEntryModal.tsx';
 import * as $$4 from './islands/entriesList.tsx';
 import * as $$5 from './islands/entriesPage.tsx';
 import * as $$6 from './islands/entryDetail.tsx';
-import * as $$7 from './islands/numberValueFormControl.tsx';
-import * as $$8 from './islands/objectValueFormControl.tsx';
-import * as $$9 from './islands/stringValueFormControl.tsx';
-import * as $$10 from './islands/valueTypeDropdown.tsx';
+import * as $$7 from './islands/entryValueFormControl.tsx';
+import * as $$8 from './islands/numberValueFormControl.tsx';
+import * as $$9 from './islands/objectValueFormControl.tsx';
+import * as $$10 from './islands/stringValueFormControl.tsx';
+import * as $$11 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -34,10 +35,11 @@ const manifest = {
     './islands/entriesList.tsx': $$4,
     './islands/entriesPage.tsx': $$5,
     './islands/entryDetail.tsx': $$6,
-    './islands/numberValueFormControl.tsx': $$7,
-    './islands/objectValueFormControl.tsx': $$8,
-    './islands/stringValueFormControl.tsx': $$9,
-    './islands/valueTypeDropdown.tsx': $$10,
+    './islands/entryValueFormControl.tsx': $$7,
+    './islands/numberValueFormControl.tsx': $$8,
+    './islands/objectValueFormControl.tsx': $$9,
+    './islands/stringValueFormControl.tsx': $$10,
+    './islands/valueTypeDropdown.tsx': $$11,
   },
   baseUrl: import.meta.url,
   config,

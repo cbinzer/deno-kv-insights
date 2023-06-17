@@ -3,11 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { createEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
-import BooleanValueFormControl from './booleanValueFormControl.tsx';
-import NumberValueFormControl from './numberValueFormControl.tsx';
-import StringValueFormControl from './stringValueFormControl.tsx';
-import ObjectValueFormControl from './objectValueFormControl.tsx';
-import DateValueFormControl from './dateValueFormControl.tsx';
+import EntryValueFormControl from './entryValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -124,21 +120,7 @@ const CreateEntryModal: FunctionComponent<
                 </div>
               </div>
               <div class='mb-3'>
-                {valueType === ValueType.BOOLEAN
-                  ? <BooleanValueFormControl value={value as boolean} onSelect={setValue} />
-                  : null}
-                {valueType === ValueType.NUMBER
-                  ? <NumberValueFormControl value={value as number} onChange={setValue} />
-                  : null}
-                {valueType === ValueType.STRING
-                  ? <StringValueFormControl value={value as string} onChange={setValue} />
-                  : null}
-                {valueType === ValueType.OBJECT
-                  ? <ObjectValueFormControl value={value as Object} onChange={setValue} />
-                  : null}
-                {valueType === ValueType.DATE
-                  ? <DateValueFormControl value={value as Date} onChange={setValue} />
-                  : null}
+                <EntryValueFormControl valueType={valueType} value={value} onChange={setValue} />
               </div>
             </form>
           </div>
