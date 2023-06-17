@@ -83,7 +83,7 @@ function convertValue(valueType: ValueType, value: EntryValue): EntryValue {
       }
 
       const newDate = new Date(value as string);
-      if (!isNaN(newDate.getTime())) {
+      if (isNaN(newDate.getTime())) {
         throw new ValidationError(`The given date value '${value}' couldn't be converted to a real date.`);
       }
 
