@@ -5,6 +5,7 @@ import { Entry, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import BooleanValueFormControl from './booleanValueFormControl.tsx';
 import NumberValueFormControl from './numberValueFormControl.tsx';
+import StringValueFormControl from './stringValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -150,20 +151,8 @@ const CreateEntryModal: FunctionComponent<
                 {valueType === ValueType.NUMBER
                   ? <NumberValueFormControl value={value as number} onChange={setValue} />
                   : null}
-                {valueType === ValueType.STRING || valueType === ValueType.OBJECT
-                  ? (
-                    <>
-                      <label for='value' class='col-form-label'>Value:</label>
-                      <textarea
-                        ref={valueFormControlRef}
-                        class={`form-control value-form-control ${isValueInvalid ? 'is-invalid' : ''}`}
-                        id='value'
-                        value={value as string}
-                        onChange={setEntryValue}
-                      />
-                      <div class='invalid-feedback'>Could not parse object.</div>
-                    </>
-                  )
+                {valueType === ValueType.STRING
+                  ? <StringValueFormControl value={value as string} onChange={setValue} />
                   : null}
               </div>
             </form>
