@@ -17,6 +17,17 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
     onSelect(valueType);
   };
 
+  const getAllValueTypes = (): ValueType[] => {
+    const valueTypes: ValueType[] = [];
+    for (const valueType in ValueType) {
+      if (isNaN(Number(valueType))) {
+        valueTypes.push(valueType);
+      }
+    }
+
+    return valueTypes;
+  };
+
   return (
     <div class='btn-group'>
       <button
@@ -27,36 +38,13 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
         {selectedValueType}
       </button>
       <ul class={`dropdown-menu ${menuVisible ? 'show' : ''}`} style={{ top: '35px' }}>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.STRING)}>
-            {ValueType.STRING}
-          </a>
-        </li>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.OBJECT)}>
-            {ValueType.OBJECT}
-          </a>
-        </li>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.BOOLEAN)}>
-            {ValueType.BOOLEAN}
-          </a>
-        </li>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.NUMBER)}>
-            {ValueType.NUMBER}
-          </a>
-        </li>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.NULL)}>
-            {ValueType.NULL}
-          </a>
-        </li>
-        <li>
-          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.UNDEFINED)}>
-            {ValueType.UNDEFINED}
-          </a>
-        </li>
+        {getAllValueTypes().map((valueType) => (
+          <li>
+            <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, valueType)}>
+              {valueType}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   );
