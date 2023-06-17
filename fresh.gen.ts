@@ -9,14 +9,15 @@ import * as $2 from './routes/api/entries/index.ts';
 import * as $3 from './routes/index.tsx';
 import * as $$0 from './islands/booleanValueFormControl.tsx';
 import * as $$1 from './islands/createEntryModal.tsx';
-import * as $$2 from './islands/deleteEntryModal.tsx';
-import * as $$3 from './islands/entriesList.tsx';
-import * as $$4 from './islands/entriesPage.tsx';
-import * as $$5 from './islands/entryDetail.tsx';
-import * as $$6 from './islands/numberValueFormControl.tsx';
-import * as $$7 from './islands/objectValueFormControl.tsx';
-import * as $$8 from './islands/stringValueFormControl.tsx';
-import * as $$9 from './islands/valueTypeDropdown.tsx';
+import * as $$2 from './islands/dateValueFormControl.tsx';
+import * as $$3 from './islands/deleteEntryModal.tsx';
+import * as $$4 from './islands/entriesList.tsx';
+import * as $$5 from './islands/entriesPage.tsx';
+import * as $$6 from './islands/entryDetail.tsx';
+import * as $$7 from './islands/numberValueFormControl.tsx';
+import * as $$8 from './islands/objectValueFormControl.tsx';
+import * as $$9 from './islands/stringValueFormControl.tsx';
+import * as $$10 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -28,14 +29,15 @@ const manifest = {
   islands: {
     './islands/booleanValueFormControl.tsx': $$0,
     './islands/createEntryModal.tsx': $$1,
-    './islands/deleteEntryModal.tsx': $$2,
-    './islands/entriesList.tsx': $$3,
-    './islands/entriesPage.tsx': $$4,
-    './islands/entryDetail.tsx': $$5,
-    './islands/numberValueFormControl.tsx': $$6,
-    './islands/objectValueFormControl.tsx': $$7,
-    './islands/stringValueFormControl.tsx': $$8,
-    './islands/valueTypeDropdown.tsx': $$9,
+    './islands/dateValueFormControl.tsx': $$2,
+    './islands/deleteEntryModal.tsx': $$3,
+    './islands/entriesList.tsx': $$4,
+    './islands/entriesPage.tsx': $$5,
+    './islands/entryDetail.tsx': $$6,
+    './islands/numberValueFormControl.tsx': $$7,
+    './islands/objectValueFormControl.tsx': $$8,
+    './islands/stringValueFormControl.tsx': $$9,
+    './islands/valueTypeDropdown.tsx': $$10,
   },
   baseUrl: import.meta.url,
   config,

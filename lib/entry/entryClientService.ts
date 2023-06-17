@@ -1,5 +1,13 @@
 import { EntryAlreadyExistsError } from '../common/errors.ts';
-import { HTTPError, HTTPStrippedEntries, Entry, KeyPart, Pagination } from './models.ts';
+import {
+  Entry,
+  EntryForCreation,
+  EntryValue,
+  HTTPError,
+  HTTPStrippedEntries,
+  Pagination,
+  ValueType,
+} from './models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -19,12 +27,13 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedEntr
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url);
-  return response.json();
+  const entry = (await response.json()) as Entry;
+
+  return convertValue(entry);
 }
 
-export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry> {
+export async function createEntry(entry: EntryForCreation): Promise<Entry> {
   const url = new URL(ENDPOINT_URL);
-  const entry = { key, value };
   const response = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(entry),
@@ -38,7 +47,7 @@ export async function createEntry(key: KeyPart[], value: unknown): Promise<Entry
   return result;
 }
 
-export async function updateEntryValue(cursor: string, value: unknown): Promise<Entry> {
+export async function updateEntryValue(cursor: string, value: EntryValue): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url, {
     method: 'PATCH',
@@ -59,4 +68,15 @@ export async function deleteEntryByCursor(cursor: string): Promise<undefined | H
   }
 
   return undefined;
+}
+
+function convertValue(entry: Entry): Entry {
+  if (entry.valueType === ValueType.DATE) {
+    return {
+      ...entry,
+      value: new Date(entry.value as string),
+    };
+  }
+
+  return entry;
 }

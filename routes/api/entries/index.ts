@@ -2,7 +2,7 @@ import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
-import { HTTPStrippedEntries, KeyPart, Pagination, StrippedEntry } from '../../../lib/entry/models.ts';
+import { EntryForCreation, HTTPStrippedEntries, Pagination, StrippedEntry } from '../../../lib/entry/models.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -16,8 +16,8 @@ export const handler: Handlers = {
 
   POST: async (request): Promise<Response> => {
     try {
-      const { key, value } = (await request.json()) as { key: KeyPart[]; value: unknown };
-      const newEntry = await createEntry(key, value);
+      const entry = (await request.json()) as EntryForCreation;
+      const newEntry = await createEntry(entry);
 
       return Response.json(newEntry, { status: Status.Created });
     } catch (e) {

@@ -14,6 +14,8 @@ export function getValueTypeColorClass(valueType: ValueType): string {
       return 'text-bg-warning';
     case ValueType.NULL:
       return 'text-bg-info';
+    case ValueType.DATE:
+      return 'text-bg-dark';
     default:
       return 'text-bg-light';
   }
@@ -21,6 +23,8 @@ export function getValueTypeColorClass(valueType: ValueType): string {
 
 export function convertEntryValueToString(entry: Entry): string {
   switch (entry.valueType) {
+    case ValueType.DATE:
+      return (entry.value as Date).toISOString();
     case ValueType.NUMBER:
       return (entry.value as number).toString();
     case ValueType.STRING:
@@ -30,7 +34,6 @@ export function convertEntryValueToString(entry: Entry): string {
     case ValueType.OBJECT:
       return JSON.stringify(entry.value, undefined, 2);
     case ValueType.UNDEFINED:
-      return '';
     case ValueType.NULL:
       return '';
     default:

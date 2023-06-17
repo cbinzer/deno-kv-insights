@@ -7,6 +7,7 @@ import BooleanValueFormControl from './booleanValueFormControl.tsx';
 import NumberValueFormControl from './numberValueFormControl.tsx';
 import StringValueFormControl from './stringValueFormControl.tsx';
 import ObjectValueFormControl from './objectValueFormControl.tsx';
+import DateValueFormControl from './dateValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -49,6 +50,9 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.UNDEFINED:
         setValue(undefined);
         break;
+      case ValueType.DATE:
+        setValue(new Date());
+        break;
     }
   };
 
@@ -61,7 +65,7 @@ const CreateEntryModal: FunctionComponent<
     }
 
     try {
-      const createdEntry = await createEntry(newKey, value);
+      const createdEntry = await createEntry({ key: newKey, valueType, value });
       onCreate(createdEntry);
       closeModal();
     } catch (e) {
@@ -131,6 +135,9 @@ const CreateEntryModal: FunctionComponent<
                   : null}
                 {valueType === ValueType.OBJECT
                   ? <ObjectValueFormControl value={value as Object} onChange={setValue} />
+                  : null}
+                {valueType === ValueType.DATE
+                  ? <DateValueFormControl value={value as Date} onChange={setValue} />
                   : null}
               </div>
             </form>

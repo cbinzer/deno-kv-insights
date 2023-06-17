@@ -9,6 +9,12 @@ export interface Entry extends StrippedEntry {
   version: string;
 }
 
+export interface EntryForCreation {
+  key: KeyPart[];
+  valueType: ValueType;
+  value?: EntryValue;
+}
+
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
 export type EntryValue =
   | undefined
@@ -32,6 +38,7 @@ export enum ValueType {
   OBJECT = 'OBJECT',
   UNDEFINED = 'UNDEFINED',
   NULL = 'NULL',
+  DATE = 'DATE',
 }
 
 export interface DBEntry {

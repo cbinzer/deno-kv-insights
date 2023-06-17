@@ -1,6 +1,6 @@
 import { encode } from '$std/encoding/base64.ts';
 import { db } from '../common/db.ts';
-import { DBEntry, KeyPart, Pagination } from './models.ts';
+import { DBEntry, EntryValue, KeyPart, Pagination } from './models.ts';
 
 export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]> {
   const entries: DBEntry[] = [];
@@ -37,7 +37,7 @@ export async function findEntryByCursor(cursor: string): Promise<DBEntry | null>
   return null;
 }
 
-export async function saveEntry(key: KeyPart[], value: unknown): Promise<DBEntry> {
+export async function saveEntry(key: KeyPart[], value: EntryValue): Promise<DBEntry> {
   const commitResult: { ok: boolean; versionstamp: string } = await db.set(key, value);
   if (!commitResult.ok) {
     throw new Error('An unknown error occurred on saving entry.');
