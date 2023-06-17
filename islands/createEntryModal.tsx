@@ -6,6 +6,7 @@ import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import BooleanValueFormControl from './booleanValueFormControl.tsx';
 import NumberValueFormControl from './numberValueFormControl.tsx';
 import StringValueFormControl from './stringValueFormControl.tsx';
+import ObjectValueFormControl from './objectValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -14,14 +15,11 @@ const CreateEntryModal: FunctionComponent<
 ) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isKeyInvalid, setIsKeyInvalid] = useState(false);
-  const [isValueInvalid, setIsValueInvalid] = useState(false);
-  const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [key, setKey] = useState('');
-  const [value, setValue] = useState<string | boolean | number>('');
+  const [isKeyInvalid, setIsKeyInvalid] = useState(false);
+  const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [valueType, setValueType] = useState(ValueType.STRING);
-
-  const valueFormControlRef = useRef<HTMLTextAreaElement | undefined>(undefined);
+  const [value, setValue] = useState<string | boolean | number>('');
 
   const setEntryKey = (event: Event) => {
     const inputElement = event.target as HTMLInputElement;
@@ -29,26 +27,7 @@ const CreateEntryModal: FunctionComponent<
     setKey(inputElement.value);
   };
 
-  const setEntryValue = (event: Event) => {
-    const inputElement = event.target as HTMLTextAreaElement;
-    setIsValueInvalid(false);
-    setValue(inputElement.value);
-  };
-
-  const convertValue = (value: string | boolean): Record<string, unknown> | string | boolean | undefined => {
-    if (valueType === ValueType.OBJECT && typeof value === 'string') {
-      try {
-        return JSON.parse(value);
-      } catch (e) {
-        return undefined;
-      }
-    }
-
-    return value;
-  };
-
   const changeValueType = (valueType: ValueType) => {
-    setIsValueInvalid(false);
     setValueType(valueType);
 
     switch (valueType) {
@@ -56,7 +35,7 @@ const CreateEntryModal: FunctionComponent<
         setValue(true);
         break;
       case ValueType.OBJECT:
-        setValue('{}');
+        setValue({});
         break;
       case ValueType.NUMBER:
         setValue(0);
@@ -68,20 +47,15 @@ const CreateEntryModal: FunctionComponent<
 
   const createNewEntry = async () => {
     const newKey = key?.split(' ');
+    console.log(newKey);
     if (!key || !newKey || newKey.length === 0) {
       setIsKeyInvalid(true);
       setInvalidKeyFeedback('Please provide a valid key.');
       return;
     }
 
-    const newValue = convertValue(value);
-    if (newValue === undefined) {
-      setIsValueInvalid(true);
-      return;
-    }
-
     try {
-      const createdEntry = await createEntry(newKey, newValue);
+      const createdEntry = await createEntry(newKey, value);
       onCreate(createdEntry);
       closeModal();
     } catch (e) {
@@ -92,14 +66,9 @@ const CreateEntryModal: FunctionComponent<
 
   const closeModal = () => {
     setIsKeyInvalid(false);
-    setIsValueInvalid(false);
-
     setKey('');
-    changeValueType(ValueType.STRING);
 
-    if (valueFormControlRef.current) {
-      valueFormControlRef.current.value = '';
-    }
+    changeValueType(ValueType.STRING);
 
     setIsOpen(false);
     onClose();
@@ -153,6 +122,9 @@ const CreateEntryModal: FunctionComponent<
                   : null}
                 {valueType === ValueType.STRING
                   ? <StringValueFormControl value={value as string} onChange={setValue} />
+                  : null}
+                {valueType === ValueType.OBJECT
+                  ? <ObjectValueFormControl value={value as Object} onChange={setValue} />
                   : null}
               </div>
             </form>

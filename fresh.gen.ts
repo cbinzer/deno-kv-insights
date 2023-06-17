@@ -14,8 +14,9 @@ import * as $$3 from './islands/entriesList.tsx';
 import * as $$4 from './islands/entriesPage.tsx';
 import * as $$5 from './islands/entryDetail.tsx';
 import * as $$6 from './islands/numberValueFormControl.tsx';
-import * as $$7 from './islands/stringValueFormControl.tsx';
-import * as $$8 from './islands/valueTypeDropdown.tsx';
+import * as $$7 from './islands/objectValueFormControl.tsx';
+import * as $$8 from './islands/stringValueFormControl.tsx';
+import * as $$9 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -32,8 +33,9 @@ const manifest = {
     './islands/entriesPage.tsx': $$4,
     './islands/entryDetail.tsx': $$5,
     './islands/numberValueFormControl.tsx': $$6,
-    './islands/stringValueFormControl.tsx': $$7,
-    './islands/valueTypeDropdown.tsx': $$8,
+    './islands/objectValueFormControl.tsx': $$7,
+    './islands/stringValueFormControl.tsx': $$8,
+    './islands/valueTypeDropdown.tsx': $$9,
   },
   baseUrl: import.meta.url,
   config,
