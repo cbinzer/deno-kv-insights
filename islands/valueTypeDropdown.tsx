@@ -47,6 +47,16 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
             {ValueType.NUMBER}
           </a>
         </li>
+        <li>
+          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.NULL)}>
+            {ValueType.NULL}
+          </a>
+        </li>
+        <li>
+          <a class='dropdown-item' href='#' onClick={(event) => changeSelectedValueType(event, ValueType.UNDEFINED)}>
+            {ValueType.UNDEFINED}
+          </a>
+        </li>
       </ul>
     </div>
   );

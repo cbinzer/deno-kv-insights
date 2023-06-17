@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { createEntry } from '../lib/entry/entryClientService.ts';
-import { Entry, ValueType } from '../lib/entry/models.ts';
+import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import BooleanValueFormControl from './booleanValueFormControl.tsx';
 import NumberValueFormControl from './numberValueFormControl.tsx';
@@ -19,7 +19,7 @@ const CreateEntryModal: FunctionComponent<
   const [isKeyInvalid, setIsKeyInvalid] = useState(false);
   const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [valueType, setValueType] = useState(ValueType.STRING);
-  const [value, setValue] = useState<string | boolean | number>('');
+  const [value, setValue] = useState<EntryValue>('');
 
   const setEntryKey = (event: Event) => {
     const inputElement = event.target as HTMLInputElement;
@@ -40,14 +40,20 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.NUMBER:
         setValue(0);
         break;
-      default:
+      case ValueType.STRING:
         setValue('');
+        break;
+      case ValueType.NULL:
+        setValue(null);
+        break;
+      case ValueType.UNDEFINED:
+        setValue(undefined);
+        break;
     }
   };
 
   const createNewEntry = async () => {
     const newKey = key?.split(' ');
-    console.log(newKey);
     if (!key || !newKey || newKey.length === 0) {
       setIsKeyInvalid(true);
       setInvalidKeyFeedback('Please provide a valid key.');

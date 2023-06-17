@@ -10,6 +10,20 @@ export interface Entry extends StrippedEntry {
 }
 
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
+export type EntryValue =
+  | undefined
+  | null
+  | boolean
+  | number
+  | string
+  | bigint
+  | Uint8Array
+  | Array<unknown>
+  | Object
+  | Map<unknown, unknown>
+  | Set<unknown>
+  | Date
+  | RegExp;
 
 export enum ValueType {
   NUMBER = 'NUMBER',
