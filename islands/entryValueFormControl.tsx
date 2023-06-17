@@ -7,22 +7,29 @@ import ObjectValueFormControl from './objectValueFormControl.tsx';
 import DateValueFormControl from './dateValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
-  { valueType, value, onChange = () => {} },
+  { id, valueType, value, onChange = () => {} },
 ) => {
   return (
     <>
       {valueType === ValueType.BOOLEAN
-        ? <BooleanValueFormControl value={value as boolean} onSelect={onChange} />
+        ? <BooleanValueFormControl id={id} value={value as boolean} onSelect={onChange} />
         : null}
-      {valueType === ValueType.NUMBER ? <NumberValueFormControl value={value as number} onChange={onChange} /> : null}
-      {valueType === ValueType.STRING ? <StringValueFormControl value={value as string} onChange={onChange} /> : null}
-      {valueType === ValueType.OBJECT ? <ObjectValueFormControl value={value as Object} onChange={onChange} /> : null}
-      {valueType === ValueType.DATE ? <DateValueFormControl value={value as Date} onChange={onChange} /> : null}
+      {valueType === ValueType.NUMBER
+        ? <NumberValueFormControl id={id} value={value as number} onChange={onChange} />
+        : null}
+      {valueType === ValueType.STRING
+        ? <StringValueFormControl id={id} value={value as string} onChange={onChange} />
+        : null}
+      {valueType === ValueType.OBJECT
+        ? <ObjectValueFormControl id={id} value={value as Object} onChange={onChange} />
+        : null}
+      {valueType === ValueType.DATE ? <DateValueFormControl id={id} value={value as Date} onChange={onChange} /> : null}
     </>
   );
 };
 
 export interface EntryValueFormControlProps {
+  id?: string;
   valueType: ValueType;
   value: EntryValue;
   onChange?: (value: EntryValue) => void;

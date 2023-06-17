@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
-const NumberValueFormControl: FunctionComponent<NumberValueFormControlProps> = ({ value = 0, onChange = () => {} }) => {
+const NumberValueFormControl: FunctionComponent<NumberValueFormControlProps> = ({ id, value = 0, onChange = () => {} }) => {
   const [internalValue, setInternalValue] = useState(value);
 
   useEffect(() => setInternalValue(value), [value]);
@@ -14,18 +14,14 @@ const NumberValueFormControl: FunctionComponent<NumberValueFormControlProps> = (
     }
 
     setInternalValue(newValue);
-    onChange(newValue)
+    onChange(newValue);
   };
 
-  return (
-    <>
-      <label for='numberValue' class='form-label'>Value</label>
-      <input type='number' class='form-control' id='numberValue' value={internalValue} onChange={changeValue} />
-    </>
-  );
+  return <input type='number' class='form-control' id={id} value={internalValue} onChange={changeValue} />;
 };
 
 export interface NumberValueFormControlProps {
+  id?: string;
   value: number;
   onChange?: (value: number) => void;
 }

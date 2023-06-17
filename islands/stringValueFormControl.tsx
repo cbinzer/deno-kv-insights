@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 
 const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
-  { value = '', onChange = () => {} },
+  { id, value = '', onChange = () => {} },
 ) => {
   const changeValue = (event: Event) => {
     const textArea = event.target as HTMLTextAreaElement;
@@ -9,19 +9,17 @@ const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
   };
 
   return (
-    <>
-      <label for='stringValue' class='col-form-label'>Value:</label>
-      <textarea
-        class={`form-control value-form-control`}
-        id='stringValue'
-        value={value}
-        onInput={changeValue}
-      />
-    </>
+    <textarea
+      class={`form-control value-form-control`}
+      id={id}
+      value={value}
+      onInput={changeValue}
+    />
   );
 };
 
 export interface StringValueFormControlProps {
+  id?: string;
   value: string;
   onChange?: (value: string) => void;
 }
