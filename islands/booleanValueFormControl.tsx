@@ -4,10 +4,8 @@ const BooleanValueFormControl: FunctionComponent<BooleanValueFormControlProps> =
   const selectValue = (event: Event) => {
     const radioElement = event.target as HTMLInputElement;
     onSelect(radioElement.value === 'true');
-    console.log(radioElement.value === 'true');
   };
 
-  // console.log(value);
   return (
     <>
       <label for='booleanValue' class='col-form-label'>Value:</label>

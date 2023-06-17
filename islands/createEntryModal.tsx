@@ -4,6 +4,7 @@ import { createEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import BooleanValueFormControl from './booleanValueFormControl.tsx';
+import NumberValueFormControl from './numberValueFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -16,7 +17,7 @@ const CreateEntryModal: FunctionComponent<
   const [isValueInvalid, setIsValueInvalid] = useState(false);
   const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [key, setKey] = useState('');
-  const [value, setValue] = useState<string | boolean>('');
+  const [value, setValue] = useState<string | boolean | number>('');
   const [valueType, setValueType] = useState(ValueType.STRING);
 
   const valueFormControlRef = useRef<HTMLTextAreaElement | undefined>(undefined);
@@ -55,6 +56,9 @@ const CreateEntryModal: FunctionComponent<
         break;
       case ValueType.OBJECT:
         setValue('{}');
+        break;
+      case ValueType.NUMBER:
+        setValue(0);
         break;
       default:
         setValue('');
@@ -142,7 +146,12 @@ const CreateEntryModal: FunctionComponent<
               <div class='mb-3'>
                 {valueType === ValueType.BOOLEAN
                   ? <BooleanValueFormControl value={value as boolean} onSelect={setValue} />
-                  : (
+                  : null}
+                {valueType === ValueType.NUMBER
+                  ? <NumberValueFormControl value={value as number} onChange={setValue} />
+                  : null}
+                {valueType === ValueType.STRING || valueType === ValueType.OBJECT
+                  ? (
                     <>
                       <label for='value' class='col-form-label'>Value:</label>
                       <textarea
@@ -154,7 +163,8 @@ const CreateEntryModal: FunctionComponent<
                       />
                       <div class='invalid-feedback'>Could not parse object.</div>
                     </>
-                  )}
+                  )
+                  : null}
               </div>
             </form>
           </div>
