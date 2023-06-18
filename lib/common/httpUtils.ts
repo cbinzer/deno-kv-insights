@@ -1,5 +1,5 @@
 import { Status } from '$std/http/http_status.ts';
-import { HTTPError } from '../entry/models.ts';
+import { HTTPError } from './models.ts';
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError, VersionConflictError } from './errors.ts';
 
 export function mapToHTTPError(error: Error): HTTPError {

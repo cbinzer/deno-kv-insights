@@ -1,10 +1,10 @@
-import { encode } from '$std/encoding/base64.ts';
 import { db } from '../common/db.ts';
-import { DBEntry, EntryValue, KeyPart, Pagination } from './models.ts';
-import {VersionConflictError} from '../common/errors.ts';
+import { CursorBasedDBEntry, DBEntry, EntryValue, KeyPart } from './models.ts';
+import { VersionConflictError } from '../common/errors.ts';
+import { Pagination } from '../common/models.ts';
 
-export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]> {
-  const entries: DBEntry[] = [];
+export async function findAllEntries(pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
+  const entries: CursorBasedDBEntry[] = [];
 
   const entriesIterator = await db.list({ prefix: [] }, { limit: pagination?.first, cursor: pagination?.after });
   for await (const entry of entriesIterator) {
@@ -17,7 +17,7 @@ export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]
   return entries;
 }
 
-export async function findEntryByCursor(cursor: string): Promise<DBEntry | null> {
+export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEntry | null> {
   try {
     let entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor });
     await entriesIterator.next();
@@ -50,13 +50,12 @@ export async function saveEntry(
       value,
     ).commit();
   if (!commitResult.ok) {
-    throw new VersionConflictError(`Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'. DB version stamp ${commitResult.versionstamp}.`);
+    throw new VersionConflictError(
+      `Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'. DB version stamp ${commitResult.versionstamp}.`,
+    );
   }
 
-  // TODO change
-  const cursor = encode(Uint8Array.of(2, ...new TextEncoder().encode(key.join('')), 0));
   return {
-    cursor,
     versionstamp: commitResult.versionstamp,
     key,
     value,

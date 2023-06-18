@@ -1,7 +1,7 @@
-import {FunctionComponent} from 'preact';
-import {useEffect, useState} from 'preact/hooks';
-import {createEntry} from '../lib/entry/entryClientService.ts';
-import {Entry, EntryValue, ValueType} from '../lib/entry/models.ts';
+import { FunctionComponent } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
+import { createEntry } from '../lib/entry/entryClientService.ts';
+import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 
@@ -120,8 +120,14 @@ const CreateEntryModal: FunctionComponent<
                 </div>
               </div>
               <div class='mb-3'>
-                <label for='entryValue' class='col-form-label'>Value:</label>
-                <EntryValueFormControl id='entryValue' valueType={valueType} value={value} onChange={setValue} />
+                {valueType !== ValueType.NULL && valueType !== ValueType.UNDEFINED
+                  ? (
+                    <>
+                      <label for='entryValue' class='col-form-label'>Value:</label>
+                      <EntryValueFormControl id='entryValue' valueType={valueType} value={value} onChange={setValue} />
+                    </>
+                  )
+                  : null}
               </div>
             </form>
           </div>

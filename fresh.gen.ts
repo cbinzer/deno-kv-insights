@@ -12,7 +12,7 @@ import * as $$1 from './islands/createEntryModal.tsx';
 import * as $$2 from './islands/dateValueFormControl.tsx';
 import * as $$3 from './islands/deleteEntryModal.tsx';
 import * as $$4 from './islands/entriesList.tsx';
-import * as $$5 from './islands/entriesPage.tsx';
+import * as $$5 from './islands/entriesManagement.tsx';
 import * as $$6 from './islands/entryDetail.tsx';
 import * as $$7 from './islands/entryValueFormControl.tsx';
 import * as $$8 from './islands/numberValueFormControl.tsx';
@@ -33,7 +33,7 @@ const manifest = {
     './islands/dateValueFormControl.tsx': $$2,
     './islands/deleteEntryModal.tsx': $$3,
     './islands/entriesList.tsx': $$4,
-    './islands/entriesPage.tsx': $$5,
+    './islands/entriesManagement.tsx': $$5,
     './islands/entryDetail.tsx': $$6,
     './islands/entryValueFormControl.tsx': $$7,
     './islands/numberValueFormControl.tsx': $$8,

@@ -1,3 +1,4 @@
+/*region common*/
 .page {
     display: grid;
     grid-template-rows: 100px auto;
@@ -26,29 +27,39 @@
     margin: auto;
 }
 
-.entries-container {
+.resize-none {
+    resize: none;
+}
+/*endregion*/
+
+/*region entriesManagement*/
+.entries-management {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 25px;
 }
 
-.entries-list {
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-row-gap: 24px;
-
+.entries-management .panel {
     padding: 24px 9px;
     border: solid var(--bs-border-color) 1px;
     border-radius: var(--bs-border-radius);
 }
 
-.entries-list .action-container {
+.entries-management .left-panel-container {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-row-gap: 24px;
+}
+
+.entries-management .action-container {
     display: grid;
     grid-template-columns: 1fr auto;
     padding: 0 15px;
 }
+/*endregion*/
 
-.entries-list .table-container {
+/*region entriesList*/
+.entries-list {
     height: 615px;
     max-height: 615px;
     overflow-y: auto;
@@ -82,23 +93,24 @@
 .entries-list .key-col {
     width: 50%;
 }
+/*endregion*/
 
+/*region createEntryModal*/
 .create-entry-modal .value-form-control {
     min-height: 210px;
 }
+/*endregion*/
 
+/*region entryDetail*/
 .entry-detail,
 .entry-detail-empty {
     display: grid;
     height: 100%;
-    padding: 24px 9px;
-    border: solid var(--bs-border-color) 1px;
-    border-radius: var(--bs-border-radius);
 }
 
 .entry-detail {
     grid-template-rows: auto 1fr;
-    row-gap: 28px;
+    row-gap: 24px;
 }
 
 .entry-detail-empty .info-text {
@@ -124,3 +136,4 @@
 .entry-detail .value-form-control {
     height: 355px;
 }
+/*endregion*/

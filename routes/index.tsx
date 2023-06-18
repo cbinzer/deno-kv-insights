@@ -1,5 +1,5 @@
 import { HandlerContext } from '$fresh/src/server/types.ts';
-import EntriesPage from '../islands/entriesPage.tsx';
+import EntriesManagement from '../islands/entriesManagement.tsx';
 import { getAllEntries } from '../lib/entry/entryService.ts';
 import { HTTPStrippedEntries } from '../lib/entry/models.ts';
 import { createHTTPStrippedEntries } from './api/entries/index.ts';
@@ -13,5 +13,5 @@ export const handler = async (_, context: HandlerContext) => {
 };
 
 export default function EntriesPageRoute(props: { data: { entries: HTTPStrippedEntries } }) {
-  return <EntriesPage initialEntries={props.data.entries} />;
+  return <EntriesManagement initialEntries={props.data.entries} />;
 }

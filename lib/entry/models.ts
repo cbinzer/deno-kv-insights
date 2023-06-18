@@ -1,3 +1,5 @@
+import { PageInfo } from '../common/models.ts';
+
 export interface StrippedEntry {
   cursor: string;
   key: KeyPart[];
@@ -8,6 +10,8 @@ export interface Entry extends StrippedEntry {
   value?: EntryValue;
   version: string;
 }
+
+export type NewEntry = Omit<Entry, 'cursor'>;
 
 export interface EntryForCreation {
   key: KeyPart[];
@@ -49,29 +53,17 @@ export enum ValueType {
 }
 
 export interface DBEntry {
-  cursor: string;
   key: KeyPart[];
   value?: EntryValue;
   versionstamp: string;
 }
 
-export interface Pagination {
-  first?: number;
-  after?: string;
+export interface CursorBasedDBEntry extends DBEntry {
+  cursor: string;
 }
 
 export interface HTTPStrippedEntries {
   pageInfo: PageInfo;
   totalCount: number;
   entries: StrippedEntry[];
-}
-
-export interface PageInfo {
-  hasNextPage: boolean;
-  endCursor?: string;
-}
-
-export interface HTTPError {
-  status: number;
-  message: string;
 }

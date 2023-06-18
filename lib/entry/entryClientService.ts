@@ -1,13 +1,6 @@
 import { EntryAlreadyExistsError } from '../common/errors.ts';
-import {
-  Entry,
-  EntryForCreation,
-  EntryForUpdate,
-  HTTPError,
-  HTTPStrippedEntries,
-  Pagination,
-  ValueType,
-} from './models.ts';
+import {Entry, EntryForCreation, EntryForUpdate, HTTPStrippedEntries, NewEntry, ValueType} from './models.ts';
+import { HTTPError, Pagination } from '../common/models.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -32,7 +25,7 @@ export async function getEntryByCursor(cursor: string): Promise<Entry> {
   return convertValue(entry);
 }
 
-export async function createEntry(entry: EntryForCreation): Promise<Entry> {
+export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   const url = new URL(ENDPOINT_URL);
   const response = await fetch(url, {
     method: 'POST',

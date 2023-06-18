@@ -1,16 +1,18 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
 import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './entryRepository.ts';
 import {
+  CursorBasedDBEntry,
   DBEntry,
   Entry,
   EntryForCreation,
   EntryForUpdate,
   EntryValue,
   KeyPart,
-  Pagination,
+  NewEntry,
   StrippedEntry,
   ValueType,
 } from './models.ts';
+import { Pagination } from '../common/models.ts';
 
 export async function getAllEntries(pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(pagination);
@@ -26,13 +28,13 @@ export async function getEntryByCursor(cursor: string): Promise<Entry> {
   return mapToEntry(entry);
 }
 
-export async function createEntry(entry: EntryForCreation): Promise<Entry> {
+export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   await assertEntryForCreation(entry);
 
   const convertedValue = convertValue(entry.valueType, entry.value);
   const newEntry = await saveEntry(entry.key, convertedValue);
 
-  return mapToEntry(newEntry);
+  return mapToNewEntry(newEntry);
 }
 
 export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
@@ -41,7 +43,8 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
   const existingEntry = await getEntryByCursor(entry.cursor);
   const convertedValue = convertValue(entry.valueType, entry.value);
   const updatedEntry = await saveEntry(existingEntry.key, convertedValue, entry.version);
-  return mapToEntry(updatedEntry);
+
+  return mapToEntry({ ...updatedEntry, cursor: entry.cursor });
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<void> {
@@ -113,7 +116,7 @@ function convertValue(valueType: ValueType, value: EntryValue): EntryValue {
   }
 }
 
-function mapToStrippedEntry(entry: DBEntry): StrippedEntry {
+function mapToStrippedEntry(entry: CursorBasedDBEntry): StrippedEntry {
   return {
     cursor: entry.cursor,
     key: entry.key,
@@ -121,9 +124,18 @@ function mapToStrippedEntry(entry: DBEntry): StrippedEntry {
   };
 }
 
-function mapToEntry(entry: DBEntry): Entry {
+function mapToEntry(entry: CursorBasedDBEntry): Entry {
   return {
     cursor: entry.cursor,
+    key: entry.key,
+    valueType: getValueType(entry.value),
+    value: entry.value,
+    version: entry.versionstamp,
+  };
+}
+
+function mapToNewEntry(entry: DBEntry): NewEntry {
+  return {
     key: entry.key,
     valueType: getValueType(entry.value),
     value: entry.value,

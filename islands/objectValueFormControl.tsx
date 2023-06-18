@@ -32,7 +32,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
   return (
     <>
       <textarea
-        class={`form-control value-form-control ${isValueInvalid ? 'is-invalid' : ''}`}
+        class={`form-control value-form-control resize-none ${isValueInvalid ? 'is-invalid' : ''}`}
         id={id}
         value={stringValue}
         onChange={changeValue}
