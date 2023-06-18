@@ -4,6 +4,7 @@ import {
   DBEntry,
   Entry,
   EntryForCreation,
+  EntryForUpdate,
   EntryValue,
   KeyPart,
   Pagination,
@@ -34,9 +35,12 @@ export async function createEntry(entry: EntryForCreation): Promise<Entry> {
   return mapToEntry(newEntry);
 }
 
-export async function updateEntryValue(cursor: string, value: EntryValue): Promise<Entry> {
-  const entry = await getEntryByCursor(cursor);
-  const updatedEntry = await saveEntry(entry.key, value);
+export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
+  await assertEntryForUpdate(entry);
+
+  const existingEntry = await getEntryByCursor(entry.cursor);
+  const convertedValue = convertValue(entry.valueType, entry.value);
+  const updatedEntry = await saveEntry(existingEntry.key, convertedValue, entry.version);
   return mapToEntry(updatedEntry);
 }
 
@@ -73,6 +77,22 @@ function assertValue(valueType: ValueType, value: EntryValue): void {
       `The given value type '${valueType}' is not matching the detected type '${realValueType}' of the value.`,
     );
   }
+}
+
+function assertEntryForUpdate(entry: EntryForUpdate): void {
+  if (!entry.cursor) {
+    throw new ValidationError('Cursor is missing.');
+  }
+
+  if (!entry.version) {
+    throw new ValidationError('Version is missing.');
+  }
+
+  if (!entry.valueType) {
+    throw new ValidationError('Value type is missing.');
+  }
+
+  assertValue(entry.valueType, entry.value);
 }
 
 function convertValue(valueType: ValueType, value: EntryValue): EntryValue {

@@ -1,6 +1,7 @@
 import { encode } from '$std/encoding/base64.ts';
 import { db } from '../common/db.ts';
 import { DBEntry, EntryValue, KeyPart, Pagination } from './models.ts';
+import {VersionConflictError} from '../common/errors.ts';
 
 export async function findAllEntries(pagination?: Pagination): Promise<DBEntry[]> {
   const entries: DBEntry[] = [];
@@ -37,10 +38,19 @@ export async function findEntryByCursor(cursor: string): Promise<DBEntry | null>
   return null;
 }
 
-export async function saveEntry(key: KeyPart[], value: EntryValue): Promise<DBEntry> {
-  const commitResult: { ok: boolean; versionstamp: string } = await db.set(key, value);
+export async function saveEntry(
+  key: KeyPart[],
+  value: EntryValue,
+  versionstamp: string | null = null,
+): Promise<DBEntry> {
+  const commitResult: { ok: boolean; versionstamp: string } = await db.atomic()
+    .check({ key, versionstamp })
+    .set(
+      key,
+      value,
+    ).commit();
   if (!commitResult.ok) {
-    throw new Error('An unknown error occurred on saving entry.');
+    throw new VersionConflictError(`Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'. DB version stamp ${commitResult.versionstamp}.`);
   }
 
   // TODO change

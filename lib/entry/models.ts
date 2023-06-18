@@ -15,6 +15,13 @@ export interface EntryForCreation {
   value?: EntryValue;
 }
 
+export interface EntryForUpdate {
+  cursor: string;
+  version: string;
+  valueType: ValueType;
+  value?: EntryValue;
+}
+
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
 export type EntryValue =
   | undefined

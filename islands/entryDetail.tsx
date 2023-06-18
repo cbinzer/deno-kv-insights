@@ -1,18 +1,20 @@
 import { asset } from '$fresh/runtime.ts';
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { updateEntryValue } from '../lib/entry/entryClientService.ts';
-import { Entry, ValueType } from '../lib/entry/models.ts';
-import { convertEntryValueToString, getValueTypeColorClass } from '../lib/entry/utils.ts';
+import { updateEntry } from '../lib/entry/entryClientService.ts';
+import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
+import { getValueTypeColorClass } from '../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
+import EntryValueFormControl from './entryValueFormControl.tsx';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = () => {} }) => {
   const [internalEntry, setInternalEntry] = useState<Entry | undefined>(entry);
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
+  const [isValueInvalid, setIsValueInvalid] = useState(false);
 
   useEffect(() => setInternalEntry(entry), [entry]);
 
-  if (!internalEntry) {
+  if (!entry || !internalEntry) {
     return (
       <div class='entry-detail-empty'>
         <p class='info-text fs-4'>No entry selected</p>
@@ -29,17 +31,15 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
     onDelete();
   };
 
-  const updateEntry = async () => {
-    const updatedEntry = await updateEntryValue(internalEntry.cursor, internalEntry.value);
+  const changeEntry = async () => {
+    const updatedEntry = await updateEntry(internalEntry);
     setInternalEntry(updatedEntry);
   };
 
-  const setValue = (event: Event) => {
-    const textarea = event.target as HTMLTextAreaElement;
-    setInternalEntry((previousEntry) => ({ ...previousEntry as Entry, value: textarea.value }));
+  const setValue = (value: EntryValue) => {
+    setInternalEntry((previousEntry) => ({ ...previousEntry as Entry, value: value }));
+    setIsValueInvalid(false);
   };
-
-  const updateSupported = internalEntry.valueType === ValueType.STRING;
 
   return (
     <div class='entry-detail'>
@@ -49,7 +49,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
           [{internalEntry.key.join(', ')}]
         </p>
         <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)}>
-          <img src={asset('icons/trash3.svg')} />
+          <img src={asset('icons/trash3.svg')} alt="trash icon" />
         </button>
       </div>
 
@@ -63,22 +63,27 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ entry, onDelete = ()
           <input type='text' class='form-control' id='version' disabled={true} value={internalEntry.version} />
         </div>
         <div class='mb-3'>
-          <label for='value' class='form-label'>Value</label>
-          <textarea
-            class='form-control value-form-control'
-            id='value'
-            value={convertEntryValueToString(internalEntry)}
-            disabled={!updateSupported}
-            onChange={setValue}
-          />
+          {entry?.valueType !== ValueType.NULL && entry?.valueType !== ValueType.UNDEFINED
+            ? (
+              <>
+                <label for='entryValueForUpdate' class='form-label'>Value</label>
+                <EntryValueFormControl
+                  id='entryValueForUpdate'
+                  valueType={internalEntry.valueType}
+                  value={internalEntry.value}
+                  onChange={setValue}
+                  onInvalid={() => setIsValueInvalid(true)}
+                />
+              </>
+            )
+            : null}
         </div>
-
         <div>
           <button
             type='submit'
             class='btn btn-primary btn-save float-end'
-            disabled={!updateSupported}
-            onClick={updateEntry}
+            disabled={isValueInvalid}
+            onClick={changeEntry}
           >
             Save
           </button>

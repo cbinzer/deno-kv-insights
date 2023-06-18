@@ -2,7 +2,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
 const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
-  { id, value = {}, onChange = () => {} },
+  { id, value = {}, onChange = () => {}, onInvalid = () => {} },
 ) => {
   const [stringValue, setStringValue] = useState('{}');
   const [isValueInvalid, setIsValueInvalid] = useState(false);
@@ -25,6 +25,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
       onChange(newValue);
     } catch (e) {
       setIsValueInvalid(true);
+      onInvalid();
     }
   };
 
@@ -45,6 +46,7 @@ export interface ObjectValueFormControlProps {
   id?: string;
   value: Object;
   onChange?: (value: Object) => void;
+  onInvalid?: () => void;
 }
 
 export default ObjectValueFormControl;

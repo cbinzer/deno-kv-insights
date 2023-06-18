@@ -1,6 +1,6 @@
 import { Status } from '$std/http/http_status.ts';
 import { HTTPError } from '../entry/models.ts';
-import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from './errors.ts';
+import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError, VersionConflictError } from './errors.ts';
 
 export function mapToHTTPError(error: Error): HTTPError {
   if (error instanceof ValidationError) {
@@ -17,7 +17,7 @@ export function mapToHTTPError(error: Error): HTTPError {
     };
   }
 
-  if (error instanceof EntryAlreadyExistsError) {
+  if (error instanceof EntryAlreadyExistsError || error instanceof VersionConflictError) {
     return {
       status: Status.Conflict,
       message: error.message,

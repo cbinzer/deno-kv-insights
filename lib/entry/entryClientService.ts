@@ -2,7 +2,7 @@ import { EntryAlreadyExistsError } from '../common/errors.ts';
 import {
   Entry,
   EntryForCreation,
-  EntryValue,
+  EntryForUpdate,
   HTTPError,
   HTTPStrippedEntries,
   Pagination,
@@ -44,17 +44,18 @@ export async function createEntry(entry: EntryForCreation): Promise<Entry> {
     throw new EntryAlreadyExistsError(result.message);
   }
 
-  return result;
+  return convertValue(result);
 }
 
-export async function updateEntryValue(cursor: string, value: EntryValue): Promise<Entry> {
+export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
+  const { cursor, ...entryWithoutCursor } = entry;
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url, {
-    method: 'PATCH',
-    body: JSON.stringify({ value }),
+    method: 'PUT',
+    body: JSON.stringify(entryWithoutCursor),
   });
 
-  return response.json();
+  return convertValue(await response.json());
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {

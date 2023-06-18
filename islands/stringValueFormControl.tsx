@@ -13,7 +13,7 @@ const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
       class={`form-control value-form-control`}
       id={id}
       value={value}
-      onInput={changeValue}
+      onChange={changeValue}
     />
   );
 };

@@ -1,7 +1,7 @@
-import {Handlers} from '$fresh/server.ts';
-import {mapToHTTPError} from '../../../lib/common/httpUtils.ts';
-import {deleteEntryByCursor, getEntryByCursor, updateEntryValue} from '../../../lib/entry/entryService.ts';
-import {Entry} from '../../../lib/entry/models.ts';
+import { Handlers } from '$fresh/server.ts';
+import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
+import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../../../lib/entry/entryService.ts';
+import { Entry, EntryForUpdate } from '../../../lib/entry/models.ts';
 
 export const handler: Handlers = {
   GET: async (_, context): Promise<Response> => {
@@ -18,11 +18,11 @@ export const handler: Handlers = {
     }
   },
 
-  PATCH: async (request, context): Promise<Response> => {
+  PUT: async (request, context): Promise<Response> => {
     try {
       const cursor = context.params.cursor;
-      const { value } = await request.json();
-      const updatedEntry = await updateEntryValue(cursor, value);
+      const entry = await request.json() as Omit<EntryForUpdate, 'cursor'>;
+      const updatedEntry = await updateEntry({ ...entry, cursor });
 
       return new Response(JSON.stringify(removeUndefinedValue(updatedEntry)));
     } catch (e) {
