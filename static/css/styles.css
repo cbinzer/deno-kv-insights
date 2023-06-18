@@ -87,11 +87,7 @@
 }
 
 .entries-list .type-col {
-    width: 10%;
-}
-
-.entries-list .key-col {
-    width: 50%;
+    width: 140px;
 }
 /*endregion*/
 

@@ -70,7 +70,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
               <tr>
                 <th class='type-col' scope='col'>Type</th>
                 <th class='key-col' scope='col'>Key</th>
-                <th scope='col'>Cursor</th>
               </tr>
             </thead>
 
@@ -85,7 +84,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
                   <td>[{entry.key.join(', ')}]</td>
-                  <td>{entry.cursor}</td>
                 </tr>
               ))}
             </tbody>
