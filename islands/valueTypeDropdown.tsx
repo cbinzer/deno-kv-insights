@@ -6,13 +6,10 @@ import { getValueTypeColorClass } from '../lib/entry/utils.ts';
 const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
   { valueType = ValueType.STRING, onSelect = () => {} },
 ) => {
-  const [selectedValueType, setSelectedValueType] = useState<ValueType>(valueType);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const changeSelectedValueType = (event: Event, valueType: ValueType) => {
     event.preventDefault();
-
-    setSelectedValueType(valueType);
     setMenuVisible(false);
     onSelect(valueType);
   };
@@ -31,11 +28,11 @@ const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
   return (
     <div class='btn-group'>
       <button
-        class={`btn btn-secondary btn-sm dropdown-toggle ${getValueTypeColorClass(selectedValueType)}`}
+        class={`btn btn-secondary btn-sm dropdown-toggle ${getValueTypeColorClass(valueType)}`}
         type='button'
         onClick={() => setMenuVisible(!menuVisible)}
       >
-        {selectedValueType}
+        {valueType}
       </button>
       <ul class={`dropdown-menu ${menuVisible ? 'show' : ''}`} style={{ top: '35px' }}>
         {getAllValueTypes().map((valueType) => (
