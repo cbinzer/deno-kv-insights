@@ -3,7 +3,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { getEntryByCursor, updateEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
-import {convertKeyToString, getValueTypeColorClass} from '../lib/entry/utils.ts';
+import { convertKeyToString, getValueTypeColorClass } from '../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 import EntryDetailLoadingPlaceholder from '../components/entryDetailLoadingPlaceholder.tsx';
@@ -13,6 +13,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
   const [isValueInvalid, setIsValueInvalid] = useState(false);
   const [isLoadingEntry, setIsLoadingEntry] = useState(false);
+  const [isUpdatingEntry, setIsUpdatingEntry] = useState(false);
 
   useEffect(() => {
     if (cursor) {
@@ -46,8 +47,12 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
   };
 
   const changeEntry = async () => {
+    setIsUpdatingEntry(true);
+
     const updatedEntry = await updateEntry(entry);
     setEntry(updatedEntry);
+
+    setIsUpdatingEntry(false);
   };
 
   const setValue = (value: EntryValue) => {
@@ -62,7 +67,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
           <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>{' '}
           {convertKeyToString(entry.key)}
         </p>
-        <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)}>
+        <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)} disabled={isUpdatingEntry}>
           <img src={asset('icons/trash3.svg')} alt='trash icon' />
         </button>
       </div>
@@ -85,6 +90,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
                   id='entryValueForUpdate'
                   valueType={entry.valueType}
                   value={entry.value}
+                  disabled={isUpdatingEntry}
                   onChange={setValue}
                   onInvalid={() => setIsValueInvalid(true)}
                 />
@@ -96,10 +102,16 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
           <button
             type='submit'
             class='btn btn-primary btn-save float-end'
-            disabled={isValueInvalid}
+            disabled={isValueInvalid || isUpdatingEntry}
             onClick={changeEntry}
           >
-            Save
+            {isUpdatingEntry
+              ? (
+                <>
+                  <span class='spinner-border spinner-border-sm' />
+                </>
+              )
+              : 'Save'}
           </button>
         </div>
       </form>

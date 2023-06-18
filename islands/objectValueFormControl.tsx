@@ -2,7 +2,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
 const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
-  { id, value = {}, onChange = () => {}, onInvalid = () => {} },
+  { id, value = {}, disabled, onChange = () => {}, onInvalid = () => {} },
 ) => {
   const [stringValue, setStringValue] = useState('{}');
   const [isValueInvalid, setIsValueInvalid] = useState(false);
@@ -35,6 +35,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
         class={`form-control value-form-control resize-none ${isValueInvalid ? 'is-invalid' : ''}`}
         id={id}
         value={stringValue}
+        disabled={disabled}
         onChange={changeValue}
       />
       <div class='invalid-feedback'>Invalid object.</div>
@@ -45,6 +46,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
 export interface ObjectValueFormControlProps {
   id?: string;
   value: Object;
+  disabled?: boolean;
   onChange?: (value: Object) => void;
   onInvalid?: () => void;
 }

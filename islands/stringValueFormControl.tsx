@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 
 const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
-  { id, value = '', onChange = () => {} },
+  { id, value = '', disabled, onChange = () => {} },
 ) => {
   const changeValue = (event: Event) => {
     const textArea = event.target as HTMLTextAreaElement;
@@ -13,6 +13,7 @@ const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
       class={`form-control value-form-control resize-none`}
       id={id}
       value={value}
+      disabled={disabled}
       onInput={changeValue}
     />
   );
@@ -21,6 +22,7 @@ const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
 export interface StringValueFormControlProps {
   id?: string;
   value: string;
+  disabled?: boolean;
   onChange?: (value: string) => void;
 }
 

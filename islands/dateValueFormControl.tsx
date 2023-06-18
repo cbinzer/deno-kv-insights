@@ -2,7 +2,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'https://esm.sh/stable/preact@10.11.0/denonext/hooks.js';
 
 const DateValueFormControl: FunctionComponent<DateValueFormControlProps> = (
-  { id, value = new Date(), onChange = () => {} },
+  { id, value = new Date(), disabled, onChange = () => {} },
 ) => {
   const [internalValue, setInternalValue] = useState(value);
 
@@ -29,6 +29,7 @@ const DateValueFormControl: FunctionComponent<DateValueFormControlProps> = (
       class='form-control'
       id={id}
       value={formatDate(internalValue)}
+      disabled={disabled}
       onChange={changeValue}
     />
   );
@@ -37,6 +38,7 @@ const DateValueFormControl: FunctionComponent<DateValueFormControlProps> = (
 export interface DateValueFormControlProps {
   id?: string;
   value: Date;
+  disabled?: boolean;
   onChange?: (value: Date) => void;
 }
 
