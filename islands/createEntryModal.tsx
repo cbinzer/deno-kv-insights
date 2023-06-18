@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { createEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
@@ -17,6 +17,8 @@ const CreateEntryModal: FunctionComponent<
   const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
   const [valueType, setValueType] = useState(ValueType.STRING);
   const [value, setValue] = useState<EntryValue>('');
+
+  const keyInputRef = useRef<HTMLInputElement>();
 
   const setEntryKey = (event: Event) => {
     const inputElement = event.target as HTMLInputElement;
@@ -52,7 +54,9 @@ const CreateEntryModal: FunctionComponent<
     }
   };
 
-  const createNewEntry = async () => {
+  const createNewEntry = async (event: Event) => {
+    event.preventDefault();
+
     const newKey = key?.split(' ');
     if (!key || !newKey || newKey.length === 0) {
       setIsKeyInvalid(true);
@@ -86,6 +90,9 @@ const CreateEntryModal: FunctionComponent<
 
   useEffect(() => {
     setIsVisible(open);
+    if (open) {
+      keyInputRef.current.focus();
+    }
   }, [isOpen]);
 
   return (
@@ -109,6 +116,7 @@ const CreateEntryModal: FunctionComponent<
                   class={`form-control ${isKeyInvalid ? 'is-invalid' : ''}`}
                   id='key'
                   value={key}
+                  ref={keyInputRef}
                   onChange={setEntryKey}
                 />
                 <div class='invalid-feedback'>{invalidKeyFeedback}</div>
