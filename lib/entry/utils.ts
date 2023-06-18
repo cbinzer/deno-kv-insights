@@ -1,4 +1,4 @@
-import { ValueType } from './models.ts';
+import { KeyPart, ValueType } from './models.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
@@ -19,4 +19,19 @@ export function getValueTypeColorClass(valueType: ValueType): string {
     default:
       return 'text-bg-light';
   }
+}
+
+export function convertKeyToString(key: KeyPart[]): string {
+  return `[${key.map((keyPart) => {
+    switch (typeof keyPart) {
+      case 'number':
+      case 'bigint':
+      case 'boolean':
+        return keyPart.toString();
+      case 'object':
+        return `[${(keyPart as Uint8Array).join(',')}]`;
+      default:
+        return `"${keyPart}"`;
+    }
+  }).join(', ')}]`;
 }

@@ -2,7 +2,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { getAllEntries } from '../lib/entry/entryClientService.ts';
 import { HTTPStrippedEntries, StrippedEntry } from '../lib/entry/models.ts';
-import { getValueTypeColorClass } from '../lib/entry/utils.ts';
+import {convertKeyToString, getValueTypeColorClass} from '../lib/entry/utils.ts';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
   { initialEntries, onSelect = () => {}, doReload = false },
@@ -83,7 +83,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                   <td>
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
-                  <td>[{entry.key.join(', ')}]</td>
+                  <td>{convertKeyToString(entry.key)}</td>
                 </tr>
               ))}
             </tbody>

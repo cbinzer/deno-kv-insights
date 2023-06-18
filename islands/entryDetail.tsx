@@ -3,7 +3,7 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { getEntryByCursor, updateEntry } from '../lib/entry/entryClientService.ts';
 import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
-import { getValueTypeColorClass } from '../lib/entry/utils.ts';
+import {convertKeyToString, getValueTypeColorClass} from '../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 import EntryDetailLoadingPlaceholder from '../components/entryDetailLoadingPlaceholder.tsx';
@@ -60,7 +60,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
       <div class='header'>
         <p class='h5'>
           <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>{' '}
-          [{entry.key.join(', ')}]
+          {convertKeyToString(entry.key)}
         </p>
         <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)}>
           <img src={asset('icons/trash3.svg')} alt='trash icon' />
