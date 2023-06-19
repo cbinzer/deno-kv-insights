@@ -10,7 +10,7 @@ const StringValueFormControl: FunctionComponent<StringValueFormControlProps> = (
 
   return (
     <textarea
-      class={`form-control value-form-control resize-none`}
+      class={`form-control value-form-control resize-none text-area-min-height`}
       id={id}
       value={value}
       disabled={disabled}

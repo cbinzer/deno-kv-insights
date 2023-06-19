@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useState } from 'https://esm.sh/stable/preact@10.11.0/denonext/hooks.js';
+import { useEffect, useState } from 'preact/hooks';
 
 const DateValueFormControl: FunctionComponent<DateValueFormControlProps> = (
   { id, value = new Date(), disabled, onChange = () => {} },

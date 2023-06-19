@@ -2,7 +2,6 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import config from './deno.json' assert { type: 'json' };
 import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/api/entries/[cursor].ts';
 import * as $2 from './routes/api/entries/index.ts';
@@ -15,10 +14,11 @@ import * as $$4 from './islands/entriesList.tsx';
 import * as $$5 from './islands/entriesManagement.tsx';
 import * as $$6 from './islands/entryDetail.tsx';
 import * as $$7 from './islands/entryValueFormControl.tsx';
-import * as $$8 from './islands/numberValueFormControl.tsx';
-import * as $$9 from './islands/objectValueFormControl.tsx';
-import * as $$10 from './islands/stringValueFormControl.tsx';
-import * as $$11 from './islands/valueTypeDropdown.tsx';
+import * as $$8 from './islands/modal.tsx';
+import * as $$9 from './islands/numberValueFormControl.tsx';
+import * as $$10 from './islands/objectValueFormControl.tsx';
+import * as $$11 from './islands/stringValueFormControl.tsx';
+import * as $$12 from './islands/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -36,13 +36,13 @@ const manifest = {
     './islands/entriesManagement.tsx': $$5,
     './islands/entryDetail.tsx': $$6,
     './islands/entryValueFormControl.tsx': $$7,
-    './islands/numberValueFormControl.tsx': $$8,
-    './islands/objectValueFormControl.tsx': $$9,
-    './islands/stringValueFormControl.tsx': $$10,
-    './islands/valueTypeDropdown.tsx': $$11,
+    './islands/modal.tsx': $$8,
+    './islands/numberValueFormControl.tsx': $$9,
+    './islands/objectValueFormControl.tsx': $$10,
+    './islands/stringValueFormControl.tsx': $$11,
+    './islands/valueTypeDropdown.tsx': $$12,
   },
   baseUrl: import.meta.url,
-  config,
 };
 
 export default manifest;

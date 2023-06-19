@@ -15,6 +15,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
       setIsValueInvalid(true);
     }
   }, [value]);
+
   const changeValue = (event: Event) => {
     const textArea = event.target as HTMLTextAreaElement;
     setStringValue(textArea.value);
@@ -32,7 +33,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
   return (
     <>
       <textarea
-        class={`form-control value-form-control resize-none ${isValueInvalid ? 'is-invalid' : ''}`}
+        class={`form-control value-form-control resize-none text-area-min-height ${isValueInvalid ? 'is-invalid' : ''}`}
         id={id}
         value={stringValue}
         disabled={disabled}
