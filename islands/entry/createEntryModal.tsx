@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { createEntry } from '../lib/entry/entryClientService.ts';
-import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
+import { createEntry } from '../../lib/entry/entryClientService.ts';
+import { Entry, EntryValue, ValueType } from '../../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
-import EntryValueFormControl from './entryValueFormControl.tsx';
-import Modal from './modal.tsx';
+import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
+import Modal from '../common/modal.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }

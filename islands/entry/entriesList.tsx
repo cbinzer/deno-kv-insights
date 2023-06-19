@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { getAllEntries } from '../lib/entry/entryClientService.ts';
-import { HTTPStrippedEntries, StrippedEntry } from '../lib/entry/models.ts';
-import {convertKeyToString, getValueTypeColorClass} from '../lib/entry/utils.ts';
+import { getAllEntries } from '../../lib/entry/entryClientService.ts';
+import { HTTPStrippedEntries, StrippedEntry } from '../../lib/entry/models.ts';
+import {convertKeyToString, getValueTypeColorClass} from '../../lib/entry/utils.ts';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
   { initialEntries, onSelect = () => {}, doReload = false },

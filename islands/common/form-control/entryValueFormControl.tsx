@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { EntryValue, ValueType } from '../lib/entry/models.ts';
+import { EntryValue, ValueType } from '../../../lib/entry/models.ts';
 import BooleanValueFormControl from './booleanValueFormControl.tsx';
 import NumberValueFormControl from './numberValueFormControl.tsx';
 import StringValueFormControl from './stringValueFormControl.tsx';

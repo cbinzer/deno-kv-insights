@@ -6,19 +6,19 @@ import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/api/entries/[cursor].ts';
 import * as $2 from './routes/api/entries/index.ts';
 import * as $3 from './routes/index.tsx';
-import * as $$0 from './islands/booleanValueFormControl.tsx';
-import * as $$1 from './islands/createEntryModal.tsx';
-import * as $$2 from './islands/dateValueFormControl.tsx';
-import * as $$3 from './islands/deleteEntryModal.tsx';
-import * as $$4 from './islands/entriesList.tsx';
-import * as $$5 from './islands/entriesManagement.tsx';
-import * as $$6 from './islands/entryDetail.tsx';
-import * as $$7 from './islands/entryValueFormControl.tsx';
-import * as $$8 from './islands/modal.tsx';
-import * as $$9 from './islands/numberValueFormControl.tsx';
-import * as $$10 from './islands/objectValueFormControl.tsx';
-import * as $$11 from './islands/stringValueFormControl.tsx';
-import * as $$12 from './islands/valueTypeDropdown.tsx';
+import * as $$0 from './islands/common/form-control/booleanValueFormControl.tsx';
+import * as $$1 from './islands/common/form-control/dateValueFormControl.tsx';
+import * as $$2 from './islands/common/form-control/entryValueFormControl.tsx';
+import * as $$3 from './islands/common/form-control/numberValueFormControl.tsx';
+import * as $$4 from './islands/common/form-control/objectValueFormControl.tsx';
+import * as $$5 from './islands/common/form-control/stringValueFormControl.tsx';
+import * as $$6 from './islands/common/modal.tsx';
+import * as $$7 from './islands/entry/createEntryModal.tsx';
+import * as $$8 from './islands/entry/deleteEntryModal.tsx';
+import * as $$9 from './islands/entry/entriesList.tsx';
+import * as $$10 from './islands/entry/entriesManagement.tsx';
+import * as $$11 from './islands/entry/entryDetail.tsx';
+import * as $$12 from './islands/entry/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -28,19 +28,19 @@ const manifest = {
     './routes/index.tsx': $3,
   },
   islands: {
-    './islands/booleanValueFormControl.tsx': $$0,
-    './islands/createEntryModal.tsx': $$1,
-    './islands/dateValueFormControl.tsx': $$2,
-    './islands/deleteEntryModal.tsx': $$3,
-    './islands/entriesList.tsx': $$4,
-    './islands/entriesManagement.tsx': $$5,
-    './islands/entryDetail.tsx': $$6,
-    './islands/entryValueFormControl.tsx': $$7,
-    './islands/modal.tsx': $$8,
-    './islands/numberValueFormControl.tsx': $$9,
-    './islands/objectValueFormControl.tsx': $$10,
-    './islands/stringValueFormControl.tsx': $$11,
-    './islands/valueTypeDropdown.tsx': $$12,
+    './islands/common/form-control/booleanValueFormControl.tsx': $$0,
+    './islands/common/form-control/dateValueFormControl.tsx': $$1,
+    './islands/common/form-control/entryValueFormControl.tsx': $$2,
+    './islands/common/form-control/numberValueFormControl.tsx': $$3,
+    './islands/common/form-control/objectValueFormControl.tsx': $$4,
+    './islands/common/form-control/stringValueFormControl.tsx': $$5,
+    './islands/common/modal.tsx': $$6,
+    './islands/entry/createEntryModal.tsx': $$7,
+    './islands/entry/deleteEntryModal.tsx': $$8,
+    './islands/entry/entriesList.tsx': $$9,
+    './islands/entry/entriesManagement.tsx': $$10,
+    './islands/entry/entryDetail.tsx': $$11,
+    './islands/entry/valueTypeDropdown.tsx': $$12,
   },
   baseUrl: import.meta.url,
 };

@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
-import { HTTPStrippedEntries } from '../lib/entry/models.ts';
+import { HTTPStrippedEntries } from '../../lib/entry/models.ts';
 import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
 import CreateEntryModal from './createEntryModal.tsx';

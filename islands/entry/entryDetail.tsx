@@ -1,12 +1,12 @@
 import { asset } from '$fresh/runtime.ts';
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { getEntryByCursor, updateEntry } from '../lib/entry/entryClientService.ts';
-import { Entry, EntryValue, ValueType } from '../lib/entry/models.ts';
-import { convertKeyToString, getValueTypeColorClass } from '../lib/entry/utils.ts';
+import { getEntryByCursor, updateEntry } from '../../lib/entry/entryClientService.ts';
+import { Entry, EntryValue, ValueType } from '../../lib/entry/models.ts';
+import { convertKeyToString, getValueTypeColorClass } from '../../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
-import EntryValueFormControl from './entryValueFormControl.tsx';
-import EntryDetailLoadingPlaceholder from '../components/entryDetailLoadingPlaceholder.tsx';
+import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
+import EntryDetailLoadingPlaceholder from '../../components/entryDetailLoadingPlaceholder.tsx';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = () => {} }) => {
   const [entry, setEntry] = useState<Entry | undefined>(cursor);

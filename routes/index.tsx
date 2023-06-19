@@ -1,5 +1,5 @@
 import { HandlerContext } from '$fresh/src/server/types.ts';
-import EntriesManagement from '../islands/entriesManagement.tsx';
+import EntriesManagement from '../islands/entry/entriesManagement.tsx';
 import { getAllEntries } from '../lib/entry/entryService.ts';
 import { HTTPStrippedEntries } from '../lib/entry/models.ts';
 import { createHTTPStrippedEntries } from './api/entries/index.ts';
