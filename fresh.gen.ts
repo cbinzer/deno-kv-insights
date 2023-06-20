@@ -18,7 +18,8 @@ import * as $$8 from './islands/entry/deleteEntryModal.tsx';
 import * as $$9 from './islands/entry/entriesList.tsx';
 import * as $$10 from './islands/entry/entriesManagement.tsx';
 import * as $$11 from './islands/entry/entryDetail.tsx';
-import * as $$12 from './islands/entry/valueTypeDropdown.tsx';
+import * as $$12 from './islands/entry/keyFormControl.tsx';
+import * as $$13 from './islands/entry/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
@@ -40,7 +41,8 @@ const manifest = {
     './islands/entry/entriesList.tsx': $$9,
     './islands/entry/entriesManagement.tsx': $$10,
     './islands/entry/entryDetail.tsx': $$11,
-    './islands/entry/valueTypeDropdown.tsx': $$12,
+    './islands/entry/keyFormControl.tsx': $$12,
+    './islands/entry/valueTypeDropdown.tsx': $$13,
   },
   baseUrl: import.meta.url,
 };

@@ -5,6 +5,7 @@ import { Entry, EntryValue, ValueType } from '../../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
 import Modal from '../common/modal.tsx';
+import KeyFormControl from './keyFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -13,8 +14,7 @@ const CreateEntryModal: FunctionComponent<
 ) => {
   const [isOpen, setIsOpen] = useState(open);
   const [key, setKey] = useState('');
-  const [isKeyInvalid, setIsKeyInvalid] = useState(false);
-  const [invalidKeyFeedback, setInvalidKeyFeedback] = useState('');
+  const [keyAlreadyExists, setKeyAlreadyExists] = useState(false);
   const [valueType, setValueType] = useState(ValueType.STRING);
   const [value, setValue] = useState<EntryValue>('');
   const [createdEntry, setCreatedEntry] = useState<Entry | undefined>(undefined);
@@ -23,10 +23,9 @@ const CreateEntryModal: FunctionComponent<
 
   useEffect(() => setIsOpen(open), [open]);
 
-  const setEntryKey = (event: Event) => {
-    const inputElement = event.target as HTMLInputElement;
-    setIsKeyInvalid(false);
-    setKey(inputElement.value);
+  const setEntryKey = (newKey: string) => {
+    setKeyAlreadyExists(false);
+    setKey(newKey);
   };
 
   const changeValueType = (valueType: ValueType) => {
@@ -62,8 +61,6 @@ const CreateEntryModal: FunctionComponent<
 
     const newKey = key?.split(' ');
     if (!key || !newKey || newKey.length === 0) {
-      setIsKeyInvalid(true);
-      setInvalidKeyFeedback('Please provide a valid key.');
       return;
     }
 
@@ -72,13 +69,14 @@ const CreateEntryModal: FunctionComponent<
       setCreatedEntry(createdEntry);
       setIsOpen(false);
     } catch (e) {
-      setIsKeyInvalid(true);
-      setInvalidKeyFeedback('Entry with this key already exist.');
+      setKeyAlreadyExists(true);
     }
   };
 
   const closeModal = () => {
-    setIsKeyInvalid(false);
+    console.log('onclose');
+
+    setKeyAlreadyExists(false);
     setKey('');
     changeValueType(ValueType.STRING);
 
@@ -101,15 +99,13 @@ const CreateEntryModal: FunctionComponent<
         <form>
           <div class='mb-3'>
             <label for='key' class='col-form-label'>Key:</label>
-            <input
-              type='text'
-              class={`form-control ${isKeyInvalid ? 'is-invalid' : ''}`}
+            <KeyFormControl
               id='key'
               value={key}
-              ref={keyInputRef}
+              keyAlreadyExists={keyAlreadyExists}
+              inputRef={keyInputRef}
               onChange={setEntryKey}
             />
-            <div class='invalid-feedback'>{invalidKeyFeedback}</div>
           </div>
           <div class='mb-3'>
             <label for='type' class='col-form-label'>Type:</label>
@@ -132,7 +128,7 @@ const CreateEntryModal: FunctionComponent<
 
       <div class='modal-footer'>
         <button class='btn btn-secondary' onClick={closeModal}>Cancel</button>
-        <button class='btn btn-primary' onClick={createNewEntry}>Create</button>
+        <button class='btn btn-primary' onClick={createNewEntry} disabled={!key}>Create</button>
       </div>
     </Modal>
   );
