@@ -1,6 +1,7 @@
 import { EntryAlreadyExistsError } from '../common/errors.ts';
-import {Entry, EntryForCreation, EntryForUpdate, HTTPStrippedEntries, NewEntry, ValueType} from './models.ts';
+import { Entry, EntryForCreation, EntryForUpdate, HTTPStrippedEntries, NewEntry, ValueType } from './models.ts';
 import { HTTPError, Pagination } from '../common/models.ts';
+import { keyReviver } from './utils.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -14,13 +15,13 @@ export function getAllEntries(pagination?: Pagination): Promise<HTTPStrippedEntr
     url.searchParams.set('after', pagination.after);
   }
 
-  return fetch(url).then((response) => response.json());
+  return fetch(url).then((response) => response.text()).then((text) => JSON.parse(text, keyReviver));
 }
 
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url);
-  const entry = (await response.json()) as Entry;
+  const entry = (await response.text().then((text) => JSON.parse(text, keyReviver))) as Entry;
 
   return convertValue(entry);
 }
@@ -32,7 +33,7 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
     body: JSON.stringify(entry),
   });
 
-  const result = await response.json();
+  const result = await response.text().then((text) => JSON.parse(text, keyReviver));
   if (result.status === 409) {
     throw new EntryAlreadyExistsError(result.message);
   }
@@ -48,7 +49,7 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
     body: JSON.stringify(entryWithoutCursor),
   });
 
-  return convertValue(await response.json());
+  return convertValue(await response.text().then((text) => JSON.parse(text, keyReviver)));
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
@@ -58,7 +59,7 @@ export async function deleteEntryByCursor(cursor: string): Promise<undefined | H
   });
 
   if (!response.ok) {
-    return response.json();
+    return response.text().then((text) => JSON.parse(text, keyReviver));
   }
 
   return undefined;

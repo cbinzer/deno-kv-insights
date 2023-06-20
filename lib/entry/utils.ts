@@ -1,4 +1,5 @@
-import { KeyPart, ValueType } from './models.ts';
+import { HTTPKeyPart, KeyPart, ValueType } from './models.ts';
+import { ValidationError } from '../common/errors.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
@@ -22,16 +23,38 @@ export function getValueTypeColorClass(valueType: ValueType): string {
 }
 
 export function convertKeyToString(key: KeyPart[]): string {
-  return `[${key.map((keyPart) => {
-    switch (typeof keyPart) {
-      case 'number':
-      case 'bigint':
-      case 'boolean':
-        return keyPart.toString();
-      case 'object':
-        return `[${(keyPart as Uint8Array).join(',')}]`;
-      default:
-        return `"${keyPart}"`;
+  return `[${
+    key.map((keyPart) => {
+      switch (typeof keyPart) {
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+          return keyPart.toString();
+        case 'object':
+          return `[${(keyPart as Uint8Array).join(',')}]`;
+        default:
+          return `"${keyPart}"`;
+      }
+    }).join(', ')
+  }]`;
+}
+
+export function keyReviver(this: any, key: string, value: any): any {
+  if (key === 'key') {
+    return value.map(mapToKeyPart);
+  }
+
+  return value;
+}
+
+export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
+  if (typeof httpKeyPart === 'object') {
+    try {
+      return new Uint8Array(Object.values(httpKeyPart));
+    } catch (e) {
+      throw new ValidationError(`Can't create Uint8Array from ${JSON.stringify(httpKeyPart)}.`);
     }
-  }).join(', ')}]`;
+  }
+
+  return httpKeyPart as KeyPart;
 }

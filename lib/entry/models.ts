@@ -27,6 +27,8 @@ export interface EntryForUpdate {
 }
 
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
+export type HTTPKeyPart = Record<string, number> | string | number | bigint | boolean;
+
 export type EntryValue =
   | undefined
   | null

@@ -2,8 +2,9 @@ import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
-import { EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
+import { HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
 import { Pagination } from '../../../lib/common/models.ts';
+import { keyReviver } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -17,7 +18,7 @@ export const handler: Handlers = {
 
   POST: async (request): Promise<Response> => {
     try {
-      const entry = (await request.json()) as EntryForCreation;
+      const entry = (await request.text().then((text) => JSON.parse(text, keyReviver))) as EntryForCreation;
       const newEntry = await createEntry(entry);
 
       return Response.json(newEntry, { status: Status.Created });

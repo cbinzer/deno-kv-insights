@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { createEntry } from '../../lib/entry/entryClientService.ts';
-import { Entry, EntryValue, ValueType } from '../../lib/entry/models.ts';
+import { Entry, EntryValue, KeyPart, ValueType } from '../../lib/entry/models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
 import Modal from '../common/modal.tsx';
@@ -13,7 +13,7 @@ const CreateEntryModal: FunctionComponent<
   { open = false, onClose = () => {}, onCreate = () => {} },
 ) => {
   const [isOpen, setIsOpen] = useState(open);
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState<KeyPart[]>([]);
   const [keyAlreadyExists, setKeyAlreadyExists] = useState(false);
   const [valueType, setValueType] = useState(ValueType.STRING);
   const [value, setValue] = useState<EntryValue>('');
@@ -23,7 +23,7 @@ const CreateEntryModal: FunctionComponent<
 
   useEffect(() => setIsOpen(open), [open]);
 
-  const setEntryKey = (newKey: string) => {
+  const setEntryKey = (newKey: KeyPart[]) => {
     setKeyAlreadyExists(false);
     setKey(newKey);
   };
@@ -59,13 +59,12 @@ const CreateEntryModal: FunctionComponent<
   const createNewEntry = async (event: Event) => {
     event.preventDefault();
 
-    const newKey = key?.split(' ');
-    if (!key || !newKey || newKey.length === 0) {
+    if (key.length === 0) {
       return;
     }
 
     try {
-      const createdEntry = await createEntry({ key: newKey, valueType, value });
+      const createdEntry = await createEntry({ key, valueType, value });
       setCreatedEntry(createdEntry);
       setIsOpen(false);
     } catch (e) {
@@ -74,10 +73,8 @@ const CreateEntryModal: FunctionComponent<
   };
 
   const closeModal = () => {
-    console.log('onclose');
-
     setKeyAlreadyExists(false);
-    setKey('');
+    setKey([]);
     changeValueType(ValueType.STRING);
 
     if (createdEntry) {
@@ -128,7 +125,7 @@ const CreateEntryModal: FunctionComponent<
 
       <div class='modal-footer'>
         <button class='btn btn-secondary' onClick={closeModal}>Cancel</button>
-        <button class='btn btn-primary' onClick={createNewEntry} disabled={!key}>Create</button>
+        <button class='btn btn-primary' onClick={createNewEntry} disabled={key.length === 0}>Create</button>
       </div>
     </Modal>
   );
