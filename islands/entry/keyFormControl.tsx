@@ -1,6 +1,7 @@
 import { FunctionComponent, Ref } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { KeyPart } from '../../lib/entry/models.ts';
+import { convertReadableStringToKey } from '../../lib/entry/utils.ts';
 
 const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
   { id, value = [], keyAlreadyExists = false, inputRef, onChange = () => {}, onInvalid = () => {} },
@@ -12,31 +13,7 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
     setInternalKey(value);
   }, [value]);
 
-  const convertToKey = (stringKey: string): KeyPart[] => {
-    return stringKey.split(' ').map((keyPart) => {
-      const numberKeyPart = Number(keyPart);
-      if (!isNaN(numberKeyPart)) {
-        return numberKeyPart;
-      }
-
-      if (keyPart === 'true' || keyPart === 'false') {
-        return keyPart === 'true';
-      }
-
-      if (keyPart.startsWith('[') && keyPart.endsWith(']') && keyPart.length > 2) {
-        const numberArray: number[] = keyPart.substring(1, keyPart.length - 1).split(',').map((val) => Number(val));
-        return new Int8Array(numberArray);
-      }
-
-      if (keyPart.startsWith('"') && keyPart.endsWith('"') && keyPart.length > 2) {
-        return keyPart.substring(1, keyPart.length - 1);
-      }
-
-      return keyPart;
-    });
-  };
-
-  const convertKeyToString = (key: KeyPart[]): string => {
+  const convertKeyToReadableString = (key: KeyPart[]): string => {
     return `${
       key.map((keyPart) => {
         switch (typeof keyPart) {
@@ -47,7 +24,10 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
           case 'object':
             return `[${(keyPart as Uint8Array).join(',')}]`;
           default:
-            if (!isNaN(Number(keyPart)) || (keyPart.startsWith('"') && keyPart.endsWith('"'))) {
+            const isNumber = !isNaN(Number(keyPart)) || (keyPart.startsWith('"') && keyPart.endsWith('"'));
+            const isBoolean = keyPart === 'true' || keyPart === 'false';
+
+            if (isNumber || isBoolean) {
               return `"${keyPart}"`;
             }
 
@@ -59,7 +39,7 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
 
   const validateAndChangeKey = (event: Event) => {
     const input = event.target as HTMLInputElement;
-    const key = convertToKey(input.value);
+    const key = convertReadableStringToKey(input.value);
 
     if (key.length === 0) {
       setIsKeyInvalid(true);
@@ -78,7 +58,7 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
         type='text'
         class={`form-control ${isKeyInvalid || keyAlreadyExists ? 'is-invalid' : ''}`}
         id={id}
-        value={convertKeyToString(internalKey)}
+        value={convertKeyToReadableString(internalKey)}
         ref={inputRef}
         onChange={validateAndChangeKey}
       />

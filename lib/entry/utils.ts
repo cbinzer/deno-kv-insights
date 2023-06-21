@@ -1,5 +1,5 @@
-import { HTTPKeyPart, KeyPart, ValueType } from './models.ts';
-import { ValidationError } from '../common/errors.ts';
+import {HTTPKeyPart, KeyPart, ValueType} from './models.ts';
+import {ValidationError} from '../common/errors.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
@@ -37,6 +37,30 @@ export function convertKeyToString(key: KeyPart[]): string {
       }
     }).join(', ')
   }]`;
+}
+
+export function convertReadableStringToKey(stringKey: string): KeyPart[] {
+  return stringKey.split(' ').map((keyPart) => {
+    const numberKeyPart = Number(keyPart);
+    if (!isNaN(numberKeyPart)) {
+      return numberKeyPart;
+    }
+
+    if (keyPart === 'true' || keyPart === 'false') {
+      return keyPart === 'true';
+    }
+
+    if (keyPart.startsWith('[') && keyPart.endsWith(']') && keyPart.length > 2) {
+      const numberArray: number[] = keyPart.substring(1, keyPart.length - 1).split(',').map((val) => Number(val));
+      return new Int8Array(numberArray);
+    }
+
+    if (keyPart.startsWith('"') && keyPart.endsWith('"') && keyPart.length > 2) {
+      return keyPart.substring(1, keyPart.length - 1);
+    }
+
+    return keyPart;
+  }) as KeyPart[];
 }
 
 export function keyReviver(this: any, key: string, value: any): any {

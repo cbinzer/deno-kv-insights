@@ -69,3 +69,7 @@ export interface HTTPStrippedEntries {
   totalCount: number;
   entries: StrippedEntry[];
 }
+
+export interface EntryFilter {
+  keyPrefix: KeyPart[];
+}

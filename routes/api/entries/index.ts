@@ -2,15 +2,17 @@ import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
-import { HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
+import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
 import { Pagination } from '../../../lib/common/models.ts';
-import { keyReviver } from '../../../lib/entry/utils.ts';
+import { convertReadableStringToKey, keyReviver } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
     const pagination = createPagination(request.url);
+    const filter = createFilter(request.url);
+
     const first = pagination.first as number;
-    const entries = await getAllEntries({ ...pagination, first: first + 1 });
+    const entries = await getAllEntries(filter, { ...pagination, first: first + 1 });
     const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
     return new Response(JSON.stringify(httpEntries));
@@ -51,6 +53,16 @@ function createPagination(urlString: string): Pagination {
   }
 
   return pagination;
+}
+
+function createFilter(urlString: string): EntryFilter | undefined {
+  const url = new URL(urlString);
+  const prefixParam = url.searchParams.get('prefix');
+  if (prefixParam) {
+    return { keyPrefix: convertReadableStringToKey(prefixParam) };
+  }
+
+  return undefined;
 }
 
 export function createHTTPStrippedEntries(

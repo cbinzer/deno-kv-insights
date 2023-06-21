@@ -4,6 +4,7 @@ import {
   CursorBasedDBEntry,
   DBEntry,
   Entry,
+  EntryFilter,
   EntryForCreation,
   EntryForUpdate,
   EntryValue,
@@ -14,8 +15,8 @@ import {
 } from './models.ts';
 import { Pagination } from '../common/models.ts';
 
-export async function getAllEntries(pagination?: Pagination): Promise<StrippedEntry[]> {
-  const entries = await findAllEntries(pagination);
+export async function getAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<StrippedEntry[]> {
+  const entries = await findAllEntries(filter, pagination);
   return entries.map(mapToStrippedEntry);
 }
 

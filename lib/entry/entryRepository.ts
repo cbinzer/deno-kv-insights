@@ -1,12 +1,18 @@
 import { db } from '../common/db.ts';
-import { CursorBasedDBEntry, DBEntry, EntryValue, KeyPart } from './models.ts';
+import {CursorBasedDBEntry, DBEntry, EntryFilter, EntryValue, KeyPart} from './models.ts';
 import { VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
 
-export async function findAllEntries(pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
+export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
+  let prefix: KeyPart[] = [];
+  let start: KeyPart[] | undefined = undefined;
+  if (filter?.keyPrefix) {
+    prefix = filter.keyPrefix;
+    start = filter.keyPrefix;
+  }
 
-  const entriesIterator = await db.list({ prefix: [] }, { limit: pagination?.first, cursor: pagination?.after });
+  const entriesIterator = await db.list({ prefix, start }, { limit: pagination?.first, cursor: pagination?.after });
   for await (const entry of entriesIterator) {
     entries.push({
       ...entry,

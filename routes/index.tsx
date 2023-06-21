@@ -6,7 +6,7 @@ import { createHTTPStrippedEntries } from './api/entries/index.ts';
 
 export const handler = async (_, context: HandlerContext) => {
   const first = 25;
-  const entries = await getAllEntries({ first: first + 1 });
+  const entries = await getAllEntries(undefined, { first: first + 1 });
   const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
   return context.render({ entries: httpEntries });
