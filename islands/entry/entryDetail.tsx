@@ -1,4 +1,3 @@
-import { asset } from '$fresh/runtime.ts';
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { getEntryByCursor, updateEntry } from '../../lib/entry/entryClientService.ts';
@@ -7,6 +6,7 @@ import { convertKeyToString, getValueTypeColorClass } from '../../lib/entry/util
 import DeleteEntryModal from './deleteEntryModal.tsx';
 import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
 import EntryDetailLoadingPlaceholder from '../../components/entryDetailLoadingPlaceholder.tsx';
+import TrashIcon from '../../components/common/icon/trashIcon.tsx';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = () => {} }) => {
   const [entry, setEntry] = useState<Entry | undefined>(cursor);
@@ -68,7 +68,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
           {convertKeyToString(entry.key)}
         </p>
         <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)} disabled={isUpdatingEntry}>
-          <img src={asset('icons/trash3.svg')} alt='trash icon' />
+          <TrashIcon />
         </button>
       </div>
 

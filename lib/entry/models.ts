@@ -73,3 +73,7 @@ export interface HTTPStrippedEntries {
 export interface EntryFilter {
   keyPrefix: KeyPart[];
 }
+
+export interface ClientEntryFilter {
+  keyPrefix: string;
+}

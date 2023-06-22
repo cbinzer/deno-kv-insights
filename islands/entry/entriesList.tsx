@@ -2,14 +2,22 @@ import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { getAllEntries } from '../../lib/entry/entryClientService.ts';
 import { HTTPStrippedEntries, StrippedEntry } from '../../lib/entry/models.ts';
-import {convertKeyToString, getValueTypeColorClass} from '../../lib/entry/utils.ts';
+import { convertKeyToString, getValueTypeColorClass } from '../../lib/entry/utils.ts';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
-  { initialEntries, onSelect = () => {}, doReload = false },
+  { initialEntries, keyPrefix = '', onSelect = () => {}, doReload = false },
 ) => {
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<StrippedEntry>();
+
+  useEffect(() => {
+    if (doReload) {
+      reloadEntries().then();
+    }
+  }, [doReload]);
+
+  useEffect(() => reloadEntries().then(), [keyPrefix]);
 
   const loadMoreEntries = () => {
     if (entries.pageInfo.hasNextPage && !isLoading) {
@@ -31,7 +39,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     setIsLoading(true);
 
     let first = entries.entries.length > 25 ? entries.entries.length : 25;
-    const reloadedEntries = await getAllEntries({ first });
+    const reloadedEntries = await getAllEntries({ first }, { keyPrefix });
     setEntries(reloadedEntries);
 
     setIsLoading(false);
@@ -49,12 +57,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     setSelectedEntry(entry);
     onSelect(entry);
   };
-
-  useEffect(() => {
-    if (doReload) {
-      reloadEntries().then();
-    }
-  }, [doReload]);
 
   return (
     <div class='entries-list' onScroll={loadMoreEntriesOnScrollEnd}>
@@ -95,6 +97,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
 
 export interface EntriesListProps {
   initialEntries: HTTPStrippedEntries;
+  keyPrefix?: string;
   doReload?: boolean;
   onSelect?: (entry: StrippedEntry) => void;
 }
