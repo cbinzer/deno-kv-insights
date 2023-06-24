@@ -4,7 +4,7 @@ import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
 import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
 import { Pagination } from '../../../lib/common/models.ts';
-import { convertReadableStringToKey, keyReviver } from '../../../lib/entry/utils.ts';
+import { convertReadableKeyStringToKey, keyReviver } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -59,7 +59,7 @@ function createFilter(urlString: string): EntryFilter | undefined {
   const url = new URL(urlString);
   const prefixParam = url.searchParams.get('prefix');
   if (prefixParam) {
-    return { keyPrefix: convertReadableStringToKey(prefixParam) };
+    return { keyPrefix: convertReadableKeyStringToKey(prefixParam) };
   }
 
   return undefined;

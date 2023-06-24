@@ -30,8 +30,12 @@ export function getAllEntries(pagination?: Pagination, filter?: ClientEntryFilte
   return fetch(url).then((response) => response.text()).then((text) => JSON.parse(text, keyReviver));
 }
 
-export async function getEntryByCursor(cursor: string): Promise<Entry> {
+export async function getEntryByCursor(cursor: string, keyPrefix?: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  if (keyPrefix) {
+    url.searchParams.set('prefix', keyPrefix);
+  }
+
   const response = await fetch(url);
   const entry = (await response.text().then((text) => JSON.parse(text, keyReviver))) as Entry;
 

@@ -39,7 +39,7 @@ export function convertKeyToString(key: KeyPart[]): string {
   }]`;
 }
 
-export function convertReadableStringToKey(stringKey: string): KeyPart[] {
+export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
   return stringKey.split(' ').map((keyPart) => {
     const numberKeyPart = Number(keyPart);
     if (!isNaN(numberKeyPart)) {

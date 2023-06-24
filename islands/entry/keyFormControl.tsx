@@ -1,7 +1,7 @@
 import { FunctionComponent, Ref } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { KeyPart } from '../../lib/entry/models.ts';
-import { convertReadableStringToKey } from '../../lib/entry/utils.ts';
+import { convertReadableKeyStringToKey } from '../../lib/entry/utils.ts';
 
 const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
   { id, value = [], keyAlreadyExists = false, inputRef, onChange = () => {}, onInvalid = () => {} },
@@ -39,7 +39,7 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
 
   const validateAndChangeKey = (event: Event) => {
     const input = event.target as HTMLInputElement;
-    const key = convertReadableStringToKey(input.value);
+    const key = convertReadableKeyStringToKey(input.value);
 
     if (key.length === 0) {
       setIsKeyInvalid(true);

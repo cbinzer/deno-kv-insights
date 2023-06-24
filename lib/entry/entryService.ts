@@ -20,8 +20,8 @@ export async function getAllEntries(filter?: EntryFilter, pagination?: Paginatio
   return entries.map(mapToStrippedEntry);
 }
 
-export async function getEntryByCursor(cursor: string): Promise<Entry> {
-  const entry = await findEntryByCursor(cursor);
+export async function getEntryByCursor(cursor: string, keyPrefix: KeyPart[] = []): Promise<Entry> {
+  const entry = await findEntryByCursor(cursor, keyPrefix);
   if (!entry) {
     throw new EntryNotFoundError(`Entry with cursor ${cursor} not found.`);
   }

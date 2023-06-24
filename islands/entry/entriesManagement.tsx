@@ -26,6 +26,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     if (event.key === 'Enter') {
       const input = event.target as HTMLInputElement
       setKeyPrefix(input.value);
+      setSelectedEntryCursor(undefined);
     }
   }
 
@@ -59,7 +60,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
           </div>
         </div>
         <div class='panel'>
-          <EntryDetail cursor={selectedEntryCursor} onDelete={removeSelectedEntry} />
+          <EntryDetail cursor={selectedEntryCursor} onDelete={removeSelectedEntry} keyPrefix={keyPrefix} />
         </div>
       </div>
 

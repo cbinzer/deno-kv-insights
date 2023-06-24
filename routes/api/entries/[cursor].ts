@@ -1,12 +1,19 @@
 import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../../../lib/entry/entryService.ts';
-import { Entry, EntryForUpdate } from '../../../lib/entry/models.ts';
+import {Entry, EntryForUpdate, KeyPart} from '../../../lib/entry/models.ts';
+import {convertReadableKeyStringToKey} from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
-  GET: async (_, context): Promise<Response> => {
+  GET: async (request, context): Promise<Response> => {
     try {
-      const entry = await getEntryByCursor(context.params.cursor);
+      const url = new URL(request.url);
+      let keyPrefix: KeyPart[] = [];
+      if (url.searchParams.has('prefix')) {
+        keyPrefix = convertReadableKeyStringToKey(url.searchParams.get('prefix'))
+      }
+
+      const entry = await getEntryByCursor(context.params.cursor, keyPrefix);
       return new Response(JSON.stringify(removeUndefinedValue(entry)));
     } catch (e) {
       console.error(e);
