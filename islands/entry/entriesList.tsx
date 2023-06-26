@@ -91,6 +91,15 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
             </tbody>
           </table>
         )}
+      {isLoading
+        ? (
+          <div class='text-center'>
+            <div class='spinner-border text-secondary'>
+              <span class='visually-hidden'>Loading...</span>
+            </div>
+          </div>
+        )
+        : null}
     </div>
   );
 };
