@@ -48,8 +48,8 @@ export async function updateEntry(entry: EntryForUpdate, keyPrefix: KeyPart[] = 
   return mapToEntry({ ...updatedEntry, cursor: entry.cursor });
 }
 
-export async function deleteEntryByCursor(cursor: string): Promise<void> {
-  const entry = await getEntryByCursor(cursor);
+export async function deleteEntryByCursor(cursor: string, keyPrefix: KeyPart[] = []): Promise<void> {
+  const entry = await getEntryByCursor(cursor, keyPrefix);
   await deleteEntry(entry.key);
 }
 

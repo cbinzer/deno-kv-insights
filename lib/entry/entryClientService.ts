@@ -72,8 +72,12 @@ export async function updateEntry(entry: EntryForUpdate, keyPrefix?: string): Pr
   return convertValue(await response.text().then((text) => JSON.parse(text, keyReviver)));
 }
 
-export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
+export async function deleteEntryByCursor(cursor: string, keyPrefix?: string): Promise<undefined | HTTPError> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  if (keyPrefix) {
+    url.searchParams.set('prefix', keyPrefix);
+  }
+
   const response = await fetch(url, {
     method: 'DELETE',
   });

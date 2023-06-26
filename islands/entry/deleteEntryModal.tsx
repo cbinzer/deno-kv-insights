@@ -5,10 +5,11 @@ import Modal from '../common/modal.tsx';
 import { convertKeyToString } from '../../lib/entry/utils.ts';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
-  { open = false, entry, onClose = () => {}, onDelete = () => {} },
+  { open = false, entry, keyPrefix, onClose = () => {}, onDelete = () => {} },
 ) => {
   const deleteEntry = async () => {
-    await deleteEntryByCursor(entry?.cursor as string);
+    console.log(keyPrefix);
+    await deleteEntryByCursor(entry?.cursor as string, keyPrefix);
     onClose();
     setTimeout(() => onDelete(), 150);
   };
@@ -35,6 +36,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
 export interface DeleteEntryModalProps {
   open: boolean;
   entry: Entry | undefined;
+  keyPrefix?: string;
   onClose?: () => void;
   onDelete?: () => void;
 }

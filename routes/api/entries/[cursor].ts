@@ -38,9 +38,10 @@ export const handler: Handlers = {
     }
   },
 
-  DELETE: async (_, context): Promise<Response> => {
+  DELETE: async (request, context): Promise<Response> => {
     try {
-      await deleteEntryByCursor(context.params.cursor);
+      const keyPrefix = getKeyPrefix(request.url);
+      await deleteEntryByCursor(context.params.cursor, keyPrefix);
       return new Response();
     } catch (e) {
       console.error(e);

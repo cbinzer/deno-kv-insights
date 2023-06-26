@@ -119,6 +119,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
       <DeleteEntryModal
         open={isDeleteEntryModalOpen}
         entry={entry}
+        keyPrefix={keyPrefix}
         onDelete={deleteEntry}
         onClose={() => setIsDeleteEntryModalOpen(false)}
       />
