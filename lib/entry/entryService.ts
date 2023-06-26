@@ -38,10 +38,10 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   return mapToNewEntry(newEntry);
 }
 
-export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
+export async function updateEntry(entry: EntryForUpdate, keyPrefix: KeyPart[] = []): Promise<Entry> {
   await assertEntryForUpdate(entry);
 
-  const existingEntry = await getEntryByCursor(entry.cursor);
+  const existingEntry = await getEntryByCursor(entry.cursor, keyPrefix);
   const convertedValue = convertValue(entry.valueType, entry.value);
   const updatedEntry = await saveEntry(existingEntry.key, convertedValue, entry.version);
 

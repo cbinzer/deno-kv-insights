@@ -1,18 +1,13 @@
 import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../../../lib/entry/entryService.ts';
-import {Entry, EntryForUpdate, KeyPart} from '../../../lib/entry/models.ts';
-import {convertReadableKeyStringToKey} from '../../../lib/entry/utils.ts';
+import { Entry, EntryForUpdate, KeyPart } from '../../../lib/entry/models.ts';
+import { convertReadableKeyStringToKey } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request, context): Promise<Response> => {
     try {
-      const url = new URL(request.url);
-      let keyPrefix: KeyPart[] = [];
-      if (url.searchParams.has('prefix')) {
-        keyPrefix = convertReadableKeyStringToKey(url.searchParams.get('prefix'))
-      }
-
+      const keyPrefix = getKeyPrefix(request.url);
       const entry = await getEntryByCursor(context.params.cursor, keyPrefix);
       return new Response(JSON.stringify(removeUndefinedValue(entry)));
     } catch (e) {
@@ -28,8 +23,9 @@ export const handler: Handlers = {
   PUT: async (request, context): Promise<Response> => {
     try {
       const cursor = context.params.cursor;
+      const keyPrefix = getKeyPrefix(request.url);
       const entry = await request.json() as Omit<EntryForUpdate, 'cursor'>;
-      const updatedEntry = await updateEntry({ ...entry, cursor });
+      const updatedEntry = await updateEntry({ ...entry, cursor }, keyPrefix);
 
       return new Response(JSON.stringify(removeUndefinedValue(updatedEntry)));
     } catch (e) {
@@ -67,4 +63,14 @@ function removeUndefinedValue(entry: Entry): Entry {
   }
 
   return newEntry;
+}
+
+function getKeyPrefix(urlString: string): KeyPart[] {
+  const url = new URL(urlString);
+  let keyPrefix: KeyPart[] = [];
+  if (url.searchParams.has('prefix')) {
+    keyPrefix = convertReadableKeyStringToKey(url.searchParams.get('prefix'));
+  }
+
+  return keyPrefix;
 }

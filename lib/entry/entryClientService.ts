@@ -57,9 +57,13 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   return convertValue(result);
 }
 
-export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
+export async function updateEntry(entry: EntryForUpdate, keyPrefix?: string): Promise<Entry> {
   const { cursor, ...entryWithoutCursor } = entry;
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
+  if (keyPrefix) {
+    url.searchParams.set('prefix', keyPrefix);
+  }
+
   const response = await fetch(url, {
     method: 'PUT',
     body: JSON.stringify(entryWithoutCursor),

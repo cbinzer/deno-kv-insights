@@ -49,7 +49,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
   const changeEntry = async () => {
     setIsUpdatingEntry(true);
 
-    const updatedEntry = await updateEntry(entry);
+    const updatedEntry = await updateEntry(entry, keyPrefix);
     setEntry(updatedEntry);
 
     setIsUpdatingEntry(false);
