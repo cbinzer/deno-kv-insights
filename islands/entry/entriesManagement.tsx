@@ -23,17 +23,15 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   };
 
   const changePrefix = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      const input = event.target as HTMLInputElement
-      setKeyPrefix(input.value);
-      setSelectedEntryCursor(undefined);
-    }
-  }
+    const input = event.target as HTMLInputElement;
+    setKeyPrefix(input.value);
+    setSelectedEntryCursor(undefined);
+  };
 
   const changeSelectedEntryCursor = (cursor: string) => {
     setDoReload(false);
     setSelectedEntryCursor(cursor);
-  }
+  };
 
   return (
     <>
@@ -49,7 +47,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                   type='search'
                   class='form-control'
                   placeholder='Filter by key (eg. users alice)'
-                  onKeyDown={changePrefix}
+                  onSearch={changePrefix}
                 />
               </div>
 
