@@ -30,6 +30,11 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     }
   }
 
+  const changeSelectedEntryCursor = (cursor: string) => {
+    setDoReload(false);
+    setSelectedEntryCursor(cursor);
+  }
+
   return (
     <>
       <div class='entries-management'>
@@ -54,7 +59,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
             <EntriesList
               initialEntries={initialEntries}
               keyPrefix={keyPrefix}
-              onSelect={(entry) => setSelectedEntryCursor(entry.cursor)}
+              onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
               doReload={doReload}
             />
           </div>
