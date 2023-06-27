@@ -85,6 +85,7 @@ function encodeCursor(key: KeyPart[]): string {
     return Deno[Deno.internal].core.ops.op_kv_encode_cursor([[], null, null], key);
   }
 
+  console.log(Deno);
   // @ts-ignore
   return Deno.core.ops.op_kv_encode_cursor([[], null, null], key);
 }
