@@ -8,7 +8,7 @@ import EntryValueFormControl from '../common/form-control/entryValueFormControl.
 import EntryDetailLoadingPlaceholder from '../../components/entryDetailLoadingPlaceholder.tsx';
 import TrashIcon from '../../components/common/icon/trashIcon.tsx';
 
-const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, onDelete = () => {} }) => {
+const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = () => {} }) => {
   const [entry, setEntry] = useState<Entry | undefined>(cursor);
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
   const [isValueInvalid, setIsValueInvalid] = useState(false);
@@ -18,7 +18,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
   useEffect(() => {
     if (cursor) {
       setIsLoadingEntry(true);
-      getEntryByCursor(cursor, keyPrefix).then((entry) => {
+      getEntryByCursor(cursor).then((entry) => {
         setEntry(entry);
         setIsLoadingEntry(false);
       });
@@ -49,7 +49,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
   const changeEntry = async () => {
     setIsUpdatingEntry(true);
 
-    const updatedEntry = await updateEntry(entry, keyPrefix);
+    const updatedEntry = await updateEntry(entry);
     setEntry(updatedEntry);
 
     setIsUpdatingEntry(false);
@@ -119,7 +119,6 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
       <DeleteEntryModal
         open={isDeleteEntryModalOpen}
         entry={entry}
-        keyPrefix={keyPrefix}
         onDelete={deleteEntry}
         onClose={() => setIsDeleteEntryModalOpen(false)}
       />
@@ -129,7 +128,6 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, keyPrefix, o
 
 export interface EntryDetailProps {
   cursor: string | undefined;
-  keyPrefix?: string;
   onDelete?: () => void;
 }
 

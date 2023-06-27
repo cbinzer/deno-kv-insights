@@ -17,7 +17,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     }
   }, [doReload]);
 
-  useEffect(() => reloadEntries().then(), [keyPrefix]);
+  useEffect(() => reloadEntries(25).then(), [keyPrefix]);
 
   const loadMoreEntries = () => {
     if (entries.pageInfo.hasNextPage && !isLoading) {
@@ -25,7 +25,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
       getAllEntries({
         first: 25,
         after: entries.pageInfo.endCursor,
-      }).then((nextEntries) => {
+      }, { keyPrefix }).then((nextEntries) => {
         setEntries({
           ...nextEntries,
           entries: [...entries.entries, ...nextEntries.entries],
@@ -35,10 +35,14 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     }
   };
 
-  const reloadEntries = async () => {
+  const reloadEntries = async (size?: number) => {
     setIsLoading(true);
 
     let first = entries.entries.length > 25 ? entries.entries.length : 25;
+    if (size) {
+      first = size
+    }
+
     const reloadedEntries = await getAllEntries({ first }, { keyPrefix });
     setEntries(reloadedEntries);
 

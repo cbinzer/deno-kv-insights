@@ -30,12 +30,8 @@ export function getAllEntries(pagination?: Pagination, filter?: ClientEntryFilte
   return fetch(url).then((response) => response.text()).then((text) => JSON.parse(text, keyReviver));
 }
 
-export async function getEntryByCursor(cursor: string, keyPrefix?: string): Promise<Entry> {
+export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
-  if (keyPrefix) {
-    url.searchParams.set('prefix', keyPrefix);
-  }
-
   const response = await fetch(url);
   const entry = (await response.text().then((text) => JSON.parse(text, keyReviver))) as Entry;
 
@@ -57,12 +53,9 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   return convertValue(result);
 }
 
-export async function updateEntry(entry: EntryForUpdate, keyPrefix?: string): Promise<Entry> {
+export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
   const { cursor, ...entryWithoutCursor } = entry;
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
-  if (keyPrefix) {
-    url.searchParams.set('prefix', keyPrefix);
-  }
 
   const response = await fetch(url, {
     method: 'PUT',
@@ -72,12 +65,8 @@ export async function updateEntry(entry: EntryForUpdate, keyPrefix?: string): Pr
   return convertValue(await response.text().then((text) => JSON.parse(text, keyReviver)));
 }
 
-export async function deleteEntryByCursor(cursor: string, keyPrefix?: string): Promise<undefined | HTTPError> {
+export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
-  if (keyPrefix) {
-    url.searchParams.set('prefix', keyPrefix);
-  }
-
   const response = await fetch(url, {
     method: 'DELETE',
   });

@@ -75,7 +75,7 @@ export function createHTTPStrippedEntries(
   return {
     pageInfo: {
       hasNextPage: entries.length > first,
-      endCursor: slicedEntries.at(-1)?.cursor,
+      endCursor: slicedEntries.at(-1)?.prefixedCursor,
     },
     entries: slicedEntries,
     totalCount,

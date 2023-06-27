@@ -2,11 +2,15 @@ import { PageInfo } from '../common/models.ts';
 
 export interface StrippedEntry {
   cursor: string;
+  prefixedCursor: string;
   key: KeyPart[];
   valueType: ValueType;
 }
 
-export interface Entry extends StrippedEntry {
+export interface Entry {
+  cursor: string;
+  key: KeyPart[];
+  valueType: ValueType;
   value?: EntryValue;
   version: string;
 }
@@ -62,6 +66,7 @@ export interface DBEntry {
 
 export interface CursorBasedDBEntry extends DBEntry {
   cursor: string;
+  prefixedCursor: string;
 }
 
 export interface HTTPStrippedEntries {

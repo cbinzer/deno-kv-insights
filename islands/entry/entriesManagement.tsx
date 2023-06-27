@@ -63,7 +63,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
           </div>
         </div>
         <div class='panel'>
-          <EntryDetail cursor={selectedEntryCursor} onDelete={removeSelectedEntry} keyPrefix={keyPrefix} />
+          <EntryDetail cursor={selectedEntryCursor} onDelete={removeSelectedEntry} />
         </div>
       </div>
 

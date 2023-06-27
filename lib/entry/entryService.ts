@@ -20,8 +20,8 @@ export async function getAllEntries(filter?: EntryFilter, pagination?: Paginatio
   return entries.map(mapToStrippedEntry);
 }
 
-export async function getEntryByCursor(cursor: string, keyPrefix: KeyPart[] = []): Promise<Entry> {
-  const entry = await findEntryByCursor(cursor, keyPrefix);
+export async function getEntryByCursor(cursor: string): Promise<Entry> {
+  const entry = await findEntryByCursor(cursor);
   if (!entry) {
     throw new EntryNotFoundError(`Entry with cursor ${cursor} not found.`);
   }
@@ -38,18 +38,18 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   return mapToNewEntry(newEntry);
 }
 
-export async function updateEntry(entry: EntryForUpdate, keyPrefix: KeyPart[] = []): Promise<Entry> {
+export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
   await assertEntryForUpdate(entry);
 
-  const existingEntry = await getEntryByCursor(entry.cursor, keyPrefix);
+  const existingEntry = await getEntryByCursor(entry.cursor);
   const convertedValue = convertValue(entry.valueType, entry.value);
   const updatedEntry = await saveEntry(existingEntry.key, convertedValue, entry.version);
 
-  return mapToEntry({ ...updatedEntry, cursor: entry.cursor });
+  return mapToEntry({ ...updatedEntry, cursor: entry.cursor, prefixedCursor: '' });
 }
 
-export async function deleteEntryByCursor(cursor: string, keyPrefix: KeyPart[] = []): Promise<void> {
-  const entry = await getEntryByCursor(cursor, keyPrefix);
+export async function deleteEntryByCursor(cursor: string): Promise<void> {
+  const entry = await getEntryByCursor(cursor);
   await deleteEntry(entry.key);
 }
 
@@ -120,6 +120,7 @@ function convertValue(valueType: ValueType, value: EntryValue): EntryValue {
 function mapToStrippedEntry(entry: CursorBasedDBEntry): StrippedEntry {
   return {
     cursor: entry.cursor,
+    prefixedCursor: entry.prefixedCursor,
     key: entry.key,
     valueType: getValueType(entry.value),
   };

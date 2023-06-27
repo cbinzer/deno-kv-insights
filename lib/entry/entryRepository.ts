@@ -16,19 +16,20 @@ export async function findAllEntries(filter?: EntryFilter, pagination?: Paginati
   for await (const entry of entriesIterator) {
     entries.push({
       ...entry,
-      cursor: entriesIterator.cursor,
+      cursor: encodeCursor(entry.key),
+      prefixedCursor: entriesIterator.cursor,
     });
   }
 
   return entries;
 }
 
-export async function findEntryByCursor(cursor: string, keyPrefix: KeyPart[] = []): Promise<CursorBasedDBEntry | null> {
+export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEntry | null> {
   try {
-    let entriesIterator = await db.list({ prefix: keyPrefix }, { limit: 1, cursor });
+    let entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor });
     await entriesIterator.next();
 
-    entriesIterator = await db.list({ prefix: keyPrefix }, { limit: 1, cursor: entriesIterator.cursor, reverse: true });
+    entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor: entriesIterator.cursor, reverse: true });
     for await (const entry of entriesIterator) {
       return {
         ...entry,
@@ -75,4 +76,9 @@ export async function entryExists(key: KeyPart[]): Promise<boolean> {
 
 export async function deleteEntry(key: KeyPart[]): Promise<void> {
   await db.delete(key);
+}
+
+function encodeCursor(key: KeyPart[]): string {
+  // @ts-ignore
+  return Deno[Deno.internal].core.ops.op_kv_encode_cursor([[], null, null], key);
 }
