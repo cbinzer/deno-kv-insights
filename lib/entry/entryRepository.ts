@@ -4,7 +4,7 @@ import { VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
 
 // @ts-ignore
-console.log(Deno[Deno.internal].core)
+console.log(Deno[Deno.internal].core.ops)
 
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
