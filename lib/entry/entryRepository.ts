@@ -3,6 +3,9 @@ import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryValue, KeyPart } from '.
 import { VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
 
+// @ts-ignore
+console.log(Deno[Deno.internal])
+
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
   let prefix: KeyPart[] = [];
@@ -79,7 +82,6 @@ export async function deleteEntry(key: KeyPart[]): Promise<void> {
 }
 
 function encodeCursor(key: KeyPart[]): string {
-  console.log(globalThis.Deno);
   // @ts-ignore
   if (Deno[Deno.internal]?.core?.ops?.op_kv_encode_cursor) {
     // @ts-ignore
