@@ -80,7 +80,7 @@ export async function deleteEntry(key: KeyPart[]): Promise<void> {
 
 function encodeCursor(key: KeyPart[]): string {
   // @ts-ignore
-  if (Deno[Deno.internal].core.ops.op_kv_encode_cursor) {
+  if (Deno[Deno.internal]?.core?.ops?.op_kv_encode_cursor) {
     // @ts-ignore
     return Deno[Deno.internal].core.ops.op_kv_encode_cursor([[], null, null], key);
   }
