@@ -1,8 +1,5 @@
 export const db = await Deno.openKv();
 
-console.log('db keys:')
-console.log(Object.keys(db).forEach(key => console.log(key)));
-
-console.log('Kv keys:')
+console.log('Core keys:')
 //@ts-ignore
-console.log(Object.keys(Deno.Kv).forEach(key => console.log(key)));
+console.log(Object.keys(Deno[Deno.internal]).forEach(key => console.log(key)));
