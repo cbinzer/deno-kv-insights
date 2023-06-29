@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "start": "deno run -A --unstable --watch=static/,routes/ dev.ts"
+    "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
+    "build_wasm_codec": "deno run -A https://deno.land/x/wasmbuild@0.14.1/main.ts --out lib/entry/codec"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

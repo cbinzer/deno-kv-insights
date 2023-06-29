@@ -1,5 +1,5 @@
-import {HTTPKeyPart, KeyPart, ValueType} from './models.ts';
-import {ValidationError} from '../common/errors.ts';
+import { HTTPKeyPart, KeyPart, ValueType } from './models.ts';
+import { ValidationError } from '../common/errors.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
