@@ -17,8 +17,9 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
     return `${
       key.map((keyPart) => {
         switch (typeof keyPart) {
-          case 'number':
           case 'bigint':
+            return `${keyPart.toString()}n`;
+          case 'number':
           case 'boolean':
             return keyPart.toString();
           case 'object':

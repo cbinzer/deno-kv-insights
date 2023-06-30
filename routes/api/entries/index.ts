@@ -4,7 +4,7 @@ import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
 import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
 import { Pagination } from '../../../lib/common/models.ts';
-import { convertReadableKeyStringToKey, keyReviver } from '../../../lib/entry/utils.ts';
+import { convertReadableKeyStringToKey, keyReplacer, keyReviver } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -15,7 +15,7 @@ export const handler: Handlers = {
     const entries = await getAllEntries(filter, { ...pagination, first: first + 1 });
     const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
-    return new Response(JSON.stringify(httpEntries));
+    return new Response(JSON.stringify(httpEntries, keyReplacer));
   },
 
   POST: async (request): Promise<Response> => {
@@ -23,7 +23,7 @@ export const handler: Handlers = {
       const entry = (await request.text().then((text) => JSON.parse(text, keyReviver))) as EntryForCreation;
       const newEntry = await createEntry(entry);
 
-      return Response.json(newEntry, { status: Status.Created });
+      return new Response(JSON.stringify(newEntry, keyReplacer), { status: Status.Created });
     } catch (e) {
       console.error(e);
 

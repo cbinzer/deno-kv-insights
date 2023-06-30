@@ -2,12 +2,13 @@ import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../../../lib/entry/entryService.ts';
 import { Entry, EntryForUpdate } from '../../../lib/entry/models.ts';
+import { keyReplacer } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request, context): Promise<Response> => {
     try {
       const entry = await getEntryByCursor(context.params.cursor);
-      return new Response(JSON.stringify(removeUndefinedValue(entry)));
+      return new Response(JSON.stringify(removeUndefinedValue(entry), keyReplacer));
     } catch (e) {
       console.error(e);
 
@@ -24,7 +25,7 @@ export const handler: Handlers = {
       const entry = await request.json() as Omit<EntryForUpdate, 'cursor'>;
       const updatedEntry = await updateEntry({ ...entry, cursor });
 
-      return new Response(JSON.stringify(removeUndefinedValue(updatedEntry)));
+      return new Response(JSON.stringify(removeUndefinedValue(updatedEntry), keyReplacer));
     } catch (e) {
       console.error(e);
 

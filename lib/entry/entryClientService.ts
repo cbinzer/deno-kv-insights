@@ -9,7 +9,7 @@ import {
   ValueType,
 } from './models.ts';
 import { HTTPError, Pagination } from '../common/models.ts';
-import { keyReviver } from './utils.ts';
+import { keyReplacer, keyReviver } from './utils.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -42,7 +42,7 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   const url = new URL(ENDPOINT_URL);
   const response = await fetch(url, {
     method: 'POST',
-    body: JSON.stringify(entry),
+    body: JSON.stringify(entry, keyReplacer),
   });
 
   const result = await response.text().then((text) => JSON.parse(text, keyReviver));
@@ -59,7 +59,7 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
 
   const response = await fetch(url, {
     method: 'PUT',
-    body: JSON.stringify(entryWithoutCursor),
+    body: JSON.stringify(entryWithoutCursor, keyReplacer),
   });
 
   return convertValue(await response.text().then((text) => JSON.parse(text, keyReviver)));

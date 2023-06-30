@@ -26,8 +26,9 @@ export function convertKeyToString(key: KeyPart[]): string {
   return `[${
     key.map((keyPart) => {
       switch (typeof keyPart) {
-        case 'number':
         case 'bigint':
+          return `${keyPart.toString()}n`;
+        case 'number':
         case 'boolean':
           return keyPart.toString();
         case 'object':
@@ -55,6 +56,10 @@ export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
       return new Int8Array(numberArray);
     }
 
+    if (/^\d+n$/.test(keyPart)) {
+      return BigInt(keyPart.substring(0, keyPart.length - 1));
+    }
+
     if (keyPart.startsWith('"') && keyPart.endsWith('"') && keyPart.length > 2) {
       return keyPart.substring(1, keyPart.length - 1);
     }
@@ -71,6 +76,22 @@ export function keyReviver(this: any, key: string, value: any): any {
   return value;
 }
 
+export function keyReplacer(key: string, value: any): any {
+  if (key === 'key') {
+    return value.map(replaceKeyPart);
+  }
+
+  return value;
+}
+
+export function replaceKeyPart(keyPart: KeyPart): HTTPKeyPart {
+  if (typeof keyPart === 'bigint') {
+    return `${keyPart.toString()}n`;
+  }
+
+  return keyPart as HTTPKeyPart;
+}
+
 export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
   if (typeof httpKeyPart === 'object') {
     try {
@@ -78,6 +99,10 @@ export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
     } catch (e) {
       throw new ValidationError(`Can't create Uint8Array from ${JSON.stringify(httpKeyPart)}.`);
     }
+  }
+
+  if (typeof httpKeyPart === 'string' && /^\d+n$/.test(httpKeyPart)) {
+    return BigInt(httpKeyPart.substring(0, httpKeyPart.length - 1));
   }
 
   return httpKeyPart as KeyPart;
