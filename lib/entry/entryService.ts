@@ -165,6 +165,8 @@ function getValueType(value: unknown): ValueType {
       return ValueType.UNDEFINED;
     case 'string':
       return ValueType.STRING;
+    case 'bigint':
+      return ValueType.BIGINT;
     default:
       throw new ValidationError(`Can't find the matching value type for ${typeof value}.`);
   }

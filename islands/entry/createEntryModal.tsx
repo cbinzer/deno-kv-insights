@@ -53,6 +53,9 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.DATE:
         setValue(new Date());
         break;
+      case ValueType.BIGINT:
+        setValue(BigInt(0));
+        break;
     }
   };
 
@@ -68,6 +71,7 @@ const CreateEntryModal: FunctionComponent<
       setCreatedEntry(createdEntry);
       setIsOpen(false);
     } catch (e) {
+      console.log(e);
       setKeyAlreadyExists(true);
     }
   };

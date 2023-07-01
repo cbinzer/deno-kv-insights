@@ -1,8 +1,9 @@
-import { HTTPKeyPart, KeyPart, ValueType } from './models.ts';
+import {EntryValue, HTTPEntryValue, HTTPKeyPart, KeyPart, ValueType} from './models.ts';
 import { ValidationError } from '../common/errors.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
+    case ValueType.BIGINT:
     case ValueType.NUMBER:
       return 'text-bg-primary';
     case ValueType.STRING:
@@ -12,9 +13,8 @@ export function getValueTypeColorClass(valueType: ValueType): string {
     case ValueType.OBJECT:
       return 'text-bg-danger';
     case ValueType.UNDEFINED:
-      return 'text-bg-warning';
     case ValueType.NULL:
-      return 'text-bg-info';
+      return 'text-bg-warning';
     case ValueType.DATE:
       return 'text-bg-dark';
     default:
@@ -68,17 +68,25 @@ export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
   }) as KeyPart[];
 }
 
-export function keyReviver(this: any, key: string, value: any): any {
+export function keyAndValueReviver(this: any, key: string, value: any): any {
   if (key === 'key') {
     return value.map(mapToKeyPart);
+  }
+
+  if (key === 'value') {
+    return mapToEntryValue(value);
   }
 
   return value;
 }
 
-export function keyReplacer(key: string, value: any): any {
+export function keyAndValueReplacer(key: string, value: any): any {
   if (key === 'key') {
     return value.map(replaceKeyPart);
+  }
+
+  if (key === 'value') {
+    return replaceEntryValue(value);
   }
 
   return value;
@@ -90,6 +98,14 @@ export function replaceKeyPart(keyPart: KeyPart): HTTPKeyPart {
   }
 
   return keyPart as HTTPKeyPart;
+}
+
+export function replaceEntryValue(entryValue: EntryValue): HTTPEntryValue {
+  if (typeof entryValue === 'bigint') {
+    return `${entryValue.toString()}n`;
+  }
+
+  return entryValue as HTTPEntryValue;
 }
 
 export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
@@ -106,4 +122,12 @@ export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
   }
 
   return httpKeyPart as KeyPart;
+}
+
+export function mapToEntryValue(value: unknown): EntryValue {
+  if (typeof value === 'string' && /^\d+n$/.test(value)) {
+    return BigInt(value.substring(0, value.length - 1));
+  }
+
+  return value as EntryValue;
 }

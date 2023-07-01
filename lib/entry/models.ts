@@ -47,6 +47,12 @@ export type EntryValue =
   | Set<unknown>
   | Date
   | RegExp;
+export type HTTPEntryValue =
+  | null
+  | boolean
+  | number
+  | string
+  | Object;
 
 export enum ValueType {
   NUMBER = 'NUMBER',
@@ -56,6 +62,7 @@ export enum ValueType {
   UNDEFINED = 'UNDEFINED',
   NULL = 'NULL',
   DATE = 'DATE',
+  BIGINT = 'BIGINT',
 }
 
 export interface DBEntry {
