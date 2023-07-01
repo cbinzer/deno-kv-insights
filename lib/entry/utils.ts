@@ -117,7 +117,7 @@ export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
     }
   }
 
-  if (typeof httpKeyPart === 'string' && /^\d+n$/.test(httpKeyPart)) {
+  if (typeof httpKeyPart === 'string' && /^-?\d+n$/.test(httpKeyPart)) {
     return BigInt(httpKeyPart.substring(0, httpKeyPart.length - 1));
   }
 
@@ -125,7 +125,7 @@ export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
 }
 
 export function mapToEntryValue(value: unknown): EntryValue {
-  if (typeof value === 'string' && /^\d+n$/.test(value)) {
+  if (typeof value === 'string' && /^-?\d+n$/.test(value)) {
     return BigInt(value.substring(0, value.length - 1));
   }
 

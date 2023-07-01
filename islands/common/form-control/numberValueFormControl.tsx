@@ -12,22 +12,42 @@ const NumberValueFormControl: FunctionComponent<NumberValueFormControlProps> = (
     const inputElement = event.target as HTMLInputElement;
     let newValue = inputElement.valueAsNumber;
     if (isNaN(inputElement.valueAsNumber)) {
-      newValue = 0;
+      newValue = internalValue;
     }
 
     setInternalValue(newValue);
     onChange(newValue);
   };
 
+  const increment = (event: Event) => {
+    event.preventDefault();
+
+    const newValue = internalValue + 1;
+    setInternalValue(newValue);
+    onChange(newValue);
+  };
+
+  const decrement = (event: Event) => {
+    event.preventDefault();
+
+    const newValue = internalValue - 1;
+    setInternalValue(newValue);
+    onChange(newValue);
+  };
+
   return (
-    <input
-      type='number'
-      class='form-control'
-      id={id}
-      value={internalValue}
-      disabled={disabled}
-      onChange={changeValue}
-    />
+    <div class='input-group'>
+      <button class='btn btn-outline-secondary' onClick={decrement} disabled={disabled}>-</button>
+      <input
+        type='text'
+        class='form-control'
+        id={id}
+        value={internalValue}
+        disabled={disabled}
+        onChange={changeValue}
+      />
+      <button class='btn btn-outline-secondary' onClick={increment} disabled={disabled}>+</button>
+    </div>
   );
 };
 
