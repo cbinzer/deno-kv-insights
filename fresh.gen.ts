@@ -6,7 +6,7 @@ import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/api/entries/[cursor].ts';
 import * as $2 from './routes/api/entries/index.ts';
 import * as $3 from './routes/index.tsx';
-import * as $$0 from './islands/common/form-control/bigIntFormControl.tsx';
+import * as $$0 from './islands/common/form-control/bigIntValueFormControl.tsx';
 import * as $$1 from './islands/common/form-control/booleanValueFormControl.tsx';
 import * as $$2 from './islands/common/form-control/dateValueFormControl.tsx';
 import * as $$3 from './islands/common/form-control/entryValueFormControl.tsx';
@@ -30,7 +30,7 @@ const manifest = {
     './routes/index.tsx': $3,
   },
   islands: {
-    './islands/common/form-control/bigIntFormControl.tsx': $$0,
+    './islands/common/form-control/bigIntValueFormControl.tsx': $$0,
     './islands/common/form-control/booleanValueFormControl.tsx': $$1,
     './islands/common/form-control/dateValueFormControl.tsx': $$2,
     './islands/common/form-control/entryValueFormControl.tsx': $$3,

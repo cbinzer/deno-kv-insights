@@ -5,7 +5,7 @@ import NumberValueFormControl from './numberValueFormControl.tsx';
 import StringValueFormControl from './stringValueFormControl.tsx';
 import ObjectValueFormControl from './objectValueFormControl.tsx';
 import DateValueFormControl from './dateValueFormControl.tsx';
-import BigIntValueFormControl from './bigIntFormControl.tsx';
+import BigIntValueFormControl from './bigIntValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
