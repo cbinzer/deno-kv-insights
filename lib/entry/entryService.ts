@@ -154,6 +154,10 @@ function getValueType(value: unknown): ValueType {
     return ValueType.DATE;
   }
 
+  if (value instanceof Uint8Array) {
+    return ValueType.UINT8ARRAY;
+  }
+
   switch (typeof value) {
     case 'object':
       return ValueType.OBJECT;

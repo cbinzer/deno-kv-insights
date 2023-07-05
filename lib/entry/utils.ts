@@ -10,6 +10,7 @@ export function getValueTypeColorClass(valueType: ValueType): string {
     case ValueType.BOOLEAN:
       return 'text-bg-success';
     case ValueType.OBJECT:
+    case ValueType.UINT8ARRAY:
       return 'text-bg-danger';
     case ValueType.UNDEFINED:
     case ValueType.NULL:

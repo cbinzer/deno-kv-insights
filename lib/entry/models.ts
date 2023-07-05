@@ -31,7 +31,6 @@ export interface EntryForUpdate {
 }
 
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
-export type HTTPKeyPart = Record<string, number> | string | number | boolean;
 
 export type EntryValue =
   | undefined
@@ -47,12 +46,6 @@ export type EntryValue =
   | Set<unknown>
   | Date
   | RegExp;
-export type HTTPEntryValue =
-  | null
-  | boolean
-  | number
-  | string
-  | Object;
 
 export enum ValueType {
   NUMBER = 'NUMBER',
@@ -63,6 +56,7 @@ export enum ValueType {
   NULL = 'NULL',
   DATE = 'DATE',
   BIGINT = 'BIGINT',
+  UINT8ARRAY = 'UINT8ARRAY',
 }
 
 export interface DBEntry {

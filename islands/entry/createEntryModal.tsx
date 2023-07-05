@@ -56,6 +56,9 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.BIGINT:
         setValue(BigInt(0));
         break;
+      case ValueType.UINT8ARRAY:
+        setValue(new Uint8Array());
+        break;
     }
   };
 

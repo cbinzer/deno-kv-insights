@@ -6,6 +6,7 @@ import StringValueFormControl from './stringValueFormControl.tsx';
 import ObjectValueFormControl from './objectValueFormControl.tsx';
 import DateValueFormControl from './dateValueFormControl.tsx';
 import BigIntValueFormControl from './bigIntValueFormControl.tsx';
+import Uint8ArrayValueFormControl from './uint8ArrayValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
@@ -36,8 +37,19 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
         ? <DateValueFormControl id={id} value={value as Date} disabled={disabled} onChange={onChange} />
         : null}
       {valueType === ValueType.BIGINT
-          ? <BigIntValueFormControl id={id} value={value as bigint} disabled={disabled} onChange={onChange} />
-          : null}
+        ? <BigIntValueFormControl id={id} value={value as bigint} disabled={disabled} onChange={onChange} />
+        : null}
+      {valueType === ValueType.UINT8ARRAY
+        ? (
+          <Uint8ArrayValueFormControl
+            id={id}
+            value={value as Uint8Array}
+            disabled={disabled}
+            onChange={onChange}
+            onInvalid={onInvalid}
+          />
+        )
+        : null}
     </>
   );
 };
