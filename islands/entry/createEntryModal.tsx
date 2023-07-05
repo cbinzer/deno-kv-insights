@@ -59,6 +59,9 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.UINT8ARRAY:
         setValue(new Uint8Array());
         break;
+      case ValueType.REGEXP:
+        setValue(new RegExp('.*', 'g'));
+        break;
     }
   };
 

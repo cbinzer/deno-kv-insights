@@ -57,6 +57,7 @@ export enum ValueType {
   DATE = 'DATE',
   BIGINT = 'BIGINT',
   UINT8ARRAY = 'UINT8ARRAY',
+  REGEXP = 'REGEXP',
 }
 
 export interface DBEntry {

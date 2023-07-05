@@ -7,6 +7,7 @@ import ObjectValueFormControl from './objectValueFormControl.tsx';
 import DateValueFormControl from './dateValueFormControl.tsx';
 import BigIntValueFormControl from './bigIntValueFormControl.tsx';
 import Uint8ArrayValueFormControl from './uint8ArrayValueFormControl.tsx';
+import RegExpValueFormControl from './regExpValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
@@ -44,6 +45,17 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
           <Uint8ArrayValueFormControl
             id={id}
             value={value as Uint8Array}
+            disabled={disabled}
+            onChange={onChange}
+            onInvalid={onInvalid}
+          />
+        )
+        : null}
+      {valueType === ValueType.REGEXP
+        ? (
+          <RegExpValueFormControl
+            id={id}
+            value={value as RegExp}
             disabled={disabled}
             onChange={onChange}
             onInvalid={onInvalid}

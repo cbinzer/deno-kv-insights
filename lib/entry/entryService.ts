@@ -158,6 +158,10 @@ function getValueType(value: unknown): ValueType {
     return ValueType.UINT8ARRAY;
   }
 
+  if (value instanceof RegExp) {
+    return ValueType.REGEXP;
+  }
+
   switch (typeof value) {
     case 'object':
       return ValueType.OBJECT;

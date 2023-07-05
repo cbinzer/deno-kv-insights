@@ -6,6 +6,7 @@ export function getValueTypeColorClass(valueType: ValueType): string {
     case ValueType.NUMBER:
       return 'text-bg-primary';
     case ValueType.STRING:
+    case ValueType.REGEXP:
       return 'text-bg-secondary';
     case ValueType.BOOLEAN:
       return 'text-bg-success';
@@ -77,6 +78,10 @@ export function replace(key: string, value: any): any {
     return replaceUint8Array(value);
   }
 
+  if (value instanceof RegExp) {
+    return replaceRegExp(value);
+  }
+
   return value;
 }
 
@@ -87,10 +92,18 @@ export function replaceBigInt(value: bigint): BigIntJSON {
   };
 }
 
-export function replaceUint8Array(value: Uint8Array) {
+export function replaceUint8Array(value: Uint8Array): Uint8ArrayJSON {
   return {
     type: JSONType.UINT8ARRAY,
     value: [...value],
+  };
+}
+
+export function replaceRegExp(value: RegExp): RegExpJSON {
+  return {
+    type: JSONType.REGEXP,
+    source: value.source,
+    flags: value.flags
   };
 }
 
@@ -102,6 +115,10 @@ export function revive(this: any, key: string, value: any): any {
 
     if (value.type === JSONType.UINT8ARRAY) {
       return reviveUint8Array(value);
+    }
+
+    if (value.type === JSONType.REGEXP) {
+      return reviveRegExp(value);
     }
   }
 
@@ -116,9 +133,14 @@ export function reviveUint8Array(uint8ArrayJSON: Uint8ArrayJSON): Uint8Array {
   return new Uint8Array(uint8ArrayJSON.value);
 }
 
+export function reviveRegExp(regExpJSON: RegExpJSON): RegExp {
+  return new RegExp(regExpJSON.source, regExpJSON.flags);
+}
+
 enum JSONType {
   BIGINT = 'BIGINT',
   UINT8ARRAY = 'UINT8ARRAY',
+  REGEXP = 'REGEXP',
 }
 
 interface BigIntJSON {
@@ -129,4 +151,10 @@ interface BigIntJSON {
 interface Uint8ArrayJSON {
   type: JSONType.UINT8ARRAY;
   value: number[];
+}
+
+interface RegExpJSON {
+  type: JSONType.REGEXP;
+  source: string;
+  flags?: string;
 }
