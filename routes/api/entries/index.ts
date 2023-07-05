@@ -4,7 +4,7 @@ import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
 import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
 import { Pagination } from '../../../lib/common/models.ts';
-import { convertReadableKeyStringToKey, keyAndValueReplacer, keyAndValueReviver } from '../../../lib/entry/utils.ts';
+import { convertReadableKeyStringToKey, replace, revive } from '../../../lib/entry/utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
@@ -15,15 +15,15 @@ export const handler: Handlers = {
     const entries = await getAllEntries(filter, { ...pagination, first: first + 1 });
     const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
-    return new Response(JSON.stringify(httpEntries, keyAndValueReplacer));
+    return new Response(JSON.stringify(httpEntries, replace));
   },
 
   POST: async (request): Promise<Response> => {
     try {
-      const entry = (await request.text().then((text) => JSON.parse(text, keyAndValueReviver))) as EntryForCreation;
+      const entry = (await request.text().then((text) => JSON.parse(text, revive))) as EntryForCreation;
       const newEntry = await createEntry(entry);
 
-      return new Response(JSON.stringify(newEntry, keyAndValueReplacer), { status: Status.Created });
+      return new Response(JSON.stringify(newEntry, replace), { status: Status.Created });
     } catch (e) {
       console.error(e);
 

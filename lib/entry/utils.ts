@@ -1,5 +1,4 @@
-import {EntryValue, HTTPEntryValue, HTTPKeyPart, KeyPart, ValueType} from './models.ts';
-import { ValidationError } from '../common/errors.ts';
+import { KeyPart, ValueType } from './models.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
@@ -68,66 +67,65 @@ export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
   }) as KeyPart[];
 }
 
-export function keyAndValueReviver(this: any, key: string, value: any): any {
-  if (key === 'key') {
-    return value.map(mapToKeyPart);
+export function replace(key: string, value: any): any {
+  if (typeof value === 'bigint') {
+    return replaceBigInt(value);
   }
 
-  if (key === 'value') {
-    return mapToEntryValue(value);
-  }
-
-  return value;
-}
-
-export function keyAndValueReplacer(key: string, value: any): any {
-  if (key === 'key') {
-    return value.map(replaceKeyPart);
-  }
-
-  if (key === 'value') {
-    return replaceEntryValue(value);
+  if (value instanceof Uint8Array) {
+    return replaceUint8Array(value);
   }
 
   return value;
 }
 
-export function replaceKeyPart(keyPart: KeyPart): HTTPKeyPart {
-  if (typeof keyPart === 'bigint') {
-    return `${keyPart.toString()}n`;
-  }
-
-  return keyPart as HTTPKeyPart;
+export function replaceBigInt(value: bigint): BigIntJSON {
+  return {
+    type: JSONType.BIGINT,
+    value: value.toString(),
+  };
 }
 
-export function replaceEntryValue(entryValue: EntryValue): HTTPEntryValue {
-  if (typeof entryValue === 'bigint') {
-    return `${entryValue.toString()}n`;
-  }
-
-  return entryValue as HTTPEntryValue;
+export function replaceUint8Array(value: Uint8Array) {
+  return {
+    type: JSONType.UINT8ARRAY,
+    value: [...value],
+  };
 }
 
-export function mapToKeyPart(httpKeyPart: HTTPKeyPart): KeyPart {
-  if (typeof httpKeyPart === 'object') {
-    try {
-      return new Uint8Array(Object.values(httpKeyPart));
-    } catch (e) {
-      throw new ValidationError(`Can't create Uint8Array from ${JSON.stringify(httpKeyPart)}.`);
+export function revive(this: any, key: string, value: any): any {
+  if (typeof value === 'object') {
+    if (value.type === JSONType.BIGINT) {
+      return reviveBigInt(value);
+    }
+
+    if (value.type === JSONType.UINT8ARRAY) {
+      return reviveUint8Array(value);
     }
   }
 
-  if (typeof httpKeyPart === 'string' && /^-?\d+n$/.test(httpKeyPart)) {
-    return BigInt(httpKeyPart.substring(0, httpKeyPart.length - 1));
-  }
-
-  return httpKeyPart as KeyPart;
+  return value;
 }
 
-export function mapToEntryValue(value: unknown): EntryValue {
-  if (typeof value === 'string' && /^-?\d+n$/.test(value)) {
-    return BigInt(value.substring(0, value.length - 1));
-  }
+export function reviveBigInt(bigIntJSON: BigIntJSON): bigint {
+  return BigInt(bigIntJSON.value);
+}
 
-  return value as EntryValue;
+export function reviveUint8Array(uint8ArrayJSON: Uint8ArrayJSON): Uint8Array {
+  return new Uint8Array(uint8ArrayJSON.value);
+}
+
+enum JSONType {
+  BIGINT = 'BIGINT',
+  UINT8ARRAY = 'UINT8ARRAY',
+}
+
+interface BigIntJSON {
+  type: JSONType.BIGINT;
+  value: string;
+}
+
+interface Uint8ArrayJSON {
+  type: JSONType.UINT8ARRAY;
+  value: number[];
 }

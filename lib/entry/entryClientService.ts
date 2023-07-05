@@ -9,7 +9,7 @@ import {
   ValueType,
 } from './models.ts';
 import { HTTPError, Pagination } from '../common/models.ts';
-import { keyAndValueReplacer, keyAndValueReviver } from './utils.ts';
+import { replace, revive } from './utils.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
 
@@ -27,13 +27,13 @@ export function getAllEntries(pagination?: Pagination, filter?: ClientEntryFilte
     url.searchParams.set('prefix', filter.keyPrefix);
   }
 
-  return fetch(url).then((response) => response.text()).then((text) => JSON.parse(text, keyAndValueReviver));
+  return fetch(url).then((response) => response.text()).then((text) => JSON.parse(text, revive));
 }
 
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url);
-  const entry = (await response.text().then((text) => JSON.parse(text, keyAndValueReviver))) as Entry;
+  const entry = (await response.text().then((text) => JSON.parse(text, revive))) as Entry;
 
   return convertValue(entry);
 }
@@ -42,10 +42,10 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   const url = new URL(ENDPOINT_URL);
   const response = await fetch(url, {
     method: 'POST',
-    body: JSON.stringify(entry, keyAndValueReplacer),
+    body: JSON.stringify(entry, replace),
   });
 
-  const result = await response.text().then((text) => JSON.parse(text, keyAndValueReviver));
+  const result = await response.text().then((text) => JSON.parse(text, revive));
   if (result.status === 409) {
     throw new EntryAlreadyExistsError(result.message);
   }
@@ -59,10 +59,10 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
 
   const response = await fetch(url, {
     method: 'PUT',
-    body: JSON.stringify(entryWithoutCursor, keyAndValueReplacer),
+    body: JSON.stringify(entryWithoutCursor, replace),
   });
 
-  return convertValue(await response.text().then((text) => JSON.parse(text, keyAndValueReviver)));
+  return convertValue(await response.text().then((text) => JSON.parse(text, revive)));
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
@@ -72,7 +72,7 @@ export async function deleteEntryByCursor(cursor: string): Promise<undefined | H
   });
 
   if (!response.ok) {
-    return response.text().then((text) => JSON.parse(text, keyAndValueReviver));
+    return response.text().then((text) => JSON.parse(text, revive));
   }
 
   return undefined;
