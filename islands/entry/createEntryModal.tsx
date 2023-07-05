@@ -62,6 +62,12 @@ const CreateEntryModal: FunctionComponent<
       case ValueType.REGEXP:
         setValue(new RegExp('.*', 'g'));
         break;
+      case ValueType.SET:
+        setValue(new Set());
+        break;
+      case ValueType.MAP:
+        setValue(new Map());
+        break;
     }
   };
 

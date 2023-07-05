@@ -13,6 +13,7 @@ export function getValueTypeColorClass(valueType: ValueType): string {
     case ValueType.OBJECT:
     case ValueType.UINT8ARRAY:
     case ValueType.SET:
+    case ValueType.MAP:
       return 'text-bg-danger';
     case ValueType.UNDEFINED:
     case ValueType.NULL:
@@ -87,6 +88,10 @@ export function replace(key: string, value: any): any {
     return replaceSet(value);
   }
 
+  if (value instanceof Map) {
+    return replaceMap(value);
+  }
+
   return value;
 }
 
@@ -119,6 +124,13 @@ export function replaceSet(value: Set<unknown>): SetJSON {
   };
 }
 
+export function replaceMap(value: Map<unknown, unknown>): MapJSON {
+  return {
+    type: JSONType.MAP,
+    value: Array.from(value.entries()).reduce((obj, [key, val]) => ({ ...obj, [key as string]: val }), {}),
+  };
+}
+
 export function revive(this: any, key: string, value: any): any {
   if (typeof value === 'object') {
     if (value.type === JSONType.BIGINT) {
@@ -135,6 +147,10 @@ export function revive(this: any, key: string, value: any): any {
 
     if (value.type === JSONType.SET) {
       return reviveSet(value);
+    }
+
+    if (value.type === JSONType.MAP) {
+      return reviveMap(value);
     }
   }
 
@@ -157,11 +173,16 @@ export function reviveSet(setJSON: SetJSON): Set<unknown> {
   return new Set<unknown>(setJSON.value);
 }
 
+export function reviveMap(mapJSON: MapJSON): Map<unknown, unknown> {
+  return new Map<unknown, unknown>(Object.entries(mapJSON.value));
+}
+
 enum JSONType {
   BIGINT = 'BIGINT',
   UINT8ARRAY = 'UINT8ARRAY',
   REGEXP = 'REGEXP',
   SET = 'SET',
+  MAP = 'MAP',
 }
 
 interface BigIntJSON {
@@ -183,4 +204,9 @@ interface RegExpJSON {
 interface SetJSON {
   type: JSONType.SET;
   value: unknown[];
+}
+
+interface MapJSON {
+  type: JSONType.MAP;
+  value: Record<string, unknown>;
 }

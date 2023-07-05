@@ -59,6 +59,7 @@ export enum ValueType {
   UINT8ARRAY = 'UINT8ARRAY',
   REGEXP = 'REGEXP',
   SET = 'SET',
+  MAP = 'MAP',
 }
 
 export interface DBEntry {

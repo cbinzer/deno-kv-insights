@@ -166,6 +166,10 @@ function getValueType(value: unknown): ValueType {
     return ValueType.SET;
   }
 
+  if (value instanceof Map) {
+    return ValueType.MAP;
+  }
+
   switch (typeof value) {
     case 'object':
       return ValueType.OBJECT;

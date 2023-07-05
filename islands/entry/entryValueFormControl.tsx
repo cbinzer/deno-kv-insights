@@ -9,6 +9,7 @@ import BigIntValueFormControl from '../common/form-control/bigIntValueFormContro
 import Uint8ArrayValueFormControl from '../common/form-control/uint8ArrayValueFormControl.tsx';
 import RegExpValueFormControl from '../common/form-control/regExpValueFormControl.tsx';
 import SetValueFormControl from '../common/form-control/setValueFormControl.tsx';
+import MapValueFormControl from '../common/form-control/mapValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
@@ -68,6 +69,17 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
           <SetValueFormControl
             id={id}
             value={value as Set}
+            disabled={disabled}
+            onChange={onChange}
+            onInvalid={onInvalid}
+          />
+        )
+        : null}
+      {valueType === ValueType.MAP
+        ? (
+          <MapValueFormControl
+            id={id}
+            value={value as Map}
             disabled={disabled}
             onChange={onChange}
             onInvalid={onInvalid}
