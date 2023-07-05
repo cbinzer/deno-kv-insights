@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import {replace, revive} from '../../../lib/entry/utils.ts';
 
 const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
   { id, value = {}, disabled, onChange = () => {}, onInvalid = () => {} },
@@ -9,7 +10,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
 
   useEffect(() => {
     try {
-      setStringValue(JSON.stringify(value, undefined, 2));
+      setStringValue(JSON.stringify(value, replace, 2));
       setIsValueInvalid(false);
     } catch (e) {
       setIsValueInvalid(true);
@@ -21,7 +22,7 @@ const ObjectValueFormControl: FunctionComponent<ObjectValueFormControlProps> = (
     setStringValue(textArea.value);
 
     try {
-      const newValue = JSON.parse(textArea.value);
+      const newValue = JSON.parse(textArea.value, revive);
       setIsValueInvalid(false);
       onChange(newValue);
     } catch (e) {
