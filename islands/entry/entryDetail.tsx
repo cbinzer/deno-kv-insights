@@ -4,7 +4,7 @@ import { getEntryByCursor, updateEntry } from '../../lib/entry/entryClientServic
 import { Entry, EntryValue, ValueType } from '../../lib/entry/models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../../lib/entry/utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
-import EntryValueFormControl from '../common/form-control/entryValueFormControl.tsx';
+import EntryValueFormControl from './entryValueFormControl.tsx';
 import EntryDetailLoadingPlaceholder from '../../components/entryDetailLoadingPlaceholder.tsx';
 import TrashIcon from '../../components/common/icon/trashIcon.tsx';
 

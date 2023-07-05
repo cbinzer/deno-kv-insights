@@ -1,13 +1,13 @@
 import { FunctionComponent } from 'preact';
-import { EntryValue, ValueType } from '../../../lib/entry/models.ts';
-import BooleanValueFormControl from './booleanValueFormControl.tsx';
-import NumberValueFormControl from './numberValueFormControl.tsx';
-import StringValueFormControl from './stringValueFormControl.tsx';
-import ObjectValueFormControl from './objectValueFormControl.tsx';
-import DateValueFormControl from './dateValueFormControl.tsx';
-import BigIntValueFormControl from './bigIntValueFormControl.tsx';
-import Uint8ArrayValueFormControl from './uint8ArrayValueFormControl.tsx';
-import RegExpValueFormControl from './regExpValueFormControl.tsx';
+import { EntryValue, ValueType } from '../../lib/entry/models.ts';
+import BooleanValueFormControl from '../common/form-control/booleanValueFormControl.tsx';
+import NumberValueFormControl from '../common/form-control/numberValueFormControl.tsx';
+import StringValueFormControl from '../common/form-control/stringValueFormControl.tsx';
+import ObjectValueFormControl from '../common/form-control/objectValueFormControl.tsx';
+import DateValueFormControl from '../common/form-control/dateValueFormControl.tsx';
+import BigIntValueFormControl from '../common/form-control/bigIntValueFormControl.tsx';
+import Uint8ArrayValueFormControl from '../common/form-control/uint8ArrayValueFormControl.tsx';
+import RegExpValueFormControl from '../common/form-control/regExpValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
