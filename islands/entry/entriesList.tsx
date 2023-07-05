@@ -7,6 +7,7 @@ import { convertKeyToString, getValueTypeColorClass } from '../../lib/entry/util
 const EntriesList: FunctionComponent<EntriesListProps> = (
   { initialEntries, keyPrefix = '', onSelect = () => {}, doReload = false },
 ) => {
+  const [initialized, setInitialized] = useState(false);
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<StrippedEntry>();
@@ -17,7 +18,13 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     }
   }, [doReload]);
 
-  useEffect(() => reloadEntries(25).then(), [keyPrefix]);
+  useEffect(() => {
+    if (initialized) {
+      reloadEntries(25).then();
+    } else {
+      setInitialized(true);
+    }
+  }, [keyPrefix]);
 
   const loadMoreEntries = () => {
     if (entries.pageInfo.hasNextPage && !isLoading) {
@@ -40,7 +47,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
 
     let first = entries.entries.length > 25 ? entries.entries.length : 25;
     if (size) {
-      first = size
+      first = size;
     }
 
     const reloadedEntries = await getAllEntries({ first }, { keyPrefix });
