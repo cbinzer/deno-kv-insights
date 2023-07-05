@@ -162,6 +162,10 @@ function getValueType(value: unknown): ValueType {
     return ValueType.REGEXP;
   }
 
+  if (value instanceof Set) {
+    return ValueType.SET;
+  }
+
   switch (typeof value) {
     case 'object':
       return ValueType.OBJECT;

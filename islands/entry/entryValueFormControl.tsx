@@ -8,6 +8,7 @@ import DateValueFormControl from '../common/form-control/dateValueFormControl.ts
 import BigIntValueFormControl from '../common/form-control/bigIntValueFormControl.tsx';
 import Uint8ArrayValueFormControl from '../common/form-control/uint8ArrayValueFormControl.tsx';
 import RegExpValueFormControl from '../common/form-control/regExpValueFormControl.tsx';
+import SetValueFormControl from '../common/form-control/setValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },
@@ -56,6 +57,17 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
           <RegExpValueFormControl
             id={id}
             value={value as RegExp}
+            disabled={disabled}
+            onChange={onChange}
+            onInvalid={onInvalid}
+          />
+        )
+        : null}
+      {valueType === ValueType.SET
+        ? (
+          <SetValueFormControl
+            id={id}
+            value={value as Set}
             disabled={disabled}
             onChange={onChange}
             onInvalid={onInvalid}

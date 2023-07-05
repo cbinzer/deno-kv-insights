@@ -12,6 +12,7 @@ export function getValueTypeColorClass(valueType: ValueType): string {
       return 'text-bg-success';
     case ValueType.OBJECT:
     case ValueType.UINT8ARRAY:
+    case ValueType.SET:
       return 'text-bg-danger';
     case ValueType.UNDEFINED:
     case ValueType.NULL:
@@ -82,6 +83,10 @@ export function replace(key: string, value: any): any {
     return replaceRegExp(value);
   }
 
+  if (value instanceof Set) {
+    return replaceSet(value);
+  }
+
   return value;
 }
 
@@ -103,7 +108,14 @@ export function replaceRegExp(value: RegExp): RegExpJSON {
   return {
     type: JSONType.REGEXP,
     source: value.source,
-    flags: value.flags
+    flags: value.flags,
+  };
+}
+
+export function replaceSet(value: Set<unknown>): SetJSON {
+  return {
+    type: JSONType.SET,
+    value: Array.from(value),
   };
 }
 
@@ -119,6 +131,10 @@ export function revive(this: any, key: string, value: any): any {
 
     if (value.type === JSONType.REGEXP) {
       return reviveRegExp(value);
+    }
+
+    if (value.type === JSONType.SET) {
+      return reviveSet(value);
     }
   }
 
@@ -137,10 +153,15 @@ export function reviveRegExp(regExpJSON: RegExpJSON): RegExp {
   return new RegExp(regExpJSON.source, regExpJSON.flags);
 }
 
+export function reviveSet(setJSON: SetJSON): Set<unknown> {
+  return new Set<unknown>(setJSON.value);
+}
+
 enum JSONType {
   BIGINT = 'BIGINT',
   UINT8ARRAY = 'UINT8ARRAY',
   REGEXP = 'REGEXP',
+  SET = 'SET',
 }
 
 interface BigIntJSON {
@@ -157,4 +178,9 @@ interface RegExpJSON {
   type: JSONType.REGEXP;
   source: string;
   flags?: string;
+}
+
+interface SetJSON {
+  type: JSONType.SET;
+  value: unknown[];
 }
