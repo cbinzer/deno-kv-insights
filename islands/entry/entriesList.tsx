@@ -21,6 +21,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
   useEffect(() => {
     if (initialized) {
       reloadEntries(25).then();
+      setSelectedEntry(undefined);
     } else {
       setInitialized(true);
     }
