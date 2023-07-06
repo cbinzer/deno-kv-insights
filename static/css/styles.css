@@ -1,7 +1,12 @@
 /*region common*/
+body {
+    height: 100vh;
+}
+
 .page {
+    height: 100%;
     display: grid;
-    grid-template-rows: 100px auto;
+    grid-template-rows: 100px 1fr 100px;
     row-gap: 25px;
 }
 
@@ -34,6 +39,7 @@
 
 /*region entriesManagement*/
 .entries-management {
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 25px;
@@ -46,8 +52,9 @@
 }
 
 .entries-management .left-panel-container {
+    height: 100%;
     display: grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 1fr;
     grid-row-gap: 24px;
 }
 
@@ -58,6 +65,14 @@
     padding: 0 15px;
 }
 
+.entries-management .entries-list-container {
+    position: relative;
+}
+
+.entries-management .entries-list-container .entries-list {
+    position: absolute;
+}
+
 .entries-management .search-form-control {
     max-width: 290px;
 }
@@ -65,9 +80,9 @@
 
 /*region entriesList*/
 .entries-list {
-    height: 615px;
-    max-height: 615px;
-    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
     padding: 0 15px;
 }
 
@@ -135,6 +150,6 @@
 }
 
 .entry-detail .value-form-control {
-    height: 355px;
+    height: calc(100% - 50px);
 }
 /*endregion*/

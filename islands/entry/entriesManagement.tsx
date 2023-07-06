@@ -54,12 +54,14 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
               <button class='btn btn-primary' onClick={openCreateEntryModal}>+ Entry</button>
             </div>
 
-            <EntriesList
-              initialEntries={initialEntries}
-              keyPrefix={keyPrefix}
-              onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
-              doReload={doReload}
-            />
+            <div class="entries-list-container">
+              <EntriesList
+                initialEntries={initialEntries}
+                keyPrefix={keyPrefix}
+                onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
+                doReload={doReload}
+              />
+            </div>
           </div>
         </div>
         <div class='panel'>
