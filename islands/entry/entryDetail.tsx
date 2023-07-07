@@ -67,7 +67,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
           <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>{' '}
           {convertKeyToString(entry.key)}
         </p>
-        <button class='btn' onClick={() => setIsDeleteEntryModalOpen(true)} disabled={isUpdatingEntry}>
+        <button class='btn remove-btn' onClick={() => setIsDeleteEntryModalOpen(true)} disabled={isUpdatingEntry}>
           <TrashIcon />
         </button>
       </div>

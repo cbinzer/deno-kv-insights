@@ -144,6 +144,16 @@ body {
     grid-template-columns: 1fr auto;
 }
 
+.entry-detail .header .h5 {
+    margin-bottom: 0;
+}
+
+.entry-detail .remove-btn {
+    display: inline-grid;
+    align-items: center;
+    justify-items: center;
+}
+
 .entry-detail .form {
     display: grid;
     grid-template-rows: auto auto 1fr auto;
