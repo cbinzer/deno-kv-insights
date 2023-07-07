@@ -11,7 +11,7 @@ import {
 import { HTTPError, Pagination } from '../common/models.ts';
 import { replace, revive } from './utils.ts';
 
-const ENDPOINT_URL = `${window.location?.origin}/api/entries`;
+const ENDPOINT_URL = `${window.location?.origin}/kv-insights/api/entries`;
 
 export function getAllEntries(pagination?: Pagination, filter?: ClientEntryFilter): Promise<HTTPStrippedEntries> {
   const url = new URL(ENDPOINT_URL);

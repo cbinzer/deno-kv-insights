@@ -16,7 +16,7 @@ export const handler: Handlers = {
       return entryHandler.GET(request, context);
     }
 
-    if (request.url.includes('/api/entries')) {
+    if (request.url.includes('/kv-insights/api/entries')) {
       return entriesHandler.GET(request, context);
     }
 
@@ -28,7 +28,7 @@ export const handler: Handlers = {
   },
 
   POST: async (request, context: HandlerContext) => {
-    if (request.url.includes('/api/entries')) {
+    if (request.url.includes('/kv-insights/api/entries')) {
       return entriesHandler.POST(request, context);
     }
 
@@ -36,7 +36,7 @@ export const handler: Handlers = {
   },
 
   PUT: async (request, context: HandlerContext) => {
-    if (request.url.includes('/api/entries')) {
+    if (request.url.includes('/kv-insights/api/entries')) {
       return entryHandler.PUT(request, context)
     }
 
@@ -53,5 +53,5 @@ export const handler: Handlers = {
 };
 
 export const config: RouteConfig = {
-  routeOverride: '(/)(api/entries)?/:cursor(.*)?',
+  routeOverride: '/kv-insights(/api/entries)?/:cursor(.*)?',
 };

@@ -3,6 +3,7 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $0 from './routes/index.tsx';
+import * as $1 from './routes/kv-insights/index.tsx';
 import * as $$0 from './islands/common/form-control/bigIntValueFormControl.tsx';
 import * as $$1 from './islands/common/form-control/booleanValueFormControl.tsx';
 import * as $$2 from './islands/common/form-control/dateValueFormControl.tsx';
@@ -26,6 +27,7 @@ import * as $$18 from './islands/entry/valueTypeDropdown.tsx';
 const manifest = {
   routes: {
     './routes/index.tsx': $0,
+    './routes/kv-insights/index.tsx': $1,
   },
   islands: {
     './islands/common/form-control/bigIntValueFormControl.tsx': $$0,
