@@ -4,7 +4,7 @@ import { HTTPStrippedEntries } from '../../lib/entry/models.ts';
 import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
 import CreateEntryModal from './createEntryModal.tsx';
-import SearchIcon from '../../components/common/icon/searchIcon.tsx';
+import SearchIcon from '../../lib/common/components/icon/searchIcon.tsx';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
