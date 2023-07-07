@@ -132,7 +132,7 @@ export function replaceMap(value: Map<unknown, unknown>): MapJSON {
 }
 
 export function revive(this: any, key: string, value: any): any {
-  if (typeof value === 'object') {
+  if (typeof value === 'object' && value !== null) {
     if (value.type === JSONType.BIGINT) {
       return reviveBigInt(value);
     }

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
-import { ValueType } from '../../lib/entry/models.ts';
-import { getValueTypeColorClass } from '../../lib/entry/utils.ts';
+import { ValueType } from '../models.ts';
+import { getValueTypeColorClass } from '../utils.ts';
 
 const ValueTypeDropdown: FunctionComponent<ValueTypeDropdownProps> = (
   { valueType = ValueType.STRING, onSelect = () => {} },

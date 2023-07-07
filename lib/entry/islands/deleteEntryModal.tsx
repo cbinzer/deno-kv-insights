@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
-import { deleteEntryByCursor } from '../../lib/entry/entryClientService.ts';
-import { Entry } from '../../lib/entry/models.ts';
-import Modal from '../common/modal.tsx';
-import { convertKeyToString } from '../../lib/entry/utils.ts';
+import { deleteEntryByCursor } from '../entryClientService.ts';
+import { Entry } from '../models.ts';
+import Modal from '../../common/islands/modal.tsx';
+import { convertKeyToString } from '../utils.ts';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   { open = false, entry, onClose = () => {}, onDelete = () => {} },
