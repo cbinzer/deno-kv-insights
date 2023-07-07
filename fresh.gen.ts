@@ -2,9 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from './routes/api/entries/[cursor].ts';
-import * as $1 from './routes/api/entries/index.ts';
-import * as $2 from './routes/index.tsx';
+import * as $0 from './routes/index.tsx';
 import * as $$0 from './islands/common/form-control/bigIntValueFormControl.tsx';
 import * as $$1 from './islands/common/form-control/booleanValueFormControl.tsx';
 import * as $$2 from './islands/common/form-control/dateValueFormControl.tsx';
@@ -27,9 +25,7 @@ import * as $$18 from './islands/entry/valueTypeDropdown.tsx';
 
 const manifest = {
   routes: {
-    './routes/api/entries/[cursor].ts': $0,
-    './routes/api/entries/index.ts': $1,
-    './routes/index.tsx': $2,
+    './routes/index.tsx': $0,
   },
   islands: {
     './islands/common/form-control/bigIntValueFormControl.tsx': $$0,

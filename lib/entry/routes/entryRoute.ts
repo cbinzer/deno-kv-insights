@@ -1,8 +1,8 @@
 import { Handlers } from '$fresh/server.ts';
-import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
-import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../../../lib/entry/entryService.ts';
-import { Entry, EntryForUpdate } from '../../../lib/entry/models.ts';
-import { replace, revive } from '../../../lib/entry/utils.ts';
+import { mapToHTTPError } from '../../common/httpUtils.ts';
+import { deleteEntryByCursor, getEntryByCursor, updateEntry } from '../entryService.ts';
+import { Entry, EntryForUpdate } from '../models.ts';
+import { replace, revive } from '../utils.ts';
 
 export const handler: Handlers = {
   GET: async (request, context): Promise<Response> => {

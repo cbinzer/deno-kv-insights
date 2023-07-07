@@ -1,1 +1,1 @@
-export { default, handler } from '../lib/entry/routes/kvInsightsRoute.tsx';
+export { default, handler, config } from '../lib/entry/routes/kvInsightsRoute.tsx';

@@ -1,10 +1,10 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '$std/http/http_status.ts';
-import { mapToHTTPError } from '../../../lib/common/httpUtils.ts';
-import { createEntry, getAllEntries } from '../../../lib/entry/entryService.ts';
-import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../../../lib/entry/models.ts';
-import { Pagination } from '../../../lib/common/models.ts';
-import { convertReadableKeyStringToKey, replace, revive } from '../../../lib/entry/utils.ts';
+import { mapToHTTPError } from '../../common/httpUtils.ts';
+import { createEntry, getAllEntries } from '../entryService.ts';
+import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../models.ts';
+import { Pagination } from '../../common/models.ts';
+import { convertReadableKeyStringToKey, replace, revive } from '../utils.ts';
 
 export const handler: Handlers = {
   GET: async (request): Promise<Response> => {
