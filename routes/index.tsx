@@ -1,8 +1,12 @@
 import { HandlerContext } from '$fresh/src/server/types.ts';
-import EntriesManagement from '../islands/entry/entriesManagement.tsx';
 import { getAllEntries } from '../lib/entry/entryService.ts';
 import { HTTPStrippedEntries } from '../lib/entry/models.ts';
 import { createHTTPStrippedEntries } from './api/entries/index.ts';
+import KVInsightsApp from '../lib/entry/components/kvInsightsApp.tsx';
+
+export default function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries } }) {
+  return <KVInsightsApp initialEntries={props.data.entries} />;
+}
 
 export const handler = async (_, context: HandlerContext) => {
   const first = 25;
@@ -12,6 +16,3 @@ export const handler = async (_, context: HandlerContext) => {
   return context.render({ entries: httpEntries });
 };
 
-export default function EntriesPageRoute(props: { data: { entries: HTTPStrippedEntries } }) {
-  return <EntriesManagement initialEntries={props.data.entries} />;
-}

@@ -1,7 +1,10 @@
-import { AppProps } from '$fresh/server.ts';
-import { asset, Head } from '$fresh/runtime.ts';
+import { FunctionComponent } from 'preact';
+import { Head } from '$fresh/src/runtime/head.ts';
+import { asset } from '$fresh/src/runtime/utils.ts';
+import { HTTPStrippedEntries } from '../models.ts';
+import EntriesManagement from '../../../islands/entry/entriesManagement.tsx';
 
-export default function App(props: AppProps) {
+const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }) => {
   return (
     <div class='page container'>
       <Head>
@@ -17,7 +20,7 @@ export default function App(props: AppProps) {
       </header>
 
       <main>
-        <props.Component />
+        <EntriesManagement initialEntries={initialEntries} />
       </main>
 
       <footer class='footer'>
@@ -32,4 +35,10 @@ export default function App(props: AppProps) {
       </footer>
     </div>
   );
+};
+
+export interface KVInsightsAppProps {
+  initialEntries: HTTPStrippedEntries;
 }
+
+export default KVInsightsApp;
