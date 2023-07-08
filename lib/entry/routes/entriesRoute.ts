@@ -1,5 +1,5 @@
 import { Handlers } from '$fresh/src/server/types.ts';
-import { Status } from '$std/http/http_status.ts';
+import { Status } from '../../../deps.ts';
 import { mapToHTTPError } from '../../common/httpUtils.ts';
 import { createEntry, getAllEntries } from '../entryService.ts';
 import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../models.ts';

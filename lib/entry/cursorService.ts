@@ -7,7 +7,7 @@ import {
   encodeStringKeyPart,
   instantiate,
 } from './codec/codec.generated.js';
-import { encode } from '$std/encoding/base64.ts';
+import { encode } from '../../deps.ts';
 
 await instantiate();
 

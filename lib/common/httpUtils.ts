@@ -1,4 +1,4 @@
-import { Status } from '$std/http/http_status.ts';
+import { Status } from '../../deps.ts';
 import { HTTPError } from './models.ts';
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError, VersionConflictError } from './errors.ts';
 

@@ -12,7 +12,6 @@
     "singleQuote": true
   },
   "imports": {
-    "$std/": "https://deno.land/std@0.190.0/",
     "$fresh/": "https://raw.githubusercontent.com/denoland/fresh/4de93945472b5ad00fa4d0a16e5f7ffc44231582/",
     "preact": "https://esm.sh/preact@10.15.1",
     "preact/": "https://esm.sh/preact@10.15.1/",
