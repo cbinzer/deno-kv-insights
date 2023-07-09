@@ -7,6 +7,7 @@ const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }
   return (
     <div class='page container'>
       <Head>
+        <meta name='robots' content='noindex' />
         <link
           href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
           rel='stylesheet'
@@ -188,7 +189,10 @@ body {
       </Head>
 
       <header class='header'>
-        <img class='deno-logo' src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Deno.svg/240px-Deno.svg.png" />
+        <img
+          class='deno-logo'
+          src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Deno.svg/240px-Deno.svg.png'
+        />
         <span class='title'>Deno KV Insights</span>
       </header>
 
