@@ -6,11 +6,11 @@ import { handler as entriesHandler } from './entriesRoute.ts';
 import { handler as entryHandler } from './entryRoute.ts';
 import KVInsightsApp from '../components/kvInsightsApp.tsx';
 
-export default function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries } }) {
+export function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries } }) {
   return <KVInsightsApp initialEntries={props.data.entries} />;
 }
 
-export const handler: Handlers = {
+export const KVInsightsAppRouteHandlers: Handlers = {
   GET: async (request, context: HandlerContext) => {
     if (context.params.cursor) {
       return entryHandler.GET(request, context);
@@ -52,6 +52,6 @@ export const handler: Handlers = {
   },
 };
 
-export const config: RouteConfig = {
+export const KVInsightsAppRouteConfig: RouteConfig = {
   routeOverride: '/kv-insights(/api/entries)?/:cursor(.*)?',
 };
