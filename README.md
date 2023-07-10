@@ -32,13 +32,15 @@ following content:
 ```ts
 // routes/kv-insights/index.tsx
 
-import KVInsightsAppRoute, {
-  config,
-  handler,
-} from 'https://github.com/cbinzer/deno-kv-insights/raw/main/lib/entry/routes/kvInsightsRoute.tsx';
+import {
+    KVInsightsAppRoute,
+    KVInsightsAppRouteConfig,
+    KVInsightsAppRouteHandlers,
+} from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/routes/kvInsightsRoute.tsx';
 
-export { config, handler };
 export default KVInsightsAppRoute;
+export const handler = KVInsightsAppRouteHandlers;
+export const config = KVInsightsAppRouteConfig;
 ```
 
 The route "kv-insights" is currently fixed and cannot be changed.
@@ -53,7 +55,7 @@ In the islands folder create an entriesManagement.tsx with the following content
 ```ts
 // islands/entriesManagement.tsx
 
-import EntriesManagement from 'https://github.com/cbinzer/deno-kv-insights/raw/main/lib/entry/islands/entriesManagement.tsx';
+import EntriesManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/islands/entriesManagement.tsx';
 
 export default EntriesManagement;
 ```
