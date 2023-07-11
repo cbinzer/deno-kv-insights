@@ -125,6 +125,10 @@ body {
     cursor: pointer;
 }
 
+.entries-list .select-col {
+    width: 35px;
+}
+
 .entries-list .type-col {
     width: 140px;
 }

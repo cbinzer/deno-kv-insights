@@ -11,6 +11,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<StrippedEntry>();
+  const [selectedEntryCursors, setSelectedEntryCursors] = useState<Set>(new Set());
 
   useEffect(() => {
     if (doReload) {
@@ -70,6 +71,25 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     onSelect(entry);
   };
 
+  const toggleAllSelectedEntryCursors = () => {
+    if (selectedEntryCursors.size === entries.entries.length) {
+      setSelectedEntryCursors(new Set());
+    } else {
+      setSelectedEntryCursors(new Set(entries.entries.map((entry) => entry.cursor)));
+    }
+  };
+
+  const toggleSelectedEntryCursor = (cursor: string) => {
+    const newSelectedCursors = new Set(selectedEntryCursors);
+    if (newSelectedCursors.has(cursor)) {
+      newSelectedCursors.delete(cursor);
+    } else {
+      newSelectedCursors.add(cursor);
+    }
+
+    setSelectedEntryCursors(newSelectedCursors);
+  };
+
   return (
     <div class='entries-list' onScroll={loadMoreEntriesOnScrollEnd}>
       {entries.entries.length === 0
@@ -82,6 +102,14 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
           <table class='table table-hover'>
             <thead class='table-header table-light'>
               <tr>
+                <th class='select-col' scope='col'>
+                  <input
+                    class='form-check-input'
+                    type='checkbox'
+                    checked={selectedEntryCursors.size === entries.entries.length}
+                    onChange={toggleAllSelectedEntryCursors}
+                  />
+                </th>
                 <th class='type-col' scope='col'>Type</th>
                 <th class='key-col' scope='col'>Key</th>
               </tr>
@@ -94,6 +122,15 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                   class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
                   onClick={() => selectEntry(entry)}
                 >
+                  <td>
+                    <input
+                      class='form-check-input'
+                      type='checkbox'
+                      checked={selectedEntryCursors.has(entry.cursor)}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={() => toggleSelectedEntryCursor(entry.cursor)}
+                    />
+                  </td>
                   <td>
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
