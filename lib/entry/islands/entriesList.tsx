@@ -5,7 +5,7 @@ import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../utils.ts';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
-  { initialEntries, keyPrefix = '', onSelect = () => {}, onSelectMany = {}, doReload = false },
+  { initialEntries, keyPrefix = '', selectedEntries = [], onSelect = () => {}, onSelectMany = {}, doReload = false },
 ) => {
   const [initialized, setInitialized] = useState(false);
   const [entries, setEntries] = useState(initialEntries);
@@ -27,6 +27,8 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
       setInitialized(true);
     }
   }, [keyPrefix]);
+
+  useEffect(() => setSelectedEntryCursors(new Set(selectedEntries.map((entry) => entry.cursor))), selectedEntries);
 
   const loadMoreEntries = () => {
     if (entries.pageInfo.hasNextPage && !isLoading) {
@@ -160,6 +162,7 @@ export interface EntriesListProps {
   initialEntries: HTTPStrippedEntries;
   keyPrefix?: string;
   doReload?: boolean;
+  selectedEntries?: StrippedEntry[];
   onSelect?: (entry: StrippedEntry) => void;
   onSelectMany?: (entry: StrippedEntry[]) => void;
 }

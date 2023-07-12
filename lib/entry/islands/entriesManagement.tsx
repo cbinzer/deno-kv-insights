@@ -5,13 +5,16 @@ import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
 import CreateEntryModal from './createEntryModal.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
+import DeleteEntriesModal from './deleteEntriesModal.tsx';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
   const [selectedEntryCursor, setSelectedEntryCursor] = useState<string | undefined>(undefined);
+  const [selectedEntries, setSelectedEntries] = useState<StrippedEntry[]>([]);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
   const [doReload, setDoReload] = useState<boolean>(false);
   const [isDeleteManyEnabled, setIsDeleteManyEnabled] = useState<boolean>(false);
+  const [isDeleteEntriesModalOpen, setIsDeleteEntriesModalOpen] = useState(false);
   const [isActionsMenuVisible, setIsActionsMenuVisible] = useState<boolean>(false);
 
   const removeSelectedEntry = () => {
@@ -37,6 +40,18 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
 
   const toggleIsDeleteManyEnabled = (entries: StrippedEntry[]) => {
     setIsDeleteManyEnabled(entries.length > 0);
+    setSelectedEntries(entries);
+  };
+
+  const openDeleteEntriesModal = (event: Event) => {
+    event.preventDefault();
+    setIsDeleteEntriesModalOpen(true);
+    setIsActionsMenuVisible(false);
+  };
+
+  const closeDeleteEntriesModal = () => {
+    setDoReload(true);
+    toggleIsDeleteManyEnabled([]);
   };
 
   return (
@@ -68,7 +83,13 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 </button>
                 <ul class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`} style={{ top: '40px', right: 0 }}>
                   <li>
-                    <a class={`dropdown-item ${isDeleteManyEnabled ? '' : 'disabled'}`} href='#'>Delete selected</a>
+                    <a
+                      class={`dropdown-item ${isDeleteManyEnabled ? '' : 'disabled'}`}
+                      href='#'
+                      onClick={openDeleteEntriesModal}
+                    >
+                      Delete selected
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -78,6 +99,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
               <EntriesList
                 initialEntries={initialEntries}
                 keyPrefix={keyPrefix}
+                selectedEntries={selectedEntries}
                 onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
                 onSelectMany={toggleIsDeleteManyEnabled}
                 doReload={doReload}
@@ -94,6 +116,13 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
         open={isCreateEntryModalOpen}
         onClose={() => setIsCreateEntryModalOpen(false)}
         onCreate={() => setDoReload(true)}
+      />
+
+      <DeleteEntriesModal
+        open={isDeleteEntriesModalOpen}
+        entries={selectedEntries}
+        onDelete={closeDeleteEntriesModal}
+        onClose={() => setIsDeleteEntriesModalOpen(false)}
       />
     </>
   );
