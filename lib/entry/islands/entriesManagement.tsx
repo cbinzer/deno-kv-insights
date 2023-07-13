@@ -45,11 +45,17 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
 
   const openDeleteEntriesModal = (event: Event) => {
     event.preventDefault();
+
+    setDoReload(false);
     setIsDeleteEntriesModalOpen(true);
     setIsActionsMenuVisible(false);
   };
 
   const closeDeleteEntriesModal = () => {
+    if (selectedEntries.some(entry => entry.cursor === selectedEntryCursor)) {
+      setSelectedEntryCursor(undefined);
+    }
+
     setDoReload(true);
     toggleIsDeleteManyEnabled([]);
   };

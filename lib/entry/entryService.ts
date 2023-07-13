@@ -1,5 +1,12 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../common/errors.ts';
-import { deleteEntry, entryExists, findAllEntries, findEntryByCursor, saveEntry } from './entryRepository.ts';
+import {
+  deleteAllEntriesByKeys,
+  deleteEntry,
+  entryExists,
+  findAllEntries,
+  findEntryByCursor,
+  saveEntry,
+} from './entryRepository.ts';
 import {
   CursorBasedDBEntry,
   DBEntry,
@@ -7,6 +14,7 @@ import {
   EntryFilter,
   EntryForCreation,
   EntryForUpdate,
+  EntryKey,
   EntryValue,
   KeyPart,
   NewEntry,
@@ -51,6 +59,10 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
 export async function deleteEntryByCursor(cursor: string): Promise<void> {
   const entry = await getEntryByCursor(cursor);
   await deleteEntry(entry.key);
+}
+
+export async function deleteEntriesByKeys(keys: EntryKey[]): Promise<void> {
+  await deleteAllEntriesByKeys(keys);
 }
 
 async function assertEntryForCreation(entry: EntryForCreation): Promise<void> {

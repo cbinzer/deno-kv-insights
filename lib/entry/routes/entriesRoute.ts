@@ -1,8 +1,8 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '../../../deps.ts';
 import { mapToHTTPError } from '../../common/httpUtils.ts';
-import { createEntry, getAllEntries } from '../entryService.ts';
-import { EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../models.ts';
+import { createEntry, deleteEntriesByKeys, getAllEntries } from '../entryService.ts';
+import { EntriesForDeletion, EntryFilter, EntryForCreation, HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { Pagination } from '../../common/models.ts';
 import { convertReadableKeyStringToKey, replace, revive } from '../utils.ts';
 
@@ -24,6 +24,21 @@ export const handler: Handlers = {
       const newEntry = await createEntry(entry);
 
       return new Response(JSON.stringify(newEntry, replace), { status: Status.Created });
+    } catch (e) {
+      console.error(e);
+
+      const httpError = mapToHTTPError(e);
+      return Response.json(httpError, {
+        status: httpError.status,
+      });
+    }
+  },
+
+  DELETE: async (request): Promise<Response> => {
+    try {
+      const entriesForDeletion = (await request.text().then((text) => JSON.parse(text, revive))) as EntriesForDeletion;
+      await deleteEntriesByKeys(entriesForDeletion.keys);
+      return new Response();
     } catch (e) {
       console.error(e);
 

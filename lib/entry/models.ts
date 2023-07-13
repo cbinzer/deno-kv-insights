@@ -30,6 +30,10 @@ export interface EntryForUpdate {
   value?: EntryValue;
 }
 
+export interface EntriesForDeletion {
+  keys: EntryKey[];
+}
+
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
 export type EntryKey = KeyPart[];
 export type EntryValue =

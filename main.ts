@@ -4,7 +4,13 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import { start } from "$fresh/server.ts";
-import manifest from "./fresh.gen.ts";
+import { start } from '$fresh/server.ts';
+import manifest from './fresh.gen.ts';
+import { db } from './lib/common/db.ts';
+
+for (let i = 0; i < 10000; i++) {
+  await db.set(['test', i], {});
+}
 
 await start(manifest, { plugins: [] });
+

@@ -48,7 +48,7 @@ export const KVInsightsAppRouteHandlers: Handlers = {
       return entryHandler.DELETE(request, context)
     }
 
-    return context.renderNotFound();
+    return entriesHandler.DELETE(request, context);
   },
 };
 

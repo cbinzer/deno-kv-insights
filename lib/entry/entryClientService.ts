@@ -4,6 +4,7 @@ import {
   Entry,
   EntryForCreation,
   EntryForUpdate,
+  EntryKey,
   HTTPStrippedEntries,
   NewEntry,
   ValueType,
@@ -76,6 +77,18 @@ export async function deleteEntryByCursor(cursor: string): Promise<undefined | H
   }
 
   return undefined;
+}
+
+export async function deleteEntriesByKeys(keys: EntryKey[]): Promise<void | HTTPError> {
+  const url = new URL(`${ENDPOINT_URL}`);
+  const response = await fetch(url, {
+    body: JSON.stringify({ keys }, replace),
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    return response.text().then((text) => JSON.parse(text, revive));
+  }
 }
 
 function convertValue(entry: Entry): Entry {

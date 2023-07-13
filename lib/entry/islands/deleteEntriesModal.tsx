@@ -1,11 +1,13 @@
 import { FunctionComponent } from 'preact';
 import { StrippedEntry } from '../models.ts';
 import Modal from '../../common/islands/modal.tsx';
+import { deleteEntriesByKeys } from '../entryClientService.ts';
 
 const DeleteEntriesModal: FunctionComponent<DeleteEntriesModalProps> = (
   { open = false, entries = [], onClose = () => {}, onDelete = () => {} },
 ) => {
   const deleteEntries = async () => {
+    await deleteEntriesByKeys(entries.map((entry) => entry.key));
     onClose();
     setTimeout(() => onDelete(), 150);
   };
