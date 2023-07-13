@@ -31,7 +31,7 @@ export interface EntryForUpdate {
 }
 
 export type KeyPart = Uint8Array | string | number | bigint | boolean;
-
+export type EntryKey = KeyPart[];
 export type EntryValue =
   | undefined
   | null

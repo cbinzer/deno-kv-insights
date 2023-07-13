@@ -1,6 +1,6 @@
 import { db } from '../common/db.ts';
-import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryValue, KeyPart } from './models.ts';
-import { VersionConflictError } from '../common/errors.ts';
+import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryKey, EntryValue, KeyPart } from './models.ts';
+import { UnknownError, VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
 import { encodeCursor } from './cursorService.ts';
 
@@ -77,4 +77,14 @@ export async function entryExists(key: KeyPart[]): Promise<boolean> {
 
 export async function deleteEntry(key: KeyPart[]): Promise<void> {
   await db.delete(key);
+}
+
+export async function deleteAllEntriesByKeys(keys: EntryKey[]): Promise<void> {
+  if (keys.length > 0) {
+    const commitResult = await db.atomic().mutate(keys.map((key) => ({ key, type: 'delete' }))).commit();
+    if (!commitResult.isOK()) {
+      console.log('An error occurred on deleting entries by keys.');
+      throw new UnknownError();
+    }
+  }
 }
