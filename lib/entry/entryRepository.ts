@@ -72,7 +72,6 @@ export async function saveEntry(
 }
 
 export async function entryExists(key: KeyPart[]): Promise<boolean> {
-  console.log(key);
   const { versionstamp } = await db.get(key);
   return !!versionstamp;
 }

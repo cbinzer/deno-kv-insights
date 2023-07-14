@@ -13,6 +13,7 @@ const CreateEntryModal: FunctionComponent<
   { open = false, onClose = () => {}, onCreate = () => {} },
 ) => {
   const [isOpen, setIsOpen] = useState(open);
+  const [isCreating, setIsCreating] = useState(false);
   const [key, setKey] = useState<KeyPart[]>([]);
   const [keyAlreadyExists, setKeyAlreadyExists] = useState(false);
   const [valueType, setValueType] = useState(ValueType.STRING);
@@ -79,12 +80,16 @@ const CreateEntryModal: FunctionComponent<
     }
 
     try {
+      setIsCreating(true);
       const createdEntry = await createEntry({ key, valueType, value });
+
       setCreatedEntry(createdEntry);
       setIsOpen(false);
     } catch (e) {
       console.log(e);
       setKeyAlreadyExists(true);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -140,8 +145,10 @@ const CreateEntryModal: FunctionComponent<
       </div>
 
       <div class='modal-footer'>
-        <button class='btn btn-secondary' onClick={closeModal}>Cancel</button>
-        <button class='btn btn-primary' onClick={createNewEntry} disabled={key.length === 0}>Create</button>
+        <button class='btn btn-secondary' onClick={closeModal} disabled={isCreating}>Cancel</button>
+        <button class='btn btn-primary' onClick={createNewEntry} disabled={key.length === 0 || isCreating}>
+          {isCreating ? <span class='spinner-border spinner-border-sm' /> : 'Create'}
+        </button>
       </div>
     </Modal>
   );
