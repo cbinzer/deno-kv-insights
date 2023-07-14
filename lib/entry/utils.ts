@@ -56,7 +56,7 @@ export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
 
     if (keyPart.startsWith('[') && keyPart.endsWith(']') && keyPart.length > 2) {
       const numberArray: number[] = keyPart.substring(1, keyPart.length - 1).split(',').map((val) => Number(val));
-      return new Int8Array(numberArray);
+      return new Uint8Array(numberArray);
     }
 
     if (/^\d+n$/.test(keyPart)) {
