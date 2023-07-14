@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import EntriesList from './entriesList.tsx';
 import EntryDetail from './entryDetail.tsx';
@@ -16,6 +16,22 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const [isDeleteManyEnabled, setIsDeleteManyEnabled] = useState<boolean>(false);
   const [isDeleteEntriesModalOpen, setIsDeleteEntriesModalOpen] = useState(false);
   const [isActionsMenuVisible, setIsActionsMenuVisible] = useState<boolean>(false);
+
+  const actionsMenuRef = useRef();
+
+  useEffect(() => {
+    if (isActionsMenuVisible) {
+      document.addEventListener('mousedown', closeMenuOnOutsideClick);
+    } else {
+      document.removeEventListener('mousedown', closeMenuOnOutsideClick);
+    }
+  }, [isActionsMenuVisible]);
+
+  const closeMenuOnOutsideClick = useMemo(() => (event: Event) => {
+    if (actionsMenuRef.current && !actionsMenuRef.current.contains(event.target)) {
+      setIsActionsMenuVisible(false);
+    }
+  });
 
   const removeSelectedEntry = () => {
     setDoReload(true);
@@ -52,7 +68,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   };
 
   const closeDeleteEntriesModal = () => {
-    if (selectedEntries.some(entry => entry.cursor === selectedEntryCursor)) {
+    if (selectedEntries.some((entry) => entry.cursor === selectedEntryCursor)) {
       setSelectedEntryCursor(undefined);
     }
 
@@ -87,7 +103,11 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 >
                   <span class='visually-hidden'>Toggle Dropdown</span>
                 </button>
-                <ul class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`} style={{ top: '40px', right: 0 }}>
+                <ul
+                  class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`}
+                  style={{ top: '40px', right: 0 }}
+                  ref={actionsMenuRef}
+                >
                   <li>
                     <a
                       class={`dropdown-item ${isDeleteManyEnabled ? '' : 'disabled'}`}
