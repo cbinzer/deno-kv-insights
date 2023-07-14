@@ -44,7 +44,7 @@ export function convertKeyToString(key: KeyPart[]): string {
 }
 
 export function convertReadableKeyStringToKey(stringKey: string): KeyPart[] {
-  return stringKey.split(' ').map((keyPart) => {
+  return stringKey.split(' ').filter((keyPart) => keyPart !== '').map((keyPart) => {
     const numberKeyPart = Number(keyPart);
     if (!isNaN(numberKeyPart)) {
       return numberKeyPart;
