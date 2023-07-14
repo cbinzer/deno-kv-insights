@@ -2,12 +2,18 @@ import { FunctionComponent } from 'preact';
 import { StrippedEntry } from '../models.ts';
 import Modal from '../../common/islands/modal.tsx';
 import { deleteEntriesByKeys } from '../entryClientService.ts';
+import { useState } from 'preact/hooks';
 
 const DeleteEntriesModal: FunctionComponent<DeleteEntriesModalProps> = (
   { open = false, entries = [], onClose = () => {}, onDelete = () => {} },
 ) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const deleteEntries = async () => {
+    setIsDeleting(true);
     await deleteEntriesByKeys(entries.map((entry) => entry.key));
+    setIsDeleting(false);
+
     onClose();
     setTimeout(() => onDelete(), 150);
   };
@@ -24,8 +30,10 @@ const DeleteEntriesModal: FunctionComponent<DeleteEntriesModalProps> = (
       </div>
 
       <div class='modal-footer'>
-        <button class='btn btn-secondary' onClick={onClose}>Cancel</button>
-        <button class='btn btn-danger' onClick={deleteEntries}>Delete</button>
+        <button class='btn btn-secondary' onClick={onClose} disabled={isDeleting}>Cancel</button>
+        <button class='btn btn-danger' onClick={deleteEntries} disabled={isDeleting}>
+          {isDeleting ? <span class='spinner-border spinner-border-sm' /> : 'Delete'}
+        </button>
       </div>
     </Modal>
   );

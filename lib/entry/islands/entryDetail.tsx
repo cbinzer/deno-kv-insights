@@ -105,13 +105,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
             disabled={isValueInvalid || isUpdatingEntry}
             onClick={changeEntry}
           >
-            {isUpdatingEntry
-              ? (
-                <>
-                  <span class='spinner-border spinner-border-sm' />
-                </>
-              )
-              : 'Save'}
+            {isUpdatingEntry ? <span class='spinner-border spinner-border-sm' /> : 'Save'}
           </button>
         </div>
       </form>
