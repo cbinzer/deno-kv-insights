@@ -110,7 +110,7 @@ const CreateEntryModal: FunctionComponent<
     <Modal open={isOpen} onOpen={() => keyInputRef.current.focus()} onClose={closeModal}>
       <div class='modal-header'>
         <h1 class='modal-title fs-5'>New entry</h1>
-        <button class='btn-close' onClick={closeModal}></button>
+        <button class='btn-close' onClick={closeModal} disabled={isCreating}></button>
       </div>
 
       <div class='modal-body'>

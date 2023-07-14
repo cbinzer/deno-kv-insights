@@ -22,7 +22,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
     <Modal open={open} onClose={onClose}>
       <div class='modal-header'>
         <h1 class='modal-title fs-5'>Delete entry</h1>
-        <button class='btn-close' onClick={onClose}></button>
+        <button class='btn-close' onClick={onClose} disabled={isDeleting}></button>
       </div>
 
       <div class='modal-body'>
