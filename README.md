@@ -9,7 +9,8 @@ Deno KV Insights is a tool for managing Deno KV database entries.
 - Display the details of an entry
 - Create a new entry
 - Edit an entry
-- Delete an entry
+- Delete one or many selected entries
+- Export selected entries
 
 The project was implemented for the Deno KV Hackathon (06/12/2023 - 06/15/2023).
 
