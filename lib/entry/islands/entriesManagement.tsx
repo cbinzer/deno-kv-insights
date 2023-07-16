@@ -6,6 +6,7 @@ import EntryDetail from './entryDetail.tsx';
 import CreateEntryModal from './createEntryModal.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
 import DeleteEntriesModal from './deleteEntriesModal.tsx';
+import { createEntriesExportLink } from '../entryExportClientService.ts';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
@@ -13,9 +14,10 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const [selectedEntries, setSelectedEntries] = useState<StrippedEntry[]>([]);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
   const [doReload, setDoReload] = useState<boolean>(false);
-  const [isDeleteManyEnabled, setIsDeleteManyEnabled] = useState<boolean>(false);
+  const [actionsEnabled, setActionsEnabled] = useState<boolean>(false);
   const [isDeleteEntriesModalOpen, setIsDeleteEntriesModalOpen] = useState(false);
   const [isActionsMenuVisible, setIsActionsMenuVisible] = useState<boolean>(false);
+  const [entriesExportLink, setEntriesExportLink] = useState<string>('#');
 
   const actionsMenuRef = useRef();
 
@@ -54,9 +56,12 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     setSelectedEntryCursor(cursor);
   };
 
-  const toggleIsDeleteManyEnabled = (entries: StrippedEntry[]) => {
-    setIsDeleteManyEnabled(entries.length > 0);
+  const toggleActionsEnabled = (entries: StrippedEntry[]) => {
+    setActionsEnabled(entries.length > 0);
     setSelectedEntries(entries);
+
+    const keys = entries.map((entry) => entry.key);
+    setEntriesExportLink(createEntriesExportLink(keys));
   };
 
   const openDeleteEntriesModal = (event: Event) => {
@@ -73,7 +78,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     }
 
     setDoReload(true);
-    toggleIsDeleteManyEnabled([]);
+    toggleActionsEnabled([]);
   };
 
   return (
@@ -110,11 +115,20 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 >
                   <li>
                     <a
-                      class={`dropdown-item ${isDeleteManyEnabled ? '' : 'disabled'}`}
+                      class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
                       href='#'
                       onClick={openDeleteEntriesModal}
                     >
                       Delete selected
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
+                      href={entriesExportLink}
+                      onClick={() => setIsActionsMenuVisible(false)}
+                    >
+                      Export selected
                     </a>
                   </li>
                 </ul>
@@ -127,7 +141,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 keyPrefix={keyPrefix}
                 selectedEntries={selectedEntries}
                 onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
-                onSelectMany={toggleIsDeleteManyEnabled}
+                onSelectMany={toggleActionsEnabled}
                 doReload={doReload}
               />
             </div>

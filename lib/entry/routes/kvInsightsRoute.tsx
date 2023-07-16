@@ -12,6 +12,10 @@ export function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries
 
 export const KVInsightsAppRouteHandlers: Handlers = {
   GET: async (request, context: HandlerContext) => {
+    if (request.url.includes('/kv-insights/api/entries/export')) {
+      return entriesExportHandler.GET(request, context);
+    }
+
     if (context.params.cursor) {
       return entryHandler.GET(request, context);
     }
@@ -28,10 +32,6 @@ export const KVInsightsAppRouteHandlers: Handlers = {
   },
 
   POST: async (request, context: HandlerContext) => {
-    if (request.url.includes('/kv-insights/api/entries/export')) {
-      return entriesExportHandler.POST(request, context);
-    }
-
     if (request.url.includes('/kv-insights/api/entries')) {
       return entriesHandler.POST(request, context);
     }
