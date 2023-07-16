@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { StrippedEntry } from '../models.ts';
 import Modal from '../../common/islands/modal.tsx';
-import { deleteEntriesByKeys } from '../entryClientService.ts';
+import { deleteEntriesByKeys } from '../services/entryClientService.ts';
 import { useState } from 'preact/hooks';
 
 const DeleteEntriesModal: FunctionComponent<DeleteEntriesModalProps> = (

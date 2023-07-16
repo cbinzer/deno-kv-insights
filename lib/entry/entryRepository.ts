@@ -2,7 +2,7 @@ import { db } from '../common/db.ts';
 import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryKey, EntryValue, KeyPart } from './models.ts';
 import { UnknownError, VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
-import { encodeCursor } from './cursorService.ts';
+import { encodeCursor } from './services/cursorService.ts';
 import { chunk } from '../../deps.ts';
 
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
@@ -53,7 +53,7 @@ export async function findEntriesByKeys(keys: EntryKey[]): Promise<CursorBasedDB
   }
 
   const entries = await db.getMany(keys) as DBEntry[];
-  const foundEntries = entries.filter((entry) => !!entry.versionstamp).map((entry) => {
+  return entries.filter((entry) => !!entry.versionstamp).map((entry) => {
     const cursor = encodeCursor(entry.key);
     return {
       ...entry,
@@ -61,8 +61,6 @@ export async function findEntriesByKeys(keys: EntryKey[]): Promise<CursorBasedDB
       prefixedCursor: cursor,
     } as CursorBasedDBEntry;
   });
-
-  return foundEntries;
 }
 
 export async function saveEntry(

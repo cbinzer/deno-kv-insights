@@ -1,4 +1,4 @@
-import { EntryAlreadyExistsError } from '../common/errors.ts';
+import { EntryAlreadyExistsError } from '../../common/errors.ts';
 import {
   ClientEntryFilter,
   Entry,
@@ -8,9 +8,9 @@ import {
   HTTPStrippedEntries,
   NewEntry,
   ValueType,
-} from './models.ts';
-import { HTTPError, Pagination } from '../common/models.ts';
-import { replace, revive } from './utils.ts';
+} from '../models.ts';
+import { HTTPError, Pagination } from '../../common/models.ts';
+import { replace, revive } from '../utils.ts';
 
 const ENDPOINT_URL = `${window.location?.origin}/kv-insights/api/entries`;
 

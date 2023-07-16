@@ -1,7 +1,7 @@
-import { EntriesExportForCreation } from './models.ts';
-import { chunk } from '../../deps.ts';
-import { findEntriesByKeys } from './entryRepository.ts';
-import { replace } from './utils.ts';
+import { EntriesExportForCreation } from '../models.ts';
+import { chunk } from '../../../deps.ts';
+import { findEntriesByKeys } from '../entryRepository.ts';
+import { replace } from '../utils.ts';
 
 export async function createEntriesExport(exportForCreation: EntriesExportForCreation): Promise<ReadableStream> {
   const initialJSON = `{ "created": "${exportForCreation.created.toISOString()}", "version": "1.0.0", "entries": [`;
@@ -20,7 +20,7 @@ export async function createEntriesExport(exportForCreation: EntriesExportForCre
 
     const keys = value[1];
     const entries = await findEntriesByKeys(keys);
-    const entriesAsString = JSON.stringify(entries, replace).replace('[', first ? '' : ',').replace(/\]$/, '');
+    const entriesAsString = JSON.stringify(entries, replace).replace('[', first ? '' : ',').replace(/]$/, '');
 
     controller.enqueue(encoder.encode(entriesAsString));
   };

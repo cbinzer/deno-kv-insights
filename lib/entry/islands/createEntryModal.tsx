@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { createEntry } from '../entryClientService.ts';
+import { createEntry } from '../services/entryClientService.ts';
 import { Entry, EntryValue, KeyPart, ValueType } from '../models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';

@@ -1,4 +1,4 @@
-import { KeyPart } from './models.ts';
+import { KeyPart } from '../models.ts';
 import {
   encodeBigIntKeyPart,
   encodeBooleanKeyPart,
@@ -6,8 +6,8 @@ import {
   encodeNumberKeyPart,
   encodeStringKeyPart,
   instantiate,
-} from './codec/codec.generated.js';
-import { encode } from '../../deps.ts';
+} from '../codec/codec.generated.js';
+import { encode } from '../../../deps.ts';
 
 await instantiate();
 

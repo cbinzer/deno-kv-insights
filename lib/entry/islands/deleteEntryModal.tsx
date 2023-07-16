@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import { deleteEntryByCursor } from '../entryClientService.ts';
+import { deleteEntryByCursor } from '../services/entryClientService.ts';
 import { Entry } from '../models.ts';
 import Modal from '../../common/islands/modal.tsx';
 import { convertKeyToString } from '../utils.ts';

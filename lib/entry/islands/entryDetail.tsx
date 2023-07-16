@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { getEntryByCursor, updateEntry } from '../entryClientService.ts';
+import { getEntryByCursor, updateEntry } from '../services/entryClientService.ts';
 import { Entry, EntryValue, ValueType } from '../models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';

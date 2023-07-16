@@ -1,6 +1,6 @@
 import { HandlerContext, Handlers, RouteConfig } from '$fresh/src/server/types.ts';
 import { HTTPStrippedEntries } from '../models.ts';
-import { getAllEntries } from '../entryService.ts';
+import { getAllEntries } from '../services/entryService.ts';
 import { createHTTPStrippedEntries, handler as entriesHandler } from './entriesRoute.ts';
 import { handler as entryHandler } from './entryRoute.ts';
 import { handler as entriesExportHandler } from './entriesExportRoute.ts';

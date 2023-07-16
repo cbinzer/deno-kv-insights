@@ -1,4 +1,4 @@
-import {EntryAlreadyExistsError, EntryNotFoundError, ValidationError} from '../common/errors.ts';
+import {EntryAlreadyExistsError, EntryNotFoundError, ValidationError} from '../../common/errors.ts';
 import {
   deleteAllEntriesByKeys,
   deleteEntry,
@@ -6,7 +6,7 @@ import {
   findAllEntries,
   findEntryByCursor,
   saveEntry,
-} from './entryRepository.ts';
+} from '../entryRepository.ts';
 import {
   CursorBasedDBEntry,
   DBEntry,
@@ -20,8 +20,8 @@ import {
   NewEntry,
   StrippedEntry,
   ValueType,
-} from './models.ts';
-import {Pagination} from '../common/models.ts';
+} from '../models.ts';
+import {Pagination} from '../../common/models.ts';
 
 export async function getAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(filter, pagination);

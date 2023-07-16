@@ -6,7 +6,7 @@ import EntryDetail from './entryDetail.tsx';
 import CreateEntryModal from './createEntryModal.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
 import DeleteEntriesModal from './deleteEntriesModal.tsx';
-import { createEntriesExportLink } from '../entryExportClientService.ts';
+import { createEntriesExportLink } from '../services/entryExportClientService.ts';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
