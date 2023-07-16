@@ -4,6 +4,7 @@ import {
   deleteEntry,
   entryExists,
   findAllEntries,
+  findAllEntriesByKeys,
   findEntryByCursor,
   saveEntry,
 } from './entryRepository.ts';
@@ -26,6 +27,11 @@ import { Pagination } from '../common/models.ts';
 export async function getAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(filter, pagination);
   return entries.map(mapToStrippedEntry);
+}
+
+export async function getAllEntriesByKeys(keys: EntryKey[]): Promise<Entry[]> {
+  const entries = await findAllEntriesByKeys(keys);
+  return entries.map(mapToEntry);
 }
 
 export async function getEntryByCursor(cursor: string): Promise<Entry> {

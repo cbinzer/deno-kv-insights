@@ -47,6 +47,17 @@ export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEn
   return null;
 }
 
+export async function findAllEntriesByKeys(keys: EntryKey[]): Promise<CursorBasedDBEntry[]> {
+  const entries = await db.getMany(keys) as DBEntry[];
+  const cursors = keys.map((key) => encodeCursor(key));
+
+  return entries.filter((entry) => !!entry.versionstamp).map((entry, index) => ({
+    ...entry,
+    cursor: cursors[index],
+    prefixedCursor: cursors[index],
+  }));
+}
+
 export async function saveEntry(
   key: KeyPart[],
   value: EntryValue,
@@ -82,7 +93,7 @@ export async function deleteEntry(key: KeyPart[]): Promise<void> {
 
 export async function deleteAllEntriesByKeys(keys: EntryKey[]): Promise<void> {
   if (keys.length > 0) {
-    for (const keysChunk of chunk(keys, 10) as EntryKey[]) {
+    for (const keysChunk of chunk(keys, 10) as EntryKey[][]) {
       const atomicOperation = db.atomic();
       keysChunk.forEach((key) => atomicOperation.delete(key));
 

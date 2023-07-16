@@ -15,7 +15,7 @@ export const handler: Handlers = {
     const entries = await getAllEntries(filter, { ...pagination, first: first + 1 });
     const httpEntries = createHTTPStrippedEntries(entries, 0, first);
 
-    return new Response(JSON.stringify(httpEntries, replace));
+    return new Response(JSON.stringify(httpEntries, replace), { headers: { 'content-type': 'application/json' } });
   },
 
   POST: async (request): Promise<Response> => {
@@ -23,7 +23,10 @@ export const handler: Handlers = {
       const entry = (await request.text().then((text) => JSON.parse(text, revive))) as EntryForCreation;
       const newEntry = await createEntry(entry);
 
-      return new Response(JSON.stringify(newEntry, replace), { status: Status.Created });
+      return new Response(JSON.stringify(newEntry, replace), {
+        status: Status.Created,
+        headers: { 'content-type': 'application/json' },
+      });
     } catch (e) {
       console.error(e);
 

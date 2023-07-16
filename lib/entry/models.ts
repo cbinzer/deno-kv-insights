@@ -9,7 +9,7 @@ export interface StrippedEntry {
 
 export interface Entry {
   cursor: string;
-  key: KeyPart[];
+  key: EntryKey;
   valueType: ValueType;
   value?: EntryValue;
   version: string;
@@ -18,7 +18,7 @@ export interface Entry {
 export type NewEntry = Omit<Entry, 'cursor'>;
 
 export interface EntryForCreation {
-  key: KeyPart[];
+  key: EntryKey;
   valueType: ValueType;
   value?: EntryValue;
 }
@@ -67,7 +67,7 @@ export enum ValueType {
 }
 
 export interface DBEntry {
-  key: KeyPart[];
+  key: EntryKey;
   value?: EntryValue;
   versionstamp: string;
 }
@@ -84,9 +84,19 @@ export interface HTTPStrippedEntries {
 }
 
 export interface EntryFilter {
-  keyPrefix: KeyPart[];
+  keyPrefix: EntryKey;
 }
 
 export interface ClientEntryFilter {
   keyPrefix: string;
+}
+
+export interface EntriesExport {
+  created: Date;
+  version: string;
+  entries: Entry[];
+}
+
+export interface EntriesExportForCreation {
+  keys: EntryKey[];
 }

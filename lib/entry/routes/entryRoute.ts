@@ -8,7 +8,9 @@ export const handler: Handlers = {
   GET: async (request, context): Promise<Response> => {
     try {
       const entry = await getEntryByCursor(context.params.cursor);
-      return new Response(JSON.stringify(removeUndefinedValue(entry), replace));
+      return new Response(JSON.stringify(removeUndefinedValue(entry), replace), {
+        headers: { 'content-type': 'application/json' },
+      });
     } catch (e) {
       console.error(e);
 
@@ -28,7 +30,9 @@ export const handler: Handlers = {
       >;
       const updatedEntry = await updateEntry({ ...entry, cursor });
 
-      return new Response(JSON.stringify(removeUndefinedValue(updatedEntry), replace));
+      return new Response(JSON.stringify(removeUndefinedValue(updatedEntry), replace), {
+        headers: { 'content-type': 'application/json' },
+      });
     } catch (e) {
       console.error(e);
 

@@ -1,9 +1,9 @@
 import { HandlerContext, Handlers, RouteConfig } from '$fresh/src/server/types.ts';
 import { HTTPStrippedEntries } from '../models.ts';
 import { getAllEntries } from '../entryService.ts';
-import { createHTTPStrippedEntries } from './entriesRoute.ts';
-import { handler as entriesHandler } from './entriesRoute.ts';
+import { createHTTPStrippedEntries, handler as entriesHandler } from './entriesRoute.ts';
 import { handler as entryHandler } from './entryRoute.ts';
+import { handler as entriesExportHandler } from './entriesExportRoute.ts';
 import KVInsightsApp from '../components/kvInsightsApp.tsx';
 
 export function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries } }) {
@@ -28,6 +28,10 @@ export const KVInsightsAppRouteHandlers: Handlers = {
   },
 
   POST: async (request, context: HandlerContext) => {
+    if (request.url.includes('/kv-insights/api/entries/export')) {
+      return entriesExportHandler.POST(request, context);
+    }
+
     if (request.url.includes('/kv-insights/api/entries')) {
       return entriesHandler.POST(request, context);
     }
@@ -37,7 +41,7 @@ export const KVInsightsAppRouteHandlers: Handlers = {
 
   PUT: async (request, context: HandlerContext) => {
     if (request.url.includes('/kv-insights/api/entries')) {
-      return entryHandler.PUT(request, context)
+      return entryHandler.PUT(request, context);
     }
 
     return context.renderNotFound();
@@ -45,7 +49,7 @@ export const KVInsightsAppRouteHandlers: Handlers = {
 
   DELETE: async (request, context: HandlerContext) => {
     if (context.params.cursor) {
-      return entryHandler.DELETE(request, context)
+      return entryHandler.DELETE(request, context);
     }
 
     return entriesHandler.DELETE(request, context);
