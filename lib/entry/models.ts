@@ -98,5 +98,6 @@ export interface EntriesExport {
 }
 
 export interface EntriesExportForCreation {
+  created: Date;
   keys: EntryKey[];
 }

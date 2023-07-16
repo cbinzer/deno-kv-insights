@@ -47,27 +47,22 @@ export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEn
   return null;
 }
 
-export async function findAllEntriesByKeys(keys: EntryKey[]): Promise<CursorBasedDBEntry[]> {
+export async function findEntriesByKeys(keys: EntryKey[]): Promise<CursorBasedDBEntry[]> {
   if (keys.length === 0) {
     return [];
   }
 
-  const allFoundEntries: CursorBasedDBEntry[] = [];
-  for (const keysChunk of chunk(keys, 10) as EntryKey[][]) {
-    const entries = await db.getMany(keysChunk) as DBEntry[];
-    const foundEntries = entries.filter((entry) => !!entry.versionstamp).map((entry) => {
-      const cursor = encodeCursor(entry.key);
-      return {
-        ...entry,
-        cursor,
-        prefixedCursor: cursor,
-      } as CursorBasedDBEntry;
-    });
+  const entries = await db.getMany(keys) as DBEntry[];
+  const foundEntries = entries.filter((entry) => !!entry.versionstamp).map((entry) => {
+    const cursor = encodeCursor(entry.key);
+    return {
+      ...entry,
+      cursor,
+      prefixedCursor: cursor,
+    } as CursorBasedDBEntry;
+  });
 
-    allFoundEntries.push(...foundEntries);
-  }
-
-  return allFoundEntries;
+  return foundEntries;
 }
 
 export async function saveEntry(
