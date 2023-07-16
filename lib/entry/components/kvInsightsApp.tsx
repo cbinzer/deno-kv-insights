@@ -105,6 +105,10 @@ body {
     padding: 0 15px;
 }
 
+.entries-list .table {
+    table-layout: fixed;
+}
+
 .entries-list .table-header {
     position: sticky;
     top: 0;

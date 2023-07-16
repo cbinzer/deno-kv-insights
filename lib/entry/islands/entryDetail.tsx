@@ -63,7 +63,7 @@ const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = (
   return (
     <div class='entry-detail'>
       <div class='header'>
-        <p class='h5'>
+        <p class='h5 text-break'>
           <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>{' '}
           {convertKeyToString(entry.key)}
         </p>
