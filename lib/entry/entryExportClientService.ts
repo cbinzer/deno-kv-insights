@@ -1,7 +1,7 @@
-import { EntryKey } from './models.ts';
-import { replace } from './utils.ts';
+import {EntryKey} from './models.ts';
+import {replace} from './utils.ts';
 
-const ENDPOINT_URL = `/kv-insights/api/entries/exports`;
+const ENDPOINT_URL = `/kv-insights/api/entries/export`;
 
 export function createEntriesExportLink(keys: EntryKey[]): string {
   const base64Keys = btoa(JSON.stringify(keys, replace));

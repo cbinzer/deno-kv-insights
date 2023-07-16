@@ -8,7 +8,7 @@ import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
 import { db } from './lib/common/db.ts';
 
-for (let i = 0; i < 100; i++) {
+for (let i = 100; i < 300; i++) {
   await db.set(['test', i], {});
 }
 
