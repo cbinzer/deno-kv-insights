@@ -6,10 +6,5 @@
 
 import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
-import { db } from './lib/common/db.ts';
-
-for (let i = 1100; i < 1600; i++) {
-  await db.set(['test', i], {});
-}
 
 await start(manifest, { plugins: [] });
