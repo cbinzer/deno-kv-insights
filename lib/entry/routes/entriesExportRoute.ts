@@ -12,7 +12,7 @@ export const handler: Handlers = {
       const base64Keys = url.searchParams.get('keys') as string;
       const keys: EntryKey[] = JSON.parse(atob(base64Keys), revive);
       const created = new Date();
-      const filename = `entries-export_${created.toISOString().replaceAll(/T.*/g, '')}.json`;
+      const filename = `entries-export_${created.toISOString().replaceAll(/T.*/g, '')}.jsonl`;
 
       const entriesExport = await createEntriesExport({ created, keys });
       return new Response(entriesExport, {

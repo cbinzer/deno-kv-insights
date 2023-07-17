@@ -91,10 +91,10 @@ export interface ClientEntryFilter {
   keyPrefix: string;
 }
 
-export interface EntriesExport {
+export interface EntriesExportHeader {
+  title: string;
   created: Date;
   version: string;
-  entries: Entry[];
 }
 
 export interface EntriesExportForCreation {
