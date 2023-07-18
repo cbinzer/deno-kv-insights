@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
-import { deleteEntryByCursor } from '../services/entryClientService.ts';
-import { Entry } from '../models.ts';
-import Modal from '../../common/islands/modal.tsx';
-import { convertKeyToString } from '../utils.ts';
+import { deleteEntryByCursor } from '../lib/entry/services/entryClientService.ts';
+import { Entry } from '../lib/entry/models.ts';
+import Modal from '../lib/common/islands/modal.tsx';
+import { convertKeyToString } from '../lib/entry/utils.ts';
 import { useState } from 'https://esm.sh/stable/preact@10.15.1/denonext/hooks.js';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (

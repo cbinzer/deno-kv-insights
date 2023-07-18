@@ -6,5 +6,6 @@
 
 import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
+import { kvInsightsPlugin } from './mod.ts';
 
-await start(manifest, { plugins: [] });
+await start(manifest, { plugins: [kvInsightsPlugin()] });

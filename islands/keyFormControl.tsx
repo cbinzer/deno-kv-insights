@@ -1,7 +1,7 @@
 import { FunctionComponent, Ref } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { KeyPart } from '../models.ts';
-import { convertReadableKeyStringToKey } from '../utils.ts';
+import { KeyPart } from '../lib/entry/models.ts';
+import { convertReadableKeyStringToKey } from '../lib/entry/utils.ts';
 
 const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
   { id, value = [], keyAlreadyExists = false, inputRef, onChange = () => {}, onInvalid = () => {} },
