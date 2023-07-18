@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { createEntry } from '../lib/entry/services/entryClientService.ts';
-import { Entry, EntryValue, KeyPart, ValueType } from '../lib/entry/models.ts';
+import { createEntry } from '../services/entryClientService.ts';
+import { Entry, EntryValue, KeyPart, ValueType } from '../models.ts';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
-import Modal from '../lib/common/islands/modal.tsx';
+import Modal from '../../common/islands/modal.tsx';
 import KeyFormControl from './keyFormControl.tsx';
 
 const CreateEntryModal: FunctionComponent<

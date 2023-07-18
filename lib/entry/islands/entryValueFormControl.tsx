@@ -1,15 +1,15 @@
 import { FunctionComponent } from 'preact';
-import { EntryValue, ValueType } from '../lib/entry/models.ts';
-import BooleanValueFormControl from '../lib/common/islands/form-control/booleanValueFormControl.tsx';
-import NumberValueFormControl from '../lib/common/islands/form-control/numberValueFormControl.tsx';
-import StringValueFormControl from '../lib/common/islands/form-control/stringValueFormControl.tsx';
-import ObjectValueFormControl from '../lib/common/islands/form-control/objectValueFormControl.tsx';
-import DateValueFormControl from '../lib/common/islands/form-control/dateValueFormControl.tsx';
-import BigIntValueFormControl from '../lib/common/islands/form-control/bigIntValueFormControl.tsx';
-import Uint8ArrayValueFormControl from '../lib/common/islands/form-control/uint8ArrayValueFormControl.tsx';
-import RegExpValueFormControl from '../lib/common/islands/form-control/regExpValueFormControl.tsx';
-import SetValueFormControl from '../lib/common/islands/form-control/setValueFormControl.tsx';
-import MapValueFormControl from '../lib/common/islands/form-control/mapValueFormControl.tsx';
+import { EntryValue, ValueType } from '../models.ts';
+import BooleanValueFormControl from '../../common/islands/form-control/booleanValueFormControl.tsx';
+import NumberValueFormControl from '../../common/islands/form-control/numberValueFormControl.tsx';
+import StringValueFormControl from '../../common/islands/form-control/stringValueFormControl.tsx';
+import ObjectValueFormControl from '../../common/islands/form-control/objectValueFormControl.tsx';
+import DateValueFormControl from '../../common/islands/form-control/dateValueFormControl.tsx';
+import BigIntValueFormControl from '../../common/islands/form-control/bigIntValueFormControl.tsx';
+import Uint8ArrayValueFormControl from '../../common/islands/form-control/uint8ArrayValueFormControl.tsx';
+import RegExpValueFormControl from '../../common/islands/form-control/regExpValueFormControl.tsx';
+import SetValueFormControl from '../../common/islands/form-control/setValueFormControl.tsx';
+import MapValueFormControl from '../../common/islands/form-control/mapValueFormControl.tsx';
 
 const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
   { id, valueType, value, disabled, onChange = () => {}, onInvalid = () => {} },

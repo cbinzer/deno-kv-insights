@@ -3,30 +3,14 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $0 from './routes/index.tsx';
-import * as $$0 from './islands/createEntryModal.tsx';
-import * as $$1 from './islands/deleteEntriesModal.tsx';
-import * as $$2 from './islands/deleteEntryModal.tsx';
-import * as $$3 from './islands/entriesList.tsx';
-import * as $$4 from './islands/entriesManagement.tsx';
-import * as $$5 from './islands/entryDetail.tsx';
-import * as $$6 from './islands/entryValueFormControl.tsx';
-import * as $$7 from './islands/keyFormControl.tsx';
-import * as $$8 from './islands/valueTypeDropdown.tsx';
+import * as $$0 from './islands/entriesManagement.tsx';
 
 const manifest = {
   routes: {
     './routes/index.tsx': $0,
   },
   islands: {
-    './islands/createEntryModal.tsx': $$0,
-    './islands/deleteEntriesModal.tsx': $$1,
-    './islands/deleteEntryModal.tsx': $$2,
-    './islands/entriesList.tsx': $$3,
-    './islands/entriesManagement.tsx': $$4,
-    './islands/entryDetail.tsx': $$5,
-    './islands/entryValueFormControl.tsx': $$6,
-    './islands/keyFormControl.tsx': $$7,
-    './islands/valueTypeDropdown.tsx': $$8,
+    './islands/entriesManagement.tsx': $$0,
   },
   baseUrl: import.meta.url,
 };
