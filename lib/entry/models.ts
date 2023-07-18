@@ -1,4 +1,4 @@
-import { PageInfo } from '../common/models.ts';
+import {PageInfo} from '../common/models.ts';
 
 export interface StrippedEntry {
   cursor: string;
@@ -10,7 +10,6 @@ export interface StrippedEntry {
 export interface Entry {
   cursor: string;
   key: EntryKey;
-  valueType: ValueType;
   value?: EntryValue;
   version: string;
 }
@@ -19,7 +18,6 @@ export type NewEntry = Omit<Entry, 'cursor'>;
 
 export interface EntryForCreation {
   key: EntryKey;
-  valueType: ValueType;
   value?: EntryValue;
 }
 

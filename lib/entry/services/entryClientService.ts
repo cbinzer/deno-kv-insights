@@ -7,7 +7,6 @@ import {
   EntryKey,
   HTTPStrippedEntries,
   NewEntry,
-  ValueType,
 } from '../models.ts';
 import { HTTPError, Pagination } from '../../common/models.ts';
 import { replace, revive } from '../utils.ts';
@@ -34,9 +33,7 @@ export function getAllEntries(pagination?: Pagination, filter?: ClientEntryFilte
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
   const url = new URL(`${ENDPOINT_URL}/${cursor}`);
   const response = await fetch(url);
-  const entry = (await response.text().then((text) => JSON.parse(text, revive))) as Entry;
-
-  return convertValue(entry);
+  return (await response.text().then((text) => JSON.parse(text, revive))) as Entry;
 }
 
 export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
@@ -51,7 +48,7 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
     throw new EntryAlreadyExistsError(result.message);
   }
 
-  return convertValue(result);
+  return result;
 }
 
 export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
@@ -63,7 +60,7 @@ export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
     body: JSON.stringify(entryWithoutCursor, replace),
   });
 
-  return convertValue(await response.text().then((text) => JSON.parse(text, revive)));
+  return await response.text().then((text) => JSON.parse(text, revive));
 }
 
 export async function deleteEntryByCursor(cursor: string): Promise<undefined | HTTPError> {
@@ -89,15 +86,4 @@ export async function deleteEntriesByKeys(keys: EntryKey[]): Promise<void | HTTP
   if (!response.ok) {
     return response.text().then((text) => JSON.parse(text, revive));
   }
-}
-
-function convertValue(entry: Entry): Entry {
-  if (entry.valueType === ValueType.DATE) {
-    return {
-      ...entry,
-      value: new Date(entry.value as string),
-    };
-  }
-
-  return entry;
 }

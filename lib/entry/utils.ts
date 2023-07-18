@@ -1,4 +1,5 @@
 import { KeyPart, ValueType } from './models.ts';
+import { ValidationError } from '../common/errors.ts';
 
 export function getValueTypeColorClass(valueType: ValueType): string {
   switch (valueType) {
@@ -92,6 +93,10 @@ export function replace(key: string, value: any): any {
     return replaceMap(value);
   }
 
+  if (this[key] instanceof Date) {
+    return replaceDate(this[key]);
+  }
+
   return value;
 }
 
@@ -131,6 +136,13 @@ export function replaceMap(value: Map<unknown, unknown>): MapJSON {
   };
 }
 
+export function replaceDate(value: Date): DateJSON {
+  return {
+    type: JSONType.DATE,
+    value: value.toISOString(),
+  };
+}
+
 export function revive(this: any, key: string, value: any): any {
   if (typeof value === 'object' && value !== null) {
     if (value.type === JSONType.BIGINT) {
@@ -151,6 +163,10 @@ export function revive(this: any, key: string, value: any): any {
 
     if (value.type === JSONType.MAP) {
       return reviveMap(value);
+    }
+
+    if (value.type === JSONType.DATE) {
+      return reviveDate(value);
     }
   }
 
@@ -177,12 +193,17 @@ export function reviveMap(mapJSON: MapJSON): Map<unknown, unknown> {
   return new Map<unknown, unknown>(Object.entries(mapJSON.value));
 }
 
+export function reviveDate(dateJSON: DateJSON): Date {
+  return new Date(dateJSON.value);
+}
+
 enum JSONType {
   BIGINT = 'BIGINT',
   UINT8ARRAY = 'UINT8ARRAY',
   REGEXP = 'REGEXP',
   SET = 'SET',
   MAP = 'MAP',
+  DATE = 'DATE',
 }
 
 interface BigIntJSON {
@@ -209,4 +230,52 @@ interface SetJSON {
 interface MapJSON {
   type: JSONType.MAP;
   value: Record<string, unknown>;
+}
+
+interface DateJSON {
+  type: JSONType.DATE;
+  value: string;
+}
+
+export function getValueType(value: unknown): ValueType {
+  if (value === null) {
+    return ValueType.NULL;
+  }
+
+  if (value instanceof Date) {
+    return ValueType.DATE;
+  }
+
+  if (value instanceof Uint8Array) {
+    return ValueType.UINT8ARRAY;
+  }
+
+  if (value instanceof RegExp) {
+    return ValueType.REGEXP;
+  }
+
+  if (value instanceof Set) {
+    return ValueType.SET;
+  }
+
+  if (value instanceof Map) {
+    return ValueType.MAP;
+  }
+
+  switch (typeof value) {
+    case 'object':
+      return ValueType.OBJECT;
+    case 'boolean':
+      return ValueType.BOOLEAN;
+    case 'number':
+      return ValueType.NUMBER;
+    case 'undefined':
+      return ValueType.UNDEFINED;
+    case 'string':
+      return ValueType.STRING;
+    case 'bigint':
+      return ValueType.BIGINT;
+    default:
+      throw new ValidationError(`Can't find the matching value type for ${typeof value}.`);
+  }
 }

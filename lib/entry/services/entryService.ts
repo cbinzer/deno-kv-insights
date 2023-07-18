@@ -1,4 +1,4 @@
-import {EntryAlreadyExistsError, EntryNotFoundError, ValidationError} from '../../common/errors.ts';
+import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../../common/errors.ts';
 import {
   deleteAllEntriesByKeys,
   deleteEntry,
@@ -21,7 +21,8 @@ import {
   StrippedEntry,
   ValueType,
 } from '../models.ts';
-import {Pagination} from '../../common/models.ts';
+import { Pagination } from '../../common/models.ts';
+import { getValueType } from '../utils.ts';
 
 export async function getAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(filter, pagination);
@@ -40,9 +41,7 @@ export async function getEntryByCursor(cursor: string): Promise<Entry> {
 export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   await assertEntryForCreation(entry);
 
-  const convertedValue = convertValue(entry.valueType, entry.value);
-  const newEntry = await saveEntry(entry.key, convertedValue);
-
+  const newEntry = await saveEntry(entry.key, entry.value);
   return mapToNewEntry(newEntry);
 }
 
@@ -67,7 +66,6 @@ export async function deleteEntriesByKeys(keys: EntryKey[]): Promise<void> {
 
 async function assertEntryForCreation(entry: EntryForCreation): Promise<void> {
   await assertKey(entry.key);
-  assertValue(entry.valueType, entry.value);
 }
 
 async function assertKey(key: KeyPart[]): Promise<void> {
@@ -82,19 +80,6 @@ async function assertKey(key: KeyPart[]): Promise<void> {
   }
 }
 
-function assertValue(valueType: ValueType, value: EntryValue): void {
-  const realValueType = getValueType(value);
-  if (valueType === ValueType.DATE && realValueType === ValueType.STRING) {
-    return;
-  }
-
-  if (valueType !== realValueType) {
-    throw new ValidationError(
-      `The given value type '${valueType}' is not matching the detected type '${realValueType}' of the value.`,
-    );
-  }
-}
-
 function assertEntryForUpdate(entry: EntryForUpdate): void {
   if (!entry.cursor) {
     throw new ValidationError('Cursor is missing.');
@@ -103,12 +88,6 @@ function assertEntryForUpdate(entry: EntryForUpdate): void {
   if (!entry.version) {
     throw new ValidationError('Version is missing.');
   }
-
-  if (!entry.valueType) {
-    throw new ValidationError('Value type is missing.');
-  }
-
-  assertValue(entry.valueType, entry.value);
 }
 
 function convertValue(valueType: ValueType, value: EntryValue): EntryValue {
@@ -142,7 +121,6 @@ function mapToEntry(entry: CursorBasedDBEntry): Entry {
   return {
     cursor: entry.cursor,
     key: entry.key,
-    valueType: getValueType(entry.value),
     value: entry.value,
     version: entry.versionstamp,
   };
@@ -151,51 +129,7 @@ function mapToEntry(entry: CursorBasedDBEntry): Entry {
 function mapToNewEntry(entry: DBEntry): NewEntry {
   return {
     key: entry.key,
-    valueType: getValueType(entry.value),
     value: entry.value,
     version: entry.versionstamp,
   };
-}
-
-function getValueType(value: unknown): ValueType {
-  if (value === null) {
-    return ValueType.NULL;
-  }
-
-  if (value instanceof Date) {
-    return ValueType.DATE;
-  }
-
-  if (value instanceof Uint8Array) {
-    return ValueType.UINT8ARRAY;
-  }
-
-  if (value instanceof RegExp) {
-    return ValueType.REGEXP;
-  }
-
-  if (value instanceof Set) {
-    return ValueType.SET;
-  }
-
-  if (value instanceof Map) {
-    return ValueType.MAP;
-  }
-
-  switch (typeof value) {
-    case 'object':
-      return ValueType.OBJECT;
-    case 'boolean':
-      return ValueType.BOOLEAN;
-    case 'number':
-      return ValueType.NUMBER;
-    case 'undefined':
-      return ValueType.UNDEFINED;
-    case 'string':
-      return ValueType.STRING;
-    case 'bigint':
-      return ValueType.BIGINT;
-    default:
-      throw new ValidationError(`Can't find the matching value type for ${typeof value}.`);
-  }
 }

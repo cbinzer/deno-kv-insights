@@ -139,7 +139,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                   <td>
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
-                  <td class="text-truncate">{convertKeyToString(entry.key)}</td>
+                  <td class='text-truncate'>{convertKeyToString(entry.key)}</td>
                 </tr>
               ))}
             </tbody>

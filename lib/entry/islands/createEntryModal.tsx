@@ -81,7 +81,7 @@ const CreateEntryModal: FunctionComponent<
 
     try {
       setIsCreating(true);
-      const createdEntry = await createEntry({ key, valueType, value });
+      const createdEntry = await createEntry({ key, value });
 
       setCreatedEntry(createdEntry);
       setIsOpen(false);
