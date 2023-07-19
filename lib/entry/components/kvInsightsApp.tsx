@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { Head } from '$fresh/src/runtime/head.ts';
 import { HTTPStrippedEntries } from '../models.ts';
-import EntriesManagement from '../islands/entriesManagement.tsx';
+import EntriesManagement from '../../../islands/entry/entriesManagement.tsx';
 
 const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }) => {
   return (

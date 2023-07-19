@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
-import EntriesList from './entriesList.tsx';
-import EntryDetail from './entryDetail.tsx';
-import CreateEntryModal from './createEntryModal.tsx';
-import SearchIcon from '../../common/components/icon/searchIcon.tsx';
-import DeleteEntriesModal from './deleteEntriesModal.tsx';
-import { createEntriesExportLink } from '../services/entryExportClientService.ts';
+import { HTTPStrippedEntries, StrippedEntry } from '../../lib/entry/models.ts';
+import EntriesList from '../../lib/entry/islands/entriesList.tsx';
+import EntryDetail from '../../lib/entry/islands/entryDetail.tsx';
+import CreateEntryModal from '../../lib/entry/islands/createEntryModal.tsx';
+import SearchIcon from '../../lib/common/components/icon/searchIcon.tsx';
+import DeleteEntriesModal from '../../lib/entry/islands/deleteEntriesModal.tsx';
+import { createEntriesExportLink } from '../../lib/entry/services/entryExportClientService.ts';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
