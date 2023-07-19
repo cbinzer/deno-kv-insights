@@ -7,6 +7,7 @@ import CreateEntryModal from './createEntryModal.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
 import DeleteEntriesModal from './deleteEntriesModal.tsx';
 import { createEntriesExportLink } from '../services/entryExportClientService.ts';
+import ImportEntriesModal from './importEntriesModal.tsx';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
   const [keyPrefix, setKeyPrefix] = useState<string>('');
@@ -18,7 +19,9 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const [isDeleteEntriesModalOpen, setIsDeleteEntriesModalOpen] = useState(false);
   const [isActionsMenuVisible, setIsActionsMenuVisible] = useState<boolean>(false);
   const [entriesExportLink, setEntriesExportLink] = useState<string>('#');
+  const [entriesImportFile, setEntriesImportFile] = useState<File | undefined>();
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const actionsMenuRef = useRef();
 
   useEffect(() => {
@@ -81,6 +84,20 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     toggleActionsEnabled([]);
   };
 
+  const openFilePicker = (event: Event) => {
+    fileInputRef.current.click();
+    event.preventDefault();
+    setIsActionsMenuVisible(false);
+  };
+
+  const openEntriesImportModal = (event: Event) => {
+    setEntriesImportFile(event.target.files[0]);
+  };
+
+  const closeEntriesImportModal = () => {
+    setEntriesImportFile(undefined);
+  };
+
   return (
     <>
       <div class='entries-management'>
@@ -108,6 +125,13 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 >
                   <span class='visually-hidden'>Toggle Dropdown</span>
                 </button>
+                <input
+                  class='d-none'
+                  type='file'
+                  ref={fileInputRef}
+                  onChange={openEntriesImportModal}
+                  accept='.jsonl'
+                />
                 <ul
                   class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`}
                   style={{ top: '40px', right: 0 }}
@@ -129,6 +153,15 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                       onClick={() => setIsActionsMenuVisible(false)}
                     >
                       Export selected
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class={`dropdown-item`}
+                      href='#'
+                      onClick={openFilePicker}
+                    >
+                      Import entries
                     </a>
                   </li>
                 </ul>
@@ -163,6 +196,13 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
         entries={selectedEntries}
         onDelete={closeDeleteEntriesModal}
         onClose={() => setIsDeleteEntriesModalOpen(false)}
+      />
+
+      <ImportEntriesModal
+        open={!!entriesImportFile}
+        entriesImportFile={entriesImportFile}
+        onImport={closeEntriesImportModal}
+        onClose={closeEntriesImportModal}
       />
     </>
   );
