@@ -18,36 +18,28 @@ The project was implemented for the Deno KV Hackathon (06/12/2023 - 06/15/2023).
 
 https://kv-insights.deno.dev/
 
-## Getting started
+## Setup
 
 KV insights was implemented with Deno Fresh and can currently only be integrated into applications based on Deno Fresh
-1.2 and above. Unfortunately, at the moment Deno Fresh does not offer the possibility to create modules/packages with
-routes, handlers and islands. Therefore, in your application, the route for kv-insights and the island must be
-re-exported from this repository.
+1.3 and above. Unfortunately, at the moment Deno Fresh does not offer the possibility to create plugins with islands.
+Therefore, in your application, the island for kv-insights must be re-exported from this repository.
 
-### 1. Re-export kv-insights route
+### 1. Import kvInsightsPlugin
 
-Create a new folder in the route folder named kv-insights. In the kv-insights folder, create an index.tsx with the
-following content:
+Import the kvInsightsPlugin to main.ts in your Fresh App:
 
 ```ts
-// routes/kv-insights/index.tsx
+// main.ts
+import { start } from '$fresh/server.ts';
+import manifest from './fresh.gen.ts';
+import { kvInsightsPlugin } from 'https://deno.land/x/deno_kv_insights@$VERSION/mod.ts';
 
-import {
-    KVInsightsAppRoute,
-    KVInsightsAppRouteConfig,
-    KVInsightsAppRouteHandlers,
-} from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/routes/kvInsightsRoute.tsx';
-
-export default KVInsightsAppRoute;
-export const handler = KVInsightsAppRouteHandlers;
-export const config = KVInsightsAppRouteConfig;
+await start(manifest, { plugins: [kvInsightsPlugin()] });
 ```
 
-The route "kv-insights" is currently fixed and cannot be changed.
-
-Now you should be able to access the tool via /kv-insights and see your first KV entries. However, you cannot create,
-edit or delete any entries yet. For this you have to re-export an island.
+Now you should be able to access the tool via /kv-insights and see your first KV entries. The route "kv-insights" is
+currently fixed and cannot be changed. However, you cannot create, edit or delete any entries yet. For this you have to
+re-export an island.
 
 ### 2. Re-export entriesManagement island
 
@@ -89,7 +81,7 @@ export default function App(props: AppProps) {
 ### 4. Protect you kv-insights route (optional)
 
 You may not want everyone to access the KV Insights tool and see all database entries. You can prevent this with a
-middleware in the kv-insights folder. Here is an example of a simple basic authentication middleware:
+middleware. Here is an example of a simple basic authentication middleware:
 
 ```ts
 // routes/kv-insights/_middleware.ts
@@ -118,4 +110,6 @@ function handleKVInsightsAuthorization(request: Request, context: MiddlewareHand
   });
 }
 ```
-If you need a more complex authentication mechanism then have a look at [deno_kv_oauth](https://github.com/denoland/deno_kv_oauth).
+
+If you need a more complex authentication mechanism then have a look at
+[deno_kv_oauth](https://github.com/denoland/deno_kv_oauth).
