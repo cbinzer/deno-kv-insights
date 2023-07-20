@@ -99,3 +99,14 @@ export interface EntriesExportForCreation {
   created: Date;
   keys: EntryKey[];
 }
+
+export interface EntriesImportResult {
+  status: EntriesImportStatus;
+  amountImportedEntries: number;
+  errorMessage?: string;
+}
+
+export enum EntriesImportStatus {
+  SUCCEEDED= 'SUCCEEDED',
+  FAILED = 'FAILED'
+}

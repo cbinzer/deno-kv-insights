@@ -10,8 +10,16 @@ const ImportEntriesModal: FunctionComponent<EntriesImportModalProps> = (
 
   useEffect(() => setIsOpen(open), [open]);
 
-  const importEntries = () => {
+  const importEntries = async () => {
     setIsImporting(true);
+
+    const result = await fetch('/kv-insights/api/entries/imports', {
+      method: 'POST',
+      body: entriesImportFile,
+    }).then((response) => response.json());
+    console.log(result);
+
+    setIsImporting(false);
   };
 
   const closeModal = () => {

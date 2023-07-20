@@ -2,6 +2,7 @@ import { KVInsightsAppRoute, KVInsightsAppRouteHandlers } from './entry/routes/k
 import { handler as EntriesRouteHandler } from './entry/routes/entriesRoute.ts';
 import { handler as EntryRouteHandler } from './entry/routes/entryRoute.ts';
 import { handler as EntriesExportRouteHandler } from './entry/routes/entriesExportRoute.ts';
+import { handler as EntriesImportsRouteHandler } from './entry/routes/entriesImportsRoute.ts';
 
 export function kvInsightsPlugin() {
   const basePath = '/kv-insights';
@@ -25,6 +26,10 @@ export function kvInsightsPlugin() {
       {
         path: `${basePath}/api/entries/export`,
         handler: EntriesExportRouteHandler,
+      },
+      {
+        path: `${basePath}/api/entries/imports`,
+        handler: EntriesImportsRouteHandler,
       },
     ],
   };

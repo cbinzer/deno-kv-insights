@@ -87,6 +87,17 @@ export async function saveEntry(
   };
 }
 
+export async function saveEntries(entries: DBEntry[]): Promise<void> {
+  const atomicOperation = db.atomic();
+  entries.forEach(entry => atomicOperation.set(entry.key, entry.value))
+
+  const commitResult: { ok: boolean } = await atomicOperation.commit();
+  if (!commitResult.ok) {
+    console.error('An unknown error occurred on saving entries.');
+    throw new UnknownError();
+  }
+}
+
 export async function entryExists(key: KeyPart[]): Promise<boolean> {
   const { versionstamp } = await db.get(key);
   return !!versionstamp;
