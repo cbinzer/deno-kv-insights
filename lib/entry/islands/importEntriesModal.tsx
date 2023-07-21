@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'preact';
 import Modal from '../../common/islands/modal.tsx';
-import { useEffect, useState } from 'https://esm.sh/stable/preact@10.15.1/denonext/hooks.js';
+import { useEffect, useState } from 'preact/hooks';
+import { importEntries } from '../services/entryImportClientService.ts';
 
 const ImportEntriesModal: FunctionComponent<EntriesImportModalProps> = (
   { open = false, entriesImportFile, onClose = () => {}, onImport = () => {} },
@@ -10,16 +11,12 @@ const ImportEntriesModal: FunctionComponent<EntriesImportModalProps> = (
 
   useEffect(() => setIsOpen(open), [open]);
 
-  const importEntries = async () => {
+  const startEntriesImport = async () => {
     setIsImporting(true);
-
-    const result = await fetch('/kv-insights/api/entries/imports', {
-      method: 'POST',
-      body: entriesImportFile,
-    }).then((response) => response.json());
-    console.log(result);
-
+    await importEntries(entriesImportFile);
     setIsImporting(false);
+
+    onImport();
   };
 
   const closeModal = () => {
@@ -34,12 +31,12 @@ const ImportEntriesModal: FunctionComponent<EntriesImportModalProps> = (
       </div>
 
       <div class='modal-body'>
-        <p>{entriesImportFile?.name}</p>
+        <p>{isImporting ? 'Importing...' : entriesImportFile?.name}</p>
       </div>
 
       <div class='modal-footer'>
         <button class='btn btn-secondary' onClick={closeModal} disabled={isImporting}>Cancel</button>
-        <button class='btn btn-primary' onClick={importEntries} disabled={isImporting}>
+        <button class='btn btn-primary' onClick={startEntriesImport} disabled={isImporting}>
           {isImporting ? <span class='spinner-border spinner-border-sm' /> : 'Import'}
         </button>
       </div>

@@ -92,10 +92,13 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
 
   const openEntriesImportModal = (event: Event) => {
     setEntriesImportFile(event.target.files[0]);
+    setDoReload(false);
   };
 
-  const closeEntriesImportModal = () => {
+  const closeEntriesImportModal = (reloadEntries = false) => {
     setEntriesImportFile(undefined);
+    fileInputRef.current.value = '';
+    setDoReload(reloadEntries);
   };
 
   return (
@@ -128,9 +131,9 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 <input
                   class='d-none'
                   type='file'
+                  accept='.jsonl'
                   ref={fileInputRef}
                   onChange={openEntriesImportModal}
-                  accept='.jsonl'
                 />
                 <ul
                   class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`}
@@ -201,8 +204,8 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
       <ImportEntriesModal
         open={!!entriesImportFile}
         entriesImportFile={entriesImportFile}
-        onImport={closeEntriesImportModal}
-        onClose={closeEntriesImportModal}
+        onImport={() => closeEntriesImportModal(true)}
+        onClose={() => closeEntriesImportModal(false)}
       />
     </>
   );
