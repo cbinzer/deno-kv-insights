@@ -1,10 +1,12 @@
-import { HandlerContext, Handlers } from '$fresh/src/server/types.ts';
-import { HTTPStrippedEntries } from '../models.ts';
-import { getAllEntries } from '../services/entryService.ts';
-import { createHTTPStrippedEntries } from './entriesRoute.ts';
-import KVInsightsApp from '../components/kvInsightsApp.tsx';
+import { HandlerContext, Handlers } from "$fresh/src/server/types.ts";
+import { HTTPStrippedEntries } from "../models.ts";
+import { getAllEntries } from "../services/entryService.ts";
+import { createHTTPStrippedEntries } from "./entriesRoute.ts";
+import KVInsightsApp from "../components/kvInsightsApp.tsx";
 
-export function KVInsightsAppRoute(props: { data: { entries: HTTPStrippedEntries } }) {
+export function KVInsightsAppRoute(props: {
+  data: { entries: HTTPStrippedEntries };
+}) {
   return <KVInsightsApp initialEntries={props.data.entries} />;
 }
 
