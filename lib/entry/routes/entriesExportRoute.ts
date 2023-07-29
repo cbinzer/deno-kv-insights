@@ -6,7 +6,7 @@ import { revive } from '../utils.ts';
 import { createEntriesExport } from '../services/entryExportService.ts';
 
 export const handler: Handlers = {
-  GET: async (request): Promise<Response> => {
+  GET: (request): Response => {
     try {
       const url = new URL(request.url);
       const base64Keys = url.searchParams.get('keys') as string;
@@ -14,7 +14,7 @@ export const handler: Handlers = {
       const created = new Date();
       const filename = `entries-export_${created.toISOString().replaceAll(/T.*/g, '')}.jsonl`;
 
-      const entriesExport = await createEntriesExport({ created, keys });
+      const entriesExport = createEntriesExport({ created, keys });
       return new Response(entriesExport, {
         status: Status.OK,
         headers: {

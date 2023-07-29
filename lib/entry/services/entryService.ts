@@ -1,9 +1,11 @@
 import { EntryAlreadyExistsError, EntryNotFoundError, ValidationError } from '../../common/errors.ts';
+import { Pagination } from '../../common/models.ts';
 import {
   deleteAllEntriesByKeys,
   deleteEntry,
   entryExists,
   findAllEntries,
+  findEntriesByKeys,
   findEntryByCursor,
   saveEntry,
 } from '../entryRepository.ts';
@@ -15,18 +17,20 @@ import {
   EntryForCreation,
   EntryForUpdate,
   EntryKey,
-  EntryValue,
   KeyPart,
   NewEntry,
   StrippedEntry,
-  ValueType,
 } from '../models.ts';
-import { Pagination } from '../../common/models.ts';
 import { getValueType } from '../utils.ts';
 
 export async function getAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<StrippedEntry[]> {
   const entries = await findAllEntries(filter, pagination);
   return entries.map(mapToStrippedEntry);
+}
+
+export async function getEntriesByKeys(keys: EntryKey[]): Promise<Entry[]> {
+  const entries = await findEntriesByKeys(keys);
+  return entries.map(mapToEntry);
 }
 
 export async function getEntryByCursor(cursor: string): Promise<Entry> {
@@ -46,11 +50,10 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
 }
 
 export async function updateEntry(entry: EntryForUpdate): Promise<Entry> {
-  await assertEntryForUpdate(entry);
+  assertEntryForUpdate(entry);
 
   const existingEntry = await getEntryByCursor(entry.cursor);
-  const convertedValue = convertValue(entry.valueType, entry.value);
-  const updatedEntry = await saveEntry(existingEntry.key, convertedValue, entry.version);
+  const updatedEntry = await saveEntry(existingEntry.key, entry.value, entry.version);
 
   return mapToEntry({ ...updatedEntry, cursor: entry.cursor, prefixedCursor: '' });
 }
@@ -87,24 +90,6 @@ function assertEntryForUpdate(entry: EntryForUpdate): void {
 
   if (!entry.version) {
     throw new ValidationError('Version is missing.');
-  }
-}
-
-function convertValue(valueType: ValueType, value: EntryValue): EntryValue {
-  switch (valueType) {
-    case ValueType.DATE:
-      if (value instanceof Date) {
-        return value;
-      }
-
-      const newDate = new Date(value as string);
-      if (isNaN(newDate.getTime())) {
-        throw new ValidationError(`The given date value '${value}' couldn't be converted to a real date.`);
-      }
-
-      return newDate;
-    default:
-      return value;
   }
 }
 

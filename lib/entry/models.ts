@@ -24,7 +24,6 @@ export interface EntryForCreation {
 export interface EntryForUpdate {
   cursor: string;
   version: string;
-  valueType: ValueType;
   value?: EntryValue;
 }
 

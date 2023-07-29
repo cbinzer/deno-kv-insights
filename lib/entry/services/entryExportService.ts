@@ -1,9 +1,9 @@
-import { EntriesExportForCreation, EntriesExportHeader } from '../models.ts';
 import { chunk } from '../../../deps.ts';
-import { findEntriesByKeys } from '../entryRepository.ts';
+import { EntriesExportForCreation, EntriesExportHeader } from '../models.ts';
 import { replace } from '../utils.ts';
+import { getEntriesByKeys } from './entryService.ts';
 
-export async function createEntriesExport(exportForCreation: EntriesExportForCreation): Promise<ReadableStream> {
+export function createEntriesExport(exportForCreation: EntriesExportForCreation): ReadableStream {
   const suffix = '\n';
   const exportHeader: EntriesExportHeader = {
     title: 'KV Insights entries export in JSON Lines format: https://jsonlines.org/',
@@ -14,7 +14,7 @@ export async function createEntriesExport(exportForCreation: EntriesExportForCre
   const keysChunksIterator = keysChunks.entries();
 
   return new ReadableStream({
-    start: async (controller: ReadableStreamDefaultController) => {
+    start: (controller: ReadableStreamDefaultController) => {
       controller.enqueue(JSON.stringify(exportHeader) + suffix);
     },
 
@@ -26,7 +26,7 @@ export async function createEntriesExport(exportForCreation: EntriesExportForCre
       }
 
       const keys = value[1];
-      const entries = await findEntriesByKeys(keys);
+      const entries = await getEntriesByKeys(keys);
       controller.enqueue(JSON.stringify(entries, replace) + suffix);
     },
   }).pipeThrough(new TextEncoderStream());
