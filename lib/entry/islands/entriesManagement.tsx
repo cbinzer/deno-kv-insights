@@ -14,7 +14,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const [selectedEntryCursor, setSelectedEntryCursor] = useState<string | undefined>(undefined);
   const [selectedEntries, setSelectedEntries] = useState<StrippedEntry[]>([]);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
-  const [doReload, setDoReload] = useState<boolean>(false);
+  const [doReloadEntries, setDoReloadEntries] = useState<boolean>(false);
   const [actionsEnabled, setActionsEnabled] = useState<boolean>(false);
   const [isDeleteEntriesModalOpen, setIsDeleteEntriesModalOpen] = useState(false);
   const [isActionsMenuVisible, setIsActionsMenuVisible] = useState<boolean>(false);
@@ -22,7 +22,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const [entriesImportFile, setEntriesImportFile] = useState<File | undefined>();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const actionsMenuRef = useRef();
+  const actionsMenuRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (isActionsMenuVisible) {
@@ -33,29 +33,30 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   }, [isActionsMenuVisible]);
 
   const closeMenuOnOutsideClick = useMemo(() => (event: Event) => {
-    if (actionsMenuRef.current && !actionsMenuRef.current.contains(event.target)) {
+    const clickedElement = event.target as Node;
+    if (actionsMenuRef.current && !actionsMenuRef.current.contains(clickedElement)) {
       setIsActionsMenuVisible(false);
     }
-  });
+  }, undefined);
 
   const removeSelectedEntry = () => {
-    setDoReload(true);
+    setDoReloadEntries(true);
     setSelectedEntryCursor(undefined);
   };
 
   const openCreateEntryModal = () => {
     setIsCreateEntryModalOpen(true);
-    setDoReload(false);
+    setDoReloadEntries(false);
   };
 
-  const changePrefix = (event: KeyboardEvent) => {
+  const changePrefix = (event: Event) => {
     const input = event.target as HTMLInputElement;
     setKeyPrefix(input.value);
     setSelectedEntryCursor(undefined);
   };
 
   const changeSelectedEntryCursor = (cursor: string) => {
-    setDoReload(false);
+    setDoReloadEntries(false);
     setSelectedEntryCursor(cursor);
   };
 
@@ -70,7 +71,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   const openDeleteEntriesModal = (event: Event) => {
     event.preventDefault();
 
-    setDoReload(false);
+    setDoReloadEntries(false);
     setIsDeleteEntriesModalOpen(true);
     setIsActionsMenuVisible(false);
   };
@@ -80,25 +81,32 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
       setSelectedEntryCursor(undefined);
     }
 
-    setDoReload(true);
+    setDoReloadEntries(true);
     toggleActionsEnabled([]);
   };
 
   const openFilePicker = (event: Event) => {
-    fileInputRef.current.click();
-    event.preventDefault();
-    setIsActionsMenuVisible(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+      event.preventDefault();
+      setIsActionsMenuVisible(false);
+    }
   };
 
   const openEntriesImportModal = (event: Event) => {
-    setEntriesImportFile(event.target.files[0]);
-    setDoReload(false);
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput && fileInput.files) {
+      setEntriesImportFile(fileInput.files[0]);
+      setDoReloadEntries(false);
+    }
   };
 
   const closeEntriesImportModal = (reloadEntries = false) => {
-    setEntriesImportFile(undefined);
-    fileInputRef.current.value = '';
-    setDoReload(reloadEntries);
+    if (fileInputRef.current) {
+      setEntriesImportFile(undefined);
+      fileInputRef.current.value = '';
+      setDoReloadEntries(reloadEntries);
+    }
   };
 
   return (
@@ -178,7 +186,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
                 selectedEntries={selectedEntries}
                 onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
                 onSelectMany={toggleActionsEnabled}
-                doReload={doReload}
+                doReload={doReloadEntries}
               />
             </div>
           </div>
@@ -191,7 +199,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
       <CreateEntryModal
         open={isCreateEntryModalOpen}
         onClose={() => setIsCreateEntryModalOpen(false)}
-        onCreate={() => setDoReload(true)}
+        onCreate={() => setDoReloadEntries(true)}
       />
 
       <DeleteEntriesModal
