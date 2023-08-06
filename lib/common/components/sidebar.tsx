@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import BroadcastIcon from './icon/broadcastIcon.tsx';
 import CardListIcon from './icon/cardListIcon.tsx';
-import GitHubIcon from './icon/gitHubIcon.tsx';
+import GitHubIcon from './icon/gitIcon.tsx';
 
 const Sidebar: FunctionComponent = () => {
   return (
@@ -28,7 +28,7 @@ const Sidebar: FunctionComponent = () => {
       </nav>
 
       <div class='second-navigation'>
-        <div class="divider">
+        <div class='divider'>
           <hr />
         </div>
         <a class='github-link text-decoration-none' href='https://github.com/cbinzer/deno-kv-insights' target='_blank'>
