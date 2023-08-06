@@ -1,9 +1,6 @@
 import { HandlerContext } from '$fresh/src/server/types.ts';
-import {
-  KVInsightsAppRoute,
-  KVInsightsAppRouteHandlers,
-} from '../lib/entry/routes/kvInsightsRoute.tsx';
+import { EntriesPageRoute, EntriesPageRouteHandlers } from '../lib/entry/routes/entriesRoute.tsx';
 
-export default KVInsightsAppRoute;
+export default EntriesPageRoute;
 
-export const handler = KVInsightsAppRouteHandlers;
+export const handler = EntriesPageRouteHandlers;

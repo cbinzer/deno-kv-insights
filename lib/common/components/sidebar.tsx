@@ -3,7 +3,7 @@ import BroadcastIcon from './icon/broadcastIcon.tsx';
 import CardListIcon from './icon/cardListIcon.tsx';
 import GitHubIcon from './icon/gitIcon.tsx';
 
-const Sidebar: FunctionComponent = () => {
+const Sidebar: FunctionComponent<SidebarProps> = ({ currentRoute = '/kv-insights' }) => {
   return (
     <div class='sidebar'>
       <img
@@ -13,14 +13,14 @@ const Sidebar: FunctionComponent = () => {
 
       <nav class='navigation'>
         <ul class='list-group navigation-list'>
-          <li class='list-group-item navigation-list-item active'>
+          <li class={`list-group-item navigation-list-item ${currentRoute === '/kv-insights' ? 'active' : ''}`}>
             <a class='text-decoration-none' href='/kv-insights'>
               <CardListIcon width={32} height={32} />
             </a>
           </li>
 
-          <li class='list-group-item navigation-list-item'>
-            <a class='text-decoration-none' href='/kv-insights'>
+          <li class={`list-group-item navigation-list-item ${currentRoute === '/kv-insights/queue' ? 'active' : ''}`}>
+            <a class='text-decoration-none' href='/kv-insights/queues'>
               <BroadcastIcon width={32} height={32} />
             </a>
           </li>
@@ -38,5 +38,9 @@ const Sidebar: FunctionComponent = () => {
     </div>
   );
 };
+
+export interface SidebarProps {
+  currentRoute?: string;
+}
 
 export default Sidebar;

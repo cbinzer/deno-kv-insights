@@ -1,8 +1,8 @@
-import { KVInsightsAppRoute, KVInsightsAppRouteHandlers } from './entry/routes/kvInsightsRoute.tsx';
-import { handler as EntriesRouteHandler } from './entry/routes/entriesRoute.ts';
-import { handler as EntryRouteHandler } from './entry/routes/entryRoute.ts';
-import { handler as EntriesExportRouteHandler } from './entry/routes/entriesExportRoute.ts';
-import { handler as EntriesImportsRouteHandler } from './entry/routes/entriesImportsRoute.ts';
+import { handler as APIEntriesExportRouteHandler } from './entry/routes/apiEntriesExportRoute.ts';
+import { handler as APIEntriesImportsRouteHandler } from './entry/routes/apiEntriesImportsRoute.ts';
+import { handler as APIEntriesRouteHandler } from './entry/routes/apiEntriesRoute.ts';
+import { handler as APIEntryRouteHandler } from './entry/routes/apiEntryRoute.ts';
+import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesRoute.tsx';
 
 export function kvInsightsPlugin() {
   const basePath = '/kv-insights';
@@ -12,24 +12,24 @@ export function kvInsightsPlugin() {
     routes: [
       {
         path: basePath,
-        handler: KVInsightsAppRouteHandlers,
-        component: KVInsightsAppRoute,
+        handler: EntriesPageRouteHandlers,
+        component: EntriesPageRoute,
       },
       {
         path: `${basePath}/api/entries`,
-        handler: EntriesRouteHandler,
+        handler: APIEntriesRouteHandler,
       },
       {
         path: `${basePath}/api/entries/[cursor]`,
-        handler: EntryRouteHandler,
+        handler: APIEntryRouteHandler,
       },
       {
         path: `${basePath}/api/entries/export`,
-        handler: EntriesExportRouteHandler,
+        handler: APIEntriesExportRouteHandler,
       },
       {
         path: `${basePath}/api/entries/imports`,
-        handler: EntriesImportsRouteHandler,
+        handler: APIEntriesImportsRouteHandler,
       },
     ],
   };

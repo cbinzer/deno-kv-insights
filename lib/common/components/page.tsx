@@ -1,11 +1,9 @@
-import { FunctionComponent } from 'preact';
 import { Head } from '$fresh/src/runtime/head.ts';
-import { HTTPStrippedEntries } from '../models.ts';
-import EntriesManagement from '../islands/entriesManagement.tsx';
-import Sidebar from '../../common/components/sidebar.tsx';
 import { asset } from '$fresh/src/runtime/utils.ts';
+import { FunctionComponent } from 'preact';
+import Sidebar from '../../common/components/sidebar.tsx';
 
-const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }) => {
+const Page: FunctionComponent<PageProps> = ({ children }) => {
   return (
     <div class='page'>
       <Head>
@@ -27,9 +25,7 @@ const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }
           <span class='title'>Deno KV Insights</span>
         </header>
 
-        <main>
-          <EntriesManagement initialEntries={initialEntries} />
-        </main>
+        <main>{children}</main>
 
         <footer class='footer'>
           <a href='https://fresh.deno.dev'>
@@ -46,8 +42,6 @@ const KVInsightsApp: FunctionComponent<KVInsightsAppProps> = ({ initialEntries }
   );
 };
 
-export interface KVInsightsAppProps {
-  initialEntries: HTTPStrippedEntries;
-}
+export interface PageProps {}
 
-export default KVInsightsApp;
+export default Page;
