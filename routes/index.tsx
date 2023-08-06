@@ -6,4 +6,4 @@ import {
 
 export default KVInsightsAppRoute;
 
-export const handler = async (request, context: HandlerContext) => KVInsightsAppRouteHandlers.GET(request, context);
+export const handler = KVInsightsAppRouteHandlers;
