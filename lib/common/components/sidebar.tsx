@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import BroadcastIcon from './icon/broadcastIcon.tsx';
 import CardListIcon from './icon/cardListIcon.tsx';
-import GitHubIcon from './icon/githubIcon.tsx';
+import GitHubIcon from './icon/gitHubIcon.tsx';
 
 const Sidebar: FunctionComponent = () => {
   return (
