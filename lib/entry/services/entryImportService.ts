@@ -1,8 +1,8 @@
 import { DBEntry, EntriesExportHeader, EntriesImportResult, EntriesImportStatus, Entry } from '../models.ts';
 import { TextLineStream } from 'https://deno.land/std@0.147.0/streams/delimiter.ts';
-import { revive } from '../utils.ts';
 import { ValidationError } from '../../common/errors.ts';
 import { saveEntries } from '../entryRepository.ts';
+import { revive } from "../../common/httpUtils.ts";
 
 export async function importEntries(importStream: ReadableStream<Uint8Array>): Promise<EntriesImportResult> {
   const amountImportedEntries = 0;

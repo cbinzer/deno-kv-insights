@@ -1,6 +1,6 @@
 import { chunk } from '../../../deps.ts';
+import { replace } from '../../common/httpUtils.ts';
 import { EntriesExportForCreation, EntriesExportHeader } from '../models.ts';
-import { replace } from '../utils.ts';
 import { getEntriesByKeys } from './entryService.ts';
 
 export function createEntriesExport(exportForCreation: EntriesExportForCreation): ReadableStream {

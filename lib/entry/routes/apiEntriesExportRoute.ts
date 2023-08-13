@@ -1,8 +1,7 @@
 import { Handlers } from '$fresh/src/server/types.ts';
 import { Status } from '../../../deps.ts';
-import { mapToHTTPError } from '../../common/httpUtils.ts';
+import { mapToHTTPError, revive } from '../../common/httpUtils.ts';
 import { EntryKey } from '../models.ts';
-import { revive } from '../utils.ts';
 import { createEntriesExport } from '../services/entryExportService.ts';
 
 export const handler: Handlers = {

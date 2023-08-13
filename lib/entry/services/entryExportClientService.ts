@@ -1,5 +1,5 @@
+import { replace } from '../../common/httpUtils.ts';
 import { EntryKey } from '../models.ts';
-import { replace } from '../utils.ts';
 
 const ENDPOINT_URL = `/kv-insights/api/entries/export`;
 

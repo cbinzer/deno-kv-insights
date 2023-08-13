@@ -9,7 +9,8 @@ import {
   NewEntry,
 } from '../models.ts';
 import { HTTPError, Pagination } from '../../common/models.ts';
-import { replace, revive } from '../utils.ts';
+import { replace, revive } from "../../common/httpUtils.ts";
+
 
 const ENDPOINT_URL = `${window.location?.origin}/kv-insights/api/entries`;
 
