@@ -17,7 +17,7 @@ export const EntriesPageRouteHandlers: Handlers = {
 
 export function EntriesPageRoute(props: { data: { entries: HTTPStrippedEntries } }) {
   return (
-    <Page>
+    <Page currentRoute={'/kv-insights'}>
       <EntriesManagement initialEntries={props.data.entries} />
     </Page>
   );

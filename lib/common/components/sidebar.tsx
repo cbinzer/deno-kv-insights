@@ -20,7 +20,7 @@ const Sidebar: FunctionComponent<SidebarProps> = ({ currentRoute = '/kv-insights
           </li>
 
           <li class={`list-group-item navigation-list-item ${currentRoute === '/kv-insights/queue' ? 'active' : ''}`}>
-            <a class='text-decoration-none' href='/kv-insights/queues'>
+            <a class='text-decoration-none' href='/kv-insights/queue'>
               <BroadcastIcon width={32} height={32} />
             </a>
           </li>

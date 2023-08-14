@@ -3,7 +3,7 @@ import { asset } from '$fresh/src/runtime/utils.ts';
 import { FunctionComponent } from 'preact';
 import Sidebar from '../../common/components/sidebar.tsx';
 
-const Page: FunctionComponent<PageProps> = ({ children }) => {
+const Page: FunctionComponent<PageProps> = ({ currentRoute, children }) => {
   return (
     <div class='page'>
       <Head>
@@ -14,11 +14,11 @@ const Page: FunctionComponent<PageProps> = ({ children }) => {
           integrity='sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM'
           crossOrigin='anonymous'
         />
-        <link href={asset('style.css')} rel='stylesheet' />
+        <link href={asset('/style.css')} rel='stylesheet' />
         <title>Deno KV Insights</title>
       </Head>
 
-      <Sidebar />
+      <Sidebar currentRoute={currentRoute} />
 
       <div class='main'>
         <header class='header'>
@@ -42,6 +42,8 @@ const Page: FunctionComponent<PageProps> = ({ children }) => {
   );
 };
 
-export interface PageProps {}
+export interface PageProps {
+  currentRoute: string;
+}
 
 export default Page;

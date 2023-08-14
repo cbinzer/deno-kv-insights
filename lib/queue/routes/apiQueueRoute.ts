@@ -1,7 +1,7 @@
 import { Handlers } from '$fresh/server.ts';
-import { mapToHTTPError, replace, revive } from '../common/httpUtils.ts';
-import { QueueData } from './models.ts';
-import { publishValue, subscribeToValue } from './queueService.ts';
+import { mapToHTTPError, replace, revive } from '../../common/httpUtils.ts';
+import { QueueData } from '../models.ts';
+import { publishValue, subscribeToValue } from '../queueService.ts';
 
 export const handler: Handlers = {
   GET: (): Response => {
