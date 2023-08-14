@@ -7,6 +7,6 @@ export async function publishValue(value: unknown): Promise<void> {
   }
 }
 
-export function subscribeToValue(handler: (value: unknown) => Promise<void> | void) {
-  db.listenQueue(handler);
+export async function subscribeToValue(handler: (value: unknown) => Promise<void> | void): Promise<void> {
+  await db.listenQueue(handler);
 }
