@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'preact';
-import QueueDataList from '../components/queueMessageList.tsx';
+import QueueDataList from './queueMessageList.tsx';
 import { useState } from 'preact/hooks';
 import { QueueData } from '../models.ts';
 
