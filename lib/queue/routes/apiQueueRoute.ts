@@ -12,6 +12,7 @@ export const handler: Handlers = {
 
           await subscribeToValue((value) => {
             const queueData: QueueData = {
+              received: new Date(),
               value,
             };
             const text = `data: ${JSON.stringify(queueData, replace)}\r\n\r\n`;

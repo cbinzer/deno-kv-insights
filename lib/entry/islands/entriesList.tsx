@@ -5,13 +5,20 @@ import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../utils.ts';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
-  { initialEntries, keyPrefix = '', selectedEntries = [], onSelect = () => {}, onSelectMany = {}, doReload = false },
+  {
+    initialEntries,
+    keyPrefix = '',
+    selectedEntries = [],
+    onSelect = () => {},
+    onSelectMany = () => {},
+    doReload = false,
+  },
 ) => {
   const [initialized, setInitialized] = useState(false);
   const [entries, setEntries] = useState(initialEntries);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<StrippedEntry>();
-  const [selectedEntryCursors, setSelectedEntryCursors] = useState<Set>(new Set());
+  const [selectedEntryCursors, setSelectedEntryCursors] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (doReload) {

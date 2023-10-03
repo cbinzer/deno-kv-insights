@@ -44,6 +44,7 @@ body {
     border: solid var(--bs-border-color) 1px;
     border-radius: var(--bs-border-radius);
 }
+
 /*#endregion*/
 
 /*#region sidebar*/
@@ -104,6 +105,7 @@ body {
 .sidebar .github-link {
     color: #000000;
 }
+
 /*#endregion*/
 
 /*#region entriesManagement*/
@@ -139,6 +141,7 @@ body {
 .entries-management .search-form-control {
     max-width: 290px;
 }
+
 /*#endregion*/
 
 /*#region entriesList*/
@@ -180,12 +183,14 @@ body {
 .entries-list .type-col {
     width: 140px;
 }
+
 /*#endregion*/
 
 /*#region createEntryModal*/
 .create-entry-modal .value-form-control {
     min-height: 210px;
 }
+
 /*#endregion*/
 
 /*#region entryDetail*/
@@ -233,6 +238,7 @@ body {
 .entry-detail .value-form-control {
     height: calc(100% - 50px);
 }
+
 /*#endregion*/
 
 /*#region entriesManagement*/
@@ -254,7 +260,47 @@ body {
     padding: 0 15px;
 }
 
-.queue-management .messages-container {
+.queue-management .queue-data-list-container {
     position: relative;
 }
+
+.queue-management .queue-data-list-container .queue-data-list {
+    position: absolute;
+}
+
+/*#endregion*/
+
+/*#region  */
+.queue-data-list {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 0 15px;
+}
+
+.queue-data-list .empty-table {
+    display: grid;
+    height: 100%;
+    width: 100%;
+}
+
+.queue-data-list .empty-table .info-text {
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.queue-data-list .table {
+    table-layout: fixed;
+}
+
+.queue-data-list .table-header {
+    position: sticky;
+    top: 0;
+}
+
+.queue-data-list .received-date-col {
+    width: 160px;
+}
+
 /*#endregion*/
