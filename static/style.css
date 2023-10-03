@@ -242,4 +242,19 @@ body {
     grid-template-rows: 1fr 1fr;
     row-gap: 25px;
 }
+
+.queue-management .top-panel-container {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-row-gap: 24px;
+}
+
+.queue-management .action-container {
+    padding: 0 15px;
+}
+
+.queue-management .messages-container {
+    position: relative;
+}
 /*#endregion*/
