@@ -241,11 +241,11 @@ body {
 
 /*#endregion*/
 
-/*#region entriesManagement*/
+/*#region queueManagement*/
 .queue-management {
     height: 100%;
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 462px;
     row-gap: 25px;
 }
 
@@ -270,7 +270,7 @@ body {
 
 /*#endregion*/
 
-/*#region  */
+/*#region queueDataList*/
 .queue-data-list {
     width: 100%;
     height: 100%;
@@ -301,6 +301,22 @@ body {
 
 .queue-data-list .received-date-col {
     width: 160px;
+}
+
+/*#endregion*/
+
+/*#region queueValuePublisher*/
+.queue-value-publisher {
+    padding: 0 15px;
+}
+
+.queue-value-publisher form {
+    display: grid;
+    grid-template-rows: auto 288px auto;
+}
+
+.queue-value-publisher .value-form-control {
+    min-height: 210px;
 }
 
 /*#endregion*/

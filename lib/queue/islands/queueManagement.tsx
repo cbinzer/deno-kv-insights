@@ -2,6 +2,7 @@ import { FunctionComponent } from 'preact';
 import QueueDataList from './queueMessageList.tsx';
 import { useState } from 'preact/hooks';
 import { QueueData } from '../models.ts';
+import QueueValuePublisher from './queueValuePublisher.tsx';
 
 const QueueManagement: FunctionComponent = () => {
   const [queueData, setQueueData] = useState<QueueData[]>(
@@ -25,7 +26,9 @@ const QueueManagement: FunctionComponent = () => {
         </div>
       </div>
 
-      <div class='panel'>Panel 2</div>
+      <div class='panel'>
+        <QueueValuePublisher />
+      </div>
     </div>
   );
 };

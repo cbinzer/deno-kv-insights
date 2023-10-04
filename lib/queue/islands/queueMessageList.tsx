@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { QueueData } from '../models.ts';
 
-const dateformat = new Intl.DateTimeFormat(undefined, { dateStyle: 'short', timeStyle: 'short' });
+const dateformater = new Intl.DateTimeFormat(undefined, { dateStyle: 'short', timeStyle: 'short' });
 
 const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => {
   if (data.length === 0) {
@@ -30,7 +30,7 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
         <tbody>
           {data.map((entry, index) => (
             <tr key={index} class='table-row'>
-              <td>{dateformat.format(entry.received)}</td>
+              <td>{dateformater.format(entry.received)}</td>
               <td class='text-truncate'>{entry.value as string}</td>
             </tr>
           ))}
