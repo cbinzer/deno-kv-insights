@@ -1,5 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { QueueData } from '../models.ts';
+import { EntryValue } from '../../entry/models.ts';
+import { getValueTypeColorClass } from '../../entry/utils.ts';
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'short', timeStyle: 'medium' });
 
@@ -17,16 +19,16 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
     );
   }
 
-  const convertValueToString = (value: unknown) => {
-    if (value === undefined) {
-      return 'undefined';
+  const convertValueToString = (value: EntryValue) => {
+    if (value == null) {
+      return '';
     }
 
     if (value instanceof Uint8Array) {
-      return `Uint8Array: [${value.join(',')}]`;
+      return `[${value.join(',')}]`;
     }
 
-    if (value instanceof RegExp) {
+    if (value instanceof RegExp || typeof value === 'boolean') {
       return value.toString();
     }
 
@@ -35,23 +37,13 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
     }
 
     if (value instanceof Map) {
-      return `Map: ${
-        JSON.stringify(
-          Array.from(value.entries()).reduce((obj, [key, val]) => ({ ...obj, [key as string]: val }), {}),
-        )
-      }`;
-    }
-
-    if (typeof value === 'bigint') {
-      return `${value}n`;
+      return JSON.stringify(
+        Array.from(value.entries()).reduce((obj, [key, val]) => ({ ...obj, [key as string]: val }), {}),
+      );
     }
 
     if (typeof value === 'object') {
       return JSON.stringify(value);
-    }
-
-    if (typeof value === 'boolean') {
-      return value.toString();
     }
 
     return value;
@@ -63,6 +55,7 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
         <thead class='table-header table-light'>
           <tr>
             <th class='received-date-col' scope='col'>Received Date</th>
+            <th class='type-col' scope='col'>Type</th>
             <th scope='col'>Value</th>
           </tr>
         </thead>
@@ -71,6 +64,9 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
           {data.map((entry, index) => (
             <tr key={index} class='table-row'>
               <td>{dateFormatter.format(entry.received)}</td>
+              <td>
+                <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
+              </td>
               <td class='text-truncate'>{convertValueToString(entry.value)}</td>
             </tr>
           ))}

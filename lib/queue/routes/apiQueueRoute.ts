@@ -1,6 +1,7 @@
 import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError, replace, revive } from '../../common/httpUtils.ts';
 import { EntryValue } from '../../entry/models.ts';
+import { getValueType } from '../../entry/utils.ts';
 import { QueueData, SubscriptionId } from '../models.ts';
 import { publishValue, subscribeToQueue, unsubscribeFromQueue } from '../services/queueService.ts';
 
@@ -16,6 +17,7 @@ export const handler: Handlers = {
           subscriptionId = subscribeToQueue((value) => {
             const queueData: QueueData = {
               received: new Date(),
+              valueType: getValueType(value),
               value,
             };
             const text = `data: ${JSON.stringify(queueData, replace)}\r\n\r\n`;

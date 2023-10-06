@@ -303,6 +303,10 @@ body {
     width: 160px;
 }
 
+.queue-data-list .type-col {
+    width: 115px;
+}
+
 /*#endregion*/
 
 /*#region queueValuePublisher*/

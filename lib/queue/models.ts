@@ -1,4 +1,4 @@
-import { EntryValue } from '../entry/models.ts';
+import { EntryValue, ValueType } from '../entry/models.ts';
 
 export type SubscriptionId = string;
 
@@ -9,5 +9,6 @@ export interface Subscription {
 
 export interface QueueData {
   received: Date;
-  value: unknown;
+  valueType: ValueType;
+  value: EntryValue;
 }
