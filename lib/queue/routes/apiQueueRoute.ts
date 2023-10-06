@@ -1,16 +1,19 @@
 import { Handlers } from '$fresh/server.ts';
 import { mapToHTTPError, replace, revive } from '../../common/httpUtils.ts';
-import { QueueData } from '../models.ts';
-import { publishValue, subscribeToValue } from '../queueService.ts';
+import { EntryValue } from '../../entry/models.ts';
+import { QueueData, SubscriptionId } from '../models.ts';
+import { publishValue, subscribeToQueue, unsubscribeFromQueue } from '../services/queueService.ts';
 
 export const handler: Handlers = {
   GET: (): Response => {
     try {
+      let subscriptionId: SubscriptionId;
+
       const value = new ReadableStream({
-        async start(controller) {
+        start(controller) {
           const textEncoder = new TextEncoder();
 
-          await subscribeToValue((value) => {
+          subscriptionId = subscribeToQueue((value) => {
             const queueData: QueueData = {
               received: new Date(),
               value,
@@ -19,8 +22,9 @@ export const handler: Handlers = {
             controller.enqueue(textEncoder.encode(text));
           });
         },
+
         cancel() {
-          console.log('should close kv queue subscription.');
+          unsubscribeFromQueue(subscriptionId);
         },
       });
 
@@ -42,7 +46,7 @@ export const handler: Handlers = {
   POST: async (request): Promise<Response> => {
     try {
       const text = await request.text();
-      const queueData = JSON.parse(text, revive) as QueueData;
+      const queueData = JSON.parse(text, revive) as { value: EntryValue };
       await publishValue(queueData.value);
       return new Response(null, { status: 201 });
     } catch (e) {

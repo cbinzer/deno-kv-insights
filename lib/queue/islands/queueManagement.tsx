@@ -1,23 +1,32 @@
 import { FunctionComponent } from 'preact';
-import QueueDataList from './queueMessageList.tsx';
 import { useState } from 'preact/hooks';
 import { QueueData } from '../models.ts';
+import { subscribeToQueue } from '../services/queueClientService.ts';
+import QueueDataList from './queueDataList.tsx';
 import QueueValuePublisher from './queueValuePublisher.tsx';
 
 const QueueManagement: FunctionComponent = () => {
-  const [queueData, setQueueData] = useState<QueueData[]>(
-    Array.from(Array(100)).map(() => ({
-      received: new Date(),
-      value: crypto.randomUUID(),
-    })),
-  );
+  const [subscribed, setSubscribed] = useState<boolean>(false);
+  const [queueData, setQueueData] = useState<QueueData[]>([]);
+
+  const subscribe = () => {
+    subscribeToQueue((data) =>
+      setQueueData((previousData) => {
+        console.log(data);
+        return [data, ...previousData];
+      })
+    );
+    setSubscribed(true);
+  };
 
   return (
     <div class='queue-management'>
       <div class='panel'>
         <div class='top-panel-container'>
           <div class='action-container'>
-            <button class='btn btn-primary float-end'>Subscribe</button>
+            <button class='btn btn-primary float-end' disabled={subscribed} onClick={subscribe}>
+              {subscribed ? <span class='spinner-border spinner-border-sm' /> : 'Subscribe'}
+            </button>
           </div>
 
           <div class='queue-data-list-container'>

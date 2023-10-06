@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks';
 import ValueTypeDropdown from '../../entry/islands/valueTypeDropdown.tsx';
 import { EntryValue, ValueType } from '../../entry/models.ts';
 import EntryValueFormControl from '../../entry/islands/entryValueFormControl.tsx';
+import { publishValue } from '../services/queueClientService.ts';
 
 const QueueValuePublisher: FunctionComponent = () => {
   const [isPublishing, setIsPublishing] = useState(false);
@@ -59,9 +60,14 @@ const QueueValuePublisher: FunctionComponent = () => {
     setIsValueInvalid(false);
   };
 
+  const publishEntryValue = async (event: Event) => {
+    event.preventDefault();
+    await publishValue(value);
+  };
+
   return (
     <div class='queue-value-publisher'>
-      <form>
+      <form onSubmit={publishEntryValue}>
         <div class='mb-3'>
           <label for='type' class='col-form-label'>Type:</label>
           <div id='type'>
@@ -86,7 +92,11 @@ const QueueValuePublisher: FunctionComponent = () => {
         </div>
 
         <div>
-          <button type='submit' class='btn btn-primary float-end' disabled={isValueInvalid || isPublishing}>
+          <button
+            type='submit'
+            class='btn btn-primary float-end'
+            disabled={isValueInvalid || isPublishing}
+          >
             {isPublishing ? <span class='spinner-border spinner-border-sm' /> : 'Publish'}
           </button>
         </div>
