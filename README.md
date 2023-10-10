@@ -12,6 +12,8 @@ Deno KV Insights is a tool for managing Deno KV database entries.
 - Delete one or many selected entries
 - Export selected entries in JSON Lines format: https://jsonlines.org/
 - Import entries from JSON Lines format: https://jsonlines.org/
+- Subscribe to the KV queue to see all published values
+- Publish values to KV queue
 
 The project was implemented for the Deno KV Hackathon (06/12/2023 - 06/15/2023).
 
@@ -42,7 +44,7 @@ Now you should be able to access the tool via /kv-insights and see your first KV
 currently fixed and cannot be changed. However, you cannot create, edit or delete any entries yet. For this you have to
 re-export an island.
 
-### 2. Re-export entriesManagement island
+### 2. Re-export entriesManagement and queueManagement islands
 
 In the islands folder create an entriesManagement.tsx with the following content:
 
@@ -54,7 +56,17 @@ import EntriesManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib
 export default EntriesManagement;
 ```
 
-Now you should be able to create, edit and delete entries.
+and create a queueManagement.tsx with the following content:
+
+```ts
+// islands/queueManagement.tsx
+
+import QueueManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/islands/queueManagement.tsx';
+
+export default QueueManagement;
+```
+
+Now you should be able to create, edit as well as delete entries.
 
 ### 3. Adapt your _app.tsx (optional)
 
