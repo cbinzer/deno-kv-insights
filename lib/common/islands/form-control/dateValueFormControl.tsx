@@ -20,7 +20,7 @@ const DateValueFormControl: FunctionComponent<DateValueFormControlProps> = (
   };
 
   const formatDate = (date: Date): string => {
-    return (new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString()).slice(0, -5);
+    return (new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString()).slice(0, -8);
   };
 
   return (
