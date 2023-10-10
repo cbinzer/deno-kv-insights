@@ -14,7 +14,7 @@ const Page: FunctionComponent<PageProps> = ({ currentRoute, children }) => {
           integrity='sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM'
           crossOrigin='anonymous'
         />
-        <link href={asset('/style.css')} rel='stylesheet' />
+        <link href={asset('/kv-insights/assets/style.css')} rel='stylesheet' />
         <title>Deno KV Insights</title>
       </Head>
 
