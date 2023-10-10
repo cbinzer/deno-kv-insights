@@ -3,6 +3,7 @@ import { Handlers } from '$fresh/server.ts';
 export const handler: Handlers = {
   GET: async (_, context): Promise<Response> => {
     const filepath = `./static/${context.params.fileName}`;
+    console.log(filepath);
 
     let file;
     try {
