@@ -10,12 +10,7 @@ const QueueManagement: FunctionComponent = () => {
   const [queueData, setQueueData] = useState<QueueData[]>([]);
 
   const subscribe = () => {
-    subscribeToQueue((data) =>
-      setQueueData((previousData) => {
-        console.log(data);
-        return [data, ...previousData];
-      })
-    );
+    subscribeToQueue((data) => setQueueData((previousData) => [data, ...previousData]));
     setSubscribed(true);
   };
 

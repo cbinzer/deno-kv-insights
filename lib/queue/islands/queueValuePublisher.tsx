@@ -62,7 +62,10 @@ const QueueValuePublisher: FunctionComponent = () => {
 
   const publishEntryValue = async (event: Event) => {
     event.preventDefault();
+
+    setIsPublishing(true);
     await publishValue(value);
+    setIsPublishing(false);
   };
 
   return (

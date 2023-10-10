@@ -24,6 +24,10 @@ const QueueDataList: FunctionComponent<QueueDataListProps> = ({ data = [] }) => 
       return '';
     }
 
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+
     if (value instanceof Uint8Array) {
       return `[${value.join(',')}]`;
     }
