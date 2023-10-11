@@ -3,7 +3,7 @@ import { handler as APIEntriesImportsRouteHandler } from './entry/routes/apiEntr
 import { handler as APIEntriesRouteHandler } from './entry/routes/apiEntriesRoute.ts';
 import { handler as APIEntryRouteHandler } from './entry/routes/apiEntryRoute.ts';
 import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts';
-import { handler as AssetsRouteHandler } from './common/routes/assetsRoute.ts';
+import { handler as StyleRouteHandler } from './common/routes/styleRoute.ts';
 import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesRoute.tsx';
 import { QueuePageRoute } from './queue/routes/queueRoute.tsx';
 
@@ -23,8 +23,8 @@ export function kvInsightsPlugin() {
         component: QueuePageRoute,
       },
       {
-        path: `${basePath}/assets/[fileName]`,
-        handler: AssetsRouteHandler,
+        path: `${basePath}/assets/style.css`,
+        handler: StyleRouteHandler,
       },
       {
         path: `${basePath}/api/entries`,
