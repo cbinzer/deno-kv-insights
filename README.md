@@ -66,7 +66,7 @@ import QueueManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/e
 export default QueueManagement;
 ```
 
-Now you should be able to create, edit as well as delete entries.
+Now you should be able to create, edit and delete entries.
 
 ### 3. Adapt your _app.tsx (optional)
 
@@ -79,7 +79,7 @@ the /kv-insights route inside it to avoid broken styles and functionality.
 import { AppProps } from '$fresh/server.ts';
 
 export default function App(props: AppProps) {
-  if (props.url.pathname === '/kv-insights') {
+  if (context.url.pathname.startsWith('/kv-insights/')) {
     return <props.Component />;
   }
 
