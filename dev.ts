@@ -8,9 +8,13 @@ await createCSSTypescriptFile();
 await dev(import.meta.url, './main.ts');
 
 async function createCSSTypescriptFile(): Promise<void> {
+  const bootstrapCSSContent = await Deno.readTextFile('./static/bootstrap.css');
   const styleCSSContent = await Deno.readTextFile('./static/style.css');
+
   const cleanCss = new CleanCss();
-  const newMinifiedCss = cleanCss.minify(styleCSSContent).styles;
-  const styleVariable = `export const style = '${newMinifiedCss}';`;
+  const minifiedStyles = cleanCss.minify(styleCSSContent).styles;
+  const minifiedBootstrapStyles = cleanCss.minify(bootstrapCSSContent).styles;
+
+  const styleVariable = `export const style = \`${minifiedBootstrapStyles} ${minifiedStyles}\`;`;
   await Deno.writeTextFile('./lib/common/routes/style.css.ts', styleVariable);
 }
