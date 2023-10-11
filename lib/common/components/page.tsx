@@ -1,5 +1,4 @@
 import { Head } from '$fresh/src/runtime/head.ts';
-import { asset } from '$fresh/src/runtime/utils.ts';
 import { FunctionComponent } from 'preact';
 import Sidebar from '../../common/components/sidebar.tsx';
 
@@ -8,7 +7,7 @@ const Page: FunctionComponent<PageProps> = ({ currentRoute, children }) => {
     <div class='page'>
       <Head>
         <meta name='robots' content='noindex' />
-        <link href={asset('/kv-insights/assets/style.css')} rel='stylesheet' />
+        <link href={'/kv-insights/assets/style'} rel='stylesheet' />
         <title>Deno KV Insights</title>
       </Head>
 

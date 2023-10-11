@@ -23,7 +23,7 @@ export function kvInsightsPlugin() {
         component: QueuePageRoute,
       },
       {
-        path: `${basePath}/assets/style.css`,
+        path: `${basePath}/assets/style`,
         handler: StyleRouteHandler,
       },
       {
