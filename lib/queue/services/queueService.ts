@@ -4,6 +4,7 @@ import { Subscription, SubscriptionId } from '../models.ts';
 
 let subscriptions: Subscription[] = [];
 let queueConnected = false;
+let queueValueHandler: ((value: unknown) => Promise<void>) | undefined;
 
 export async function publishValue(value: EntryValue): Promise<void> {
   const result: { ok: boolean } = await db.enqueue(value);
@@ -21,10 +22,26 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
 
   if (!queueConnected) {
     queueConnected = true;
-    db.listenQueue(async (value) => {
-      await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
-    });
-    console.debug(`Successfully connected to queue.`);
+
+    if (!queueValueHandler) {
+      createQueueValueHandler();
+
+      try {
+        db.listenQueue(async (value) => {
+          if (queueValueHandler) {
+            await queueValueHandler(value);
+          }
+        });
+        console.debug(`Successfully connected to queue.`);
+      } catch (e) {
+        queueConnected = false;
+        queueValueHandler = undefined;
+        unsubscribeFromQueue(id);
+
+        console.error('An error occurred on connecting to queue', e);
+        throw new Error('An error occurred on connecting to queue');
+      }
+    }
   }
 
   return id;
@@ -33,4 +50,14 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
 export function unsubscribeFromQueue(id: SubscriptionId) {
   subscriptions = subscriptions.filter((subscribtion) => subscribtion.id !== id);
   console.debug(`Subscription with id ${id} successfully removed.`);
+}
+
+export function createQueueValueHandler(): (value: unknown) => Promise<void> {
+  if (!queueValueHandler) {
+    queueValueHandler = async (value) => {
+      await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
+    };
+  }
+
+  return queueValueHandler;
 }
