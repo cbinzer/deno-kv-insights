@@ -1,1 +1,5 @@
-export const db = await Deno.openKv();
+export let db: Deno.Kv;
+
+export function setKv(kv: Deno.Kv) {
+  db = kv;
+}

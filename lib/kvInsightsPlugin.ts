@@ -6,10 +6,14 @@ import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts
 import { handler as StyleRouteHandler } from './common/routes/styleRoute.ts';
 import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesRoute.tsx';
 import { QueuePageRoute } from './queue/routes/queueRoute.tsx';
+import { PluginSettings } from './common/models.ts';
+import { setKv } from './common/db.ts';
+import { Plugin } from '$fresh/server.ts';
 
-export function kvInsightsPlugin() {
+export async function kvInsightsPlugin(settings: PluginSettings = {}): Promise<Plugin> {
+  await initKv(settings.kv);
+
   const basePath = '/kv-insights';
-
   return {
     name: 'deno-kv-insights',
     routes: [
@@ -48,4 +52,12 @@ export function kvInsightsPlugin() {
       },
     ],
   };
+}
+
+async function initKv(existingKvInstance?: Deno.Kv): Promise<void> {
+  if (existingKvInstance) {
+    setKv(existingKvInstance);
+  } else {
+    setKv(await Deno.openKv());
+  }
 }

@@ -52,3 +52,7 @@ export interface DateJSON {
   type: JSONType.DATE;
   value: string;
 }
+
+export interface PluginSettings {
+  kv?: Deno.Kv;
+}
