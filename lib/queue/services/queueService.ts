@@ -28,19 +28,21 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
   if (!queueConnected) {
     queueConnected = true;
 
-    if (!queueValueHandler) {
-      createQueueValueHandler();
-    }
-
-    try {
-      connectToKVQueue();
+    if (queueValueHandler) {
       connectToBroadcastChannel();
-    } catch (e) {
-      queueConnected = false;
-      unsubscribeFromQueue(id);
+    } else {
+      createQueueValueHandler();
 
-      console.error('An error occurred on connecting to queue', e);
-      throw new Error('An error occurred on connecting to queue');
+      try {
+        connectToKVQueue();
+        connectToBroadcastChannel();
+      } catch (e) {
+        queueConnected = false;
+        unsubscribeFromQueue(id);
+
+        console.error('An error occurred on connecting to queue', e);
+        throw new Error('An error occurred on connecting to queue');
+      }
     }
   }
 
