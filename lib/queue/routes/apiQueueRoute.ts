@@ -20,6 +20,8 @@ export const handler: Handlers = {
               valueType: getValueType(value),
               value,
             };
+
+            console.debug('controller enqueue');
             const text = `data: ${JSON.stringify(queueData, replace)}\r\n\r\n`;
             controller.enqueue(textEncoder.encode(text));
           });

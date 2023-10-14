@@ -55,6 +55,7 @@ export function unsubscribeFromQueue(id: SubscriptionId) {
 export function createQueueValueHandler(): (value: unknown) => Promise<void> {
   if (!queueValueHandler) {
     queueValueHandler = async (value) => {
+      console.debug('QueueValueHandler executed');
       await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
     };
   }
