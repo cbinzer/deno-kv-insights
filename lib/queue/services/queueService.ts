@@ -6,7 +6,7 @@ const onDenoDeploy = Deno.env.get('DENO_DEPLOYMENT_ID') !== undefined;
 
 let subscriptions: Subscription[] = [];
 let queueConnected = false;
-let queueValueHandler: ((value: unknown) => Promise<void>) | undefined;
+let queueValueHandler: ((value: unknown, publishToBroadcastChannel: boolean) => Promise<void>) | undefined;
 let broadcastChannel: BroadcastChannel;
 
 export async function publishValue(value: EntryValue): Promise<void> {
@@ -22,7 +22,7 @@ export async function publishValue(value: EntryValue): Promise<void> {
 
   if (onDenoDeploy && queueValueHandler) {
     console.debug('Publish value to publisher', value);
-    await queueValueHandler(value);
+    await queueValueHandler(value, true);
   }
 }
 
@@ -61,11 +61,13 @@ export function unsubscribeFromQueue(id: SubscriptionId) {
 
 export function createQueueValueHandler(): (value: unknown) => Promise<void> {
   if (!queueValueHandler) {
-    queueValueHandler = async (value) => {
+    queueValueHandler = async (value, publishToBroadcastChannel) => {
       await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
 
-      console.debug('Publish value to broadcast channel', value);
-      broadcastChannel.postMessage(value);
+      if (publishToBroadcastChannel) {
+        console.debug('Publish value to broadcast channel', value);
+        broadcastChannel.postMessage(value);
+      }
     };
 
     if (!Deno.args.includes('build')) {
@@ -73,14 +75,18 @@ export function createQueueValueHandler(): (value: unknown) => Promise<void> {
     }
   }
 
-  return queueValueHandler;
+  return async (value: unknown) => {
+    if (queueValueHandler) {
+      await queueValueHandler(value, true);
+    }
+  };
 }
 
 function connectToKVQueue() {
   db.listenQueue(async (value) => {
     if (queueValueHandler) {
       console.debug('Received value over queue', value);
-      await queueValueHandler(value);
+      await queueValueHandler(value, true);
     }
   });
   console.debug(`Successfully connected to queue.`);
@@ -93,7 +99,7 @@ function connectToBroadcastChannel() {
       broadcastChannel.onmessage = async (event: MessageEvent<unknown>) => {
         if (queueValueHandler) {
           console.debug('Received value over broadcast channel', event.data);
-          await queueValueHandler(event.data);
+          await queueValueHandler(event.data, false);
         }
       };
       console.debug(`Successfully connected to broadcast channel.`);
