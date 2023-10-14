@@ -16,11 +16,12 @@ export async function publishValue(value: EntryValue): Promise<void> {
   }
 
   if (broadcastChannel) {
-    console.log('send value to broadcast channel', value);
+    console.debug('Publish value to broadcast channel', value);
     broadcastChannel.postMessage(value);
   }
 
   if (onDenoDeploy && queueValueHandler) {
+    console.debug('Publish value to publisher', value);
     await queueValueHandler(value);
   }
 }
@@ -61,7 +62,6 @@ export function unsubscribeFromQueue(id: SubscriptionId) {
 export function createQueueValueHandler(): (value: unknown) => Promise<void> {
   if (!queueValueHandler) {
     queueValueHandler = async (value) => {
-      console.debug('QueueValueHandler executed');
       await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
     };
 
@@ -76,6 +76,7 @@ export function createQueueValueHandler(): (value: unknown) => Promise<void> {
 function connectToKVQueue() {
   db.listenQueue(async (value) => {
     if (queueValueHandler) {
+      console.debug('Received value over queue', value);
       await queueValueHandler(value);
     }
   });
@@ -87,9 +88,8 @@ function connectToBroadcastChannel() {
     if (!broadcastChannel) {
       broadcastChannel = new BroadcastChannel('kv-insights');
       broadcastChannel.onmessage = async (event: MessageEvent<unknown>) => {
-        console.log('onmessage broadcast', event.data);
         if (queueValueHandler) {
-          console.log('Execute QueueValueHandler in broadcast');
+          console.debug('Received value over broadcast channel', event.data);
           await queueValueHandler(event.data);
         }
       };
