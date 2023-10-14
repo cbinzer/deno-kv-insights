@@ -57,7 +57,10 @@ export function createQueueValueHandler(): (value: unknown) => Promise<void> {
       console.debug('QueueValueHandler executed');
       await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
     };
-    connectToBroadcastChannel();
+
+    if (!Deno.args.includes('build')) {
+      connectToBroadcastChannel();
+    }
   }
 
   return queueValueHandler;
