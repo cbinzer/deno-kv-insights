@@ -14,6 +14,7 @@ export async function publishValue(value: EntryValue): Promise<void> {
   }
 
   if (broadcastChannel) {
+    console.log('send value to broadcast channel', value);
     broadcastChannel.postMessage(value);
   }
 }
@@ -80,7 +81,9 @@ function connectToBroadcastChannel() {
     if (!broadcastChannel) {
       broadcastChannel = new BroadcastChannel('kv-insights');
       broadcastChannel.onmessage = async (event: MessageEvent<unknown>) => {
+        console.log('onmessage broadcast', event.data);
         if (queueValueHandler) {
+          console.log('Execute QueueValueHandler in broadcast');
           await queueValueHandler(event.data);
         }
       };
