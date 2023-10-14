@@ -2,6 +2,8 @@ import { db } from '../../common/db.ts';
 import { EntryValue } from '../../entry/models.ts';
 import { Subscription, SubscriptionId } from '../models.ts';
 
+const onDenoDeploy = Deno.env.get('DENO_DEPLOYMENT_ID') !== undefined;
+
 let subscriptions: Subscription[] = [];
 let queueConnected = false;
 let queueValueHandler: ((value: unknown) => Promise<void>) | undefined;
@@ -16,6 +18,10 @@ export async function publishValue(value: EntryValue): Promise<void> {
   if (broadcastChannel) {
     console.log('send value to broadcast channel', value);
     broadcastChannel.postMessage(value);
+  }
+
+  if (onDenoDeploy && queueValueHandler) {
+    await queueValueHandler(value);
   }
 }
 
