@@ -2,8 +2,6 @@ import { db } from '../../common/db.ts';
 import { EntryValue } from '../../entry/models.ts';
 import { Subscription, SubscriptionId } from '../models.ts';
 
-const onDenoDeploy = Deno.env.get('DENO_DEPLOYMENT_ID') !== undefined;
-
 let subscriptions: Subscription[] = [];
 let queueConnected = false;
 let queueValueHandler: ((value: unknown, publishToBroadcastChannel: boolean) => Promise<void>) | undefined;
@@ -13,16 +11,6 @@ export async function publishValue(value: EntryValue): Promise<void> {
   const result: { ok: boolean } = await db.enqueue(value);
   if (!result.ok) {
     throw new Error('An unknown error occurred on publishing a value.');
-  }
-
-  if (broadcastChannel) {
-    console.debug('Publish value to broadcast channel', value);
-    broadcastChannel.postMessage(value);
-  }
-
-  if (onDenoDeploy && queueValueHandler) {
-    console.debug('Publish value to publisher', value);
-    await queueValueHandler(value, true);
   }
 }
 
