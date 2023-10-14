@@ -5,11 +5,16 @@ import { Subscription, SubscriptionId } from '../models.ts';
 let subscriptions: Subscription[] = [];
 let queueConnected = false;
 let queueValueHandler: ((value: unknown) => Promise<void>) | undefined;
+let broadcastChannel: BroadcastChannel;
 
 export async function publishValue(value: EntryValue): Promise<void> {
   const result: { ok: boolean } = await db.enqueue(value);
   if (!result.ok) {
     throw new Error('An unknown error occurred on publishing a value.');
+  }
+
+  if (broadcastChannel) {
+    broadcastChannel.postMessage(value);
   }
 }
 
@@ -25,22 +30,17 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
 
     if (!queueValueHandler) {
       createQueueValueHandler();
+    }
 
-      try {
-        db.listenQueue(async (value) => {
-          if (queueValueHandler) {
-            await queueValueHandler(value);
-          }
-        });
-        console.debug(`Successfully connected to queue.`);
-      } catch (e) {
-        queueConnected = false;
-        queueValueHandler = undefined;
-        unsubscribeFromQueue(id);
+    try {
+      connectToKVQueue();
+      connectToBroadcastChannel();
+    } catch (e) {
+      queueConnected = false;
+      unsubscribeFromQueue(id);
 
-        console.error('An error occurred on connecting to queue', e);
-        throw new Error('An error occurred on connecting to queue');
-      }
+      console.error('An error occurred on connecting to queue', e);
+      throw new Error('An error occurred on connecting to queue');
     }
   }
 
@@ -48,7 +48,7 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
 }
 
 export function unsubscribeFromQueue(id: SubscriptionId) {
-  subscriptions = subscriptions.filter((subscribtion) => subscribtion.id !== id);
+  subscriptions = subscriptions.filter((subscription) => subscription.id !== id);
   console.debug(`Subscription with id ${id} successfully removed.`);
 }
 
@@ -61,4 +61,29 @@ export function createQueueValueHandler(): (value: unknown) => Promise<void> {
   }
 
   return queueValueHandler;
+}
+
+function connectToKVQueue() {
+  db.listenQueue(async (value) => {
+    if (queueValueHandler) {
+      await queueValueHandler(value);
+    }
+  });
+  console.debug(`Successfully connected to queue.`);
+}
+
+function connectToBroadcastChannel() {
+  try {
+    if (!broadcastChannel) {
+      broadcastChannel = new BroadcastChannel('kv-insights');
+      broadcastChannel.onmessage = async (event: MessageEvent<unknown>) => {
+        if (queueValueHandler) {
+          await queueValueHandler(event.data);
+        }
+      };
+      console.debug(`Successfully connected to broadcast channel.`);
+    }
+  } catch (e) {
+    console.error('Connecting to broadcast channel failed.', e);
+  }
 }
