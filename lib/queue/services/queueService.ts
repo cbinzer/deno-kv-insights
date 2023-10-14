@@ -28,14 +28,11 @@ export function subscribeToQueue(handler: (value: EntryValue) => Promise<void> |
   if (!queueConnected) {
     queueConnected = true;
 
-    if (queueValueHandler) {
-      connectToBroadcastChannel();
-    } else {
+    if (!queueValueHandler) {
       createQueueValueHandler();
 
       try {
         connectToKVQueue();
-        connectToBroadcastChannel();
       } catch (e) {
         queueConnected = false;
         unsubscribeFromQueue(id);
@@ -60,6 +57,7 @@ export function createQueueValueHandler(): (value: unknown) => Promise<void> {
       console.debug('QueueValueHandler executed');
       await Promise.all(subscriptions.map((subscription) => subscription.handler(value as EntryValue)));
     };
+    connectToBroadcastChannel();
   }
 
   return queueValueHandler;
