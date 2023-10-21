@@ -25,7 +25,7 @@ https://kv-insights.deno.dev/
 
 KV insights was implemented with Deno Fresh and can currently only be integrated into applications based on Deno Fresh
 1.3 and above. Unfortunately, at the moment Deno Fresh does not offer the possibility to create plugins with islands.
-Therefore, in your application, the island for kv-insights must be re-exported from this repository.
+Therefore, in your application, the islands for kv-insights must be re-exported from this repository.
 
 ### 1. Import kvInsightsPlugin
 
@@ -37,12 +37,12 @@ import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
 import { kvInsightsPlugin } from 'https://deno.land/x/deno_kv_insights@$VERSION/mod.ts';
 
-await start(manifest, { plugins: [kvInsightsPlugin()] });
+await start(manifest, { plugins: [await kvInsightsPlugin()] });
 ```
 
 Now you should be able to access the tool via /kv-insights and see your first KV entries. The route "kv-insights" is
 currently fixed and cannot be changed. However, you cannot create, edit or delete any entries yet. For this you have to
-re-export an island.
+re-export two islands.
 
 ### 2. Re-export entriesManagement and queueManagement islands
 
@@ -68,7 +68,31 @@ export default QueueManagement;
 
 Now you should be able to create, edit and delete entries.
 
-### 3. Adapt your _app.tsx (optional)
+### 3. Reuse your KV instance to use the queue management section
+
+If your application has already a open connection to the KV queue you have to share your KV instance with kv-insights
+and execute the kv-insights value handler yourself:
+
+```ts
+// main.tsx
+import { start } from '$fresh/server.ts';
+import manifest from './fresh.gen.ts';
+import { createQueueValueHandler, kvInsightsPlugin } from 'https://deno.land/x/deno_kv_insights@$VERSION/mod.ts';
+
+const kv = await Deno.openKv();
+const kvInsightsQueueValueHandler = createQueueValueHandler();
+
+kv.listenQueue(async (value: unknown) => {
+  await kvInsightsQueueValueHandler(value); // execute the kv-insights value handler
+  // add your code to handle the queue value here
+});
+
+await start(manifest, { plugins: [await kvInsightsPlugin({ kv })] });
+```
+
+Now you should be able to publish and receive queue values over kv-insights.
+
+### 4. Adapt your _app.tsx (optional)
 
 If you are using an application wrapper (_app.tsx) to add a specific layout, scripts or styles then you should consider
 the /kv-insights route inside it to avoid broken styles and functionality.
@@ -91,7 +115,7 @@ export default function App(props: AppProps) {
 }
 ```
 
-### 4. Protect you kv-insights route (optional)
+### 5. Protect you kv-insights route (optional)
 
 You may not want everyone to access the KV Insights tool and see all database entries. You can prevent this with a
 middleware. Here is an example of a simple basic authentication middleware:
