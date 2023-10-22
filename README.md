@@ -37,7 +37,7 @@ import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
 import { kvInsightsPlugin } from 'https://deno.land/x/deno_kv_insights@$VERSION/mod.ts';
 
-await start(manifest, { plugins: [await kvInsightsPlugin()] });
+await start(manifest, { plugins: [kvInsightsPlugin()] });
 ```
 
 Now you should be able to access the tool via /kv-insights and see your first KV entries. The route "kv-insights" is
@@ -87,7 +87,7 @@ kv.listenQueue(async (value: unknown) => {
   // add your code to handle the queue value here
 });
 
-await start(manifest, { plugins: [await kvInsightsPlugin({ kv })] });
+await start(manifest, { plugins: [kvInsightsPlugin({ kv })] });
 ```
 
 Now you should be able to publish and receive queue values over kv-insights.
@@ -115,7 +115,7 @@ export default function App(props: AppProps) {
 }
 ```
 
-### 5. Protect you kv-insights route (optional)
+### 5. Protect your kv-insights route (optional)
 
 You may not want everyone to access the KV Insights tool and see all database entries. You can prevent this with a
 middleware. Here is an example of a simple basic authentication middleware:

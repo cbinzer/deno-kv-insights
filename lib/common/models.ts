@@ -53,6 +53,6 @@ export interface DateJSON {
   value: string;
 }
 
-export interface PluginSettings {
+export interface KVInsightsPluginOptions {
   kv?: Deno.Kv;
 }

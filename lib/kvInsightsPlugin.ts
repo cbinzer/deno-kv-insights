@@ -1,17 +1,17 @@
+import { Plugin } from '$fresh/server.ts';
+import { setKv } from './common/db.ts';
+import { KVInsightsPluginOptions } from './common/models.ts';
+import { handler as StyleRouteHandler } from './common/routes/styleRoute.ts';
 import { handler as APIEntriesExportRouteHandler } from './entry/routes/apiEntriesExportRoute.ts';
 import { handler as APIEntriesImportsRouteHandler } from './entry/routes/apiEntriesImportsRoute.ts';
 import { handler as APIEntriesRouteHandler } from './entry/routes/apiEntriesRoute.ts';
 import { handler as APIEntryRouteHandler } from './entry/routes/apiEntryRoute.ts';
-import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts';
-import { handler as StyleRouteHandler } from './common/routes/styleRoute.ts';
 import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesRoute.tsx';
+import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts';
 import { QueuePageRoute } from './queue/routes/queueRoute.tsx';
-import { PluginSettings } from './common/models.ts';
-import { setKv } from './common/db.ts';
-import { Plugin } from '$fresh/server.ts';
 
-export async function kvInsightsPlugin(settings: PluginSettings = {}): Promise<Plugin> {
-  await initKv(settings.kv);
+export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin {
+  initKv(options.kv);
 
   const basePath = '/kv-insights';
   return {
@@ -54,10 +54,10 @@ export async function kvInsightsPlugin(settings: PluginSettings = {}): Promise<P
   };
 }
 
-async function initKv(existingKvInstance?: Deno.Kv): Promise<void> {
+function initKv(existingKvInstance?: Deno.Kv) {
   if (existingKvInstance) {
     setKv(existingKvInstance);
   } else {
-    setKv(await Deno.openKv());
+    Deno.openKv().then((kv) => setKv(kv));
   }
 }
