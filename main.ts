@@ -7,6 +7,13 @@
 
 import { start } from '$fresh/server.ts';
 import manifest from './fresh.gen.ts';
-import { kvInsightsPlugin } from './mod.ts';
+import { createQueueValueHandler, kvInsightsPlugin } from './mod.ts';
 
-await start(manifest, { plugins: [kvInsightsPlugin()], router: { trailingSlash: false } });
+const kv = await Deno.openKv();
+const kvInsightsQueueValueHandler = createQueueValueHandler();
+
+kv.listenQueue(async (value: unknown) => {
+  await kvInsightsQueueValueHandler(value);
+});
+
+await start(manifest, { plugins: [kvInsightsPlugin({ kv })], router: { trailingSlash: false } });
