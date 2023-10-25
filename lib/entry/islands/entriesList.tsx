@@ -3,6 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { getAllEntries } from '../services/entryClientService.ts';
 import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../utils.ts';
+import PencilIcon from '../../common/components/icon/pencilIcon.tsx';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
   {
@@ -69,7 +70,9 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
 
   const loadMoreEntriesOnScrollEnd = (event: Event) => {
     const element = event.target as HTMLDivElement;
-    const scrollEndReached = element.offsetHeight + element.scrollTop >= element.scrollHeight;
+    const rowHeight = 20;
+    const scrollEndReached = element.offsetHeight + element.scrollTop + rowHeight >= element.scrollHeight;
+
     if (scrollEndReached) {
       loadMoreEntries();
     }
@@ -111,7 +114,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
           </div>
         )
         : (
-          <table class='table table-hover'>
+          <table class='table'>
             <thead class='table-header table-light'>
               <tr>
                 <th class='select-col' scope='col'>
@@ -124,6 +127,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                 </th>
                 <th class='type-col' scope='col'>Type</th>
                 <th class='key-col' scope='col'>Key</th>
+                <th class='actions-col' scope='col'></th>
               </tr>
             </thead>
 
@@ -132,7 +136,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                 <tr
                   key={entry.cursor}
                   class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
-                  onClick={() => selectEntry(entry)}
                 >
                   <td>
                     <input
@@ -147,6 +150,11 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
                   <td class='text-truncate'>{convertKeyToString(entry.key)}</td>
+                  <td class='text-center'>
+                    <a class='btn btn-outline-primary edit-btn' href={`/kv-insights/entries/${entry.cursor}`}>
+                      <PencilIcon />
+                    </a>
+                  </td>
                 </tr>
               ))}
             </tbody>

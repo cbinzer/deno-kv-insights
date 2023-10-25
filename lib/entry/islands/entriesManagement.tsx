@@ -1,12 +1,11 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
-import EntriesList from './entriesList.tsx';
-import EntryDetail from './entryDetail.tsx';
-import CreateEntryModal from './createEntryModal.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
-import DeleteEntriesModal from './deleteEntriesModal.tsx';
+import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { createEntriesExportLink } from '../services/entryExportClientService.ts';
+import CreateEntryModal from './createEntryModal.tsx';
+import DeleteEntriesModal from './deleteEntriesModal.tsx';
+import EntriesList from './entriesList.tsx';
 import ImportEntriesModal from './importEntriesModal.tsx';
 
 const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
@@ -38,11 +37,6 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
       setIsActionsMenuVisible(false);
     }
   }, undefined);
-
-  const removeSelectedEntry = () => {
-    setDoReloadEntries(true);
-    setSelectedEntryCursor(undefined);
-  };
 
   const openCreateEntryModal = () => {
     setIsCreateEntryModalOpen(true);
@@ -190,9 +184,6 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
               />
             </div>
           </div>
-        </div>
-        <div class='panel'>
-          <EntryDetail cursor={selectedEntryCursor} onDelete={removeSelectedEntry} />
         </div>
       </div>
 

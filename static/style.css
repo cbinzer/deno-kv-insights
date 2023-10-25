@@ -112,8 +112,7 @@ body {
 .entries-management {
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 25px;
+    grid-template-columns: 1fr;
 }
 
 .entries-management .left-panel-container {
@@ -172,16 +171,26 @@ body {
     margin-bottom: 78px;
 }
 
-.entries-list .table-row {
-    cursor: pointer;
-}
-
 .entries-list .select-col {
     width: 35px;
 }
 
 .entries-list .type-col {
     width: 140px;
+}
+
+.entries-list .actions-col {
+    width: 70px;
+}
+
+.entries-list td {
+    vertical-align: middle;
+}
+
+.entries-list .edit-btn {
+    border-style: none;
+    line-height: 1;
+    padding: 6px;
 }
 
 /*#endregion*/
