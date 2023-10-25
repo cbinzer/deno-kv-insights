@@ -4,3 +4,6 @@
 deno.lock
 import_map.json
 /target
+
+# Fresh build directory
+_fresh/

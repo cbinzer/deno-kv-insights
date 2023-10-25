@@ -3,7 +3,7 @@ import { deleteEntryByCursor } from '../services/entryClientService.ts';
 import { Entry } from '../models.ts';
 import Modal from '../../common/islands/modal.tsx';
 import { convertKeyToString } from '../utils.ts';
-import { useState } from 'https://esm.sh/stable/preact@10.15.1/denonext/hooks.js';
+import { useState } from 'preact/hooks';
 
 const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
   { open = false, entry, onClose = () => {}, onDelete = () => {} },

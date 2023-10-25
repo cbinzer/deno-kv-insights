@@ -16,4 +16,11 @@ kv.listenQueue(async (value: unknown) => {
   await kvInsightsQueueValueHandler(value);
 });
 
+// TODO: remove this after fix
+const origConsoleError = console.error;
+console.error = (msg) => {
+  if (typeof msg === 'string' && msg.includes('Improper nesting of table')) return;
+  origConsoleError(msg);
+};
+
 await start(manifest, { plugins: [kvInsightsPlugin({ kv })], router: { trailingSlash: false } });

@@ -9,7 +9,7 @@ import EntryDetailLoadingPlaceholder from '../components/entryDetailLoadingPlace
 import TrashIcon from '../../common/components/icon/trashIcon.tsx';
 
 const EntryDetail: FunctionComponent<EntryDetailProps> = ({ cursor, onDelete = () => {} }) => {
-  const [entry, setEntry] = useState<Entry | undefined>(cursor);
+  const [entry, setEntry] = useState<Entry | undefined>();
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
   const [isValueInvalid, setIsValueInvalid] = useState(false);
   const [isLoadingEntry, setIsLoadingEntry] = useState(false);

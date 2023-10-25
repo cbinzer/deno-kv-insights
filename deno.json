@@ -1,31 +1,21 @@
 {
   "tasks": {
     "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
-    "build_wasm_codec": "deno run -A https://deno.land/x/wasmbuild@0.14.1/main.ts --out lib/entry/codec"
+    "build_wasm_codec": "deno run -A https://deno.land/x/wasmbuild@0.14.1/main.ts --out lib/entry/codec",
+    "build": "deno run -A dev.ts build",
+    "preview": "deno run -A main.ts"
   },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  },
-  "fmt": {
-    "lineWidth": 120,
-    "singleQuote": true
-  },
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "fmt": { "lineWidth": 120, "singleQuote": true },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.3.1/",
+    "$fresh/": "https://deno.land/x/fresh@1.5.2/",
     "clean-css": "https://esm.sh/clean-css@5.3.1",
-    "preact": "https://esm.sh/preact@10.15.1",
-    "preact/": "https://esm.sh/preact@10.15.1/",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.0",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.1.3",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.2.3"
+    "preact": "https://esm.sh/preact@10.18.1",
+    "preact/": "https://esm.sh/preact@10.18.1/",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0"
   },
-  "lint": {
-    "rules": {
-      "tags": [
-        "fresh",
-        "recommended"
-      ]
-    }
-  }
+  "lint": { "rules": { "tags": ["fresh", "recommended"] } },
+  "exclude": ["**/_fresh/*"]
 }
