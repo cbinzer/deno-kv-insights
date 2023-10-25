@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import EntryDetail from './entryDetail.tsx';
 
-const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) => {
+const EntryPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) => {
   const removeSelectedEntry = () => {
     console.log('On delete!');
   };
@@ -13,4 +13,4 @@ export interface EntryDetailPageProps {
   cursor?: string;
 }
 
-export default EntryDetailPage;
+export default EntryPage;

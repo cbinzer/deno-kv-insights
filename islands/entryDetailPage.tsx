@@ -1,3 +1,3 @@
-import EntryDetailPage from '../lib/entry/islands/entryDetailPage.tsx';
+import EntryPage from '../lib/entry/islands/entryDetailPage.tsx';
 
-export default EntryDetailPage;
+export default EntryPage;
