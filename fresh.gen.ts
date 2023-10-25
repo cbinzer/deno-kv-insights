@@ -6,7 +6,8 @@ import * as $0 from './routes/_app.tsx';
 import * as $1 from './routes/index.tsx';
 import * as $2 from './routes/queue/index.tsx';
 import * as $$0 from './islands/entriesManagement.tsx';
-import * as $$1 from './islands/queueManagement.tsx';
+import * as $$1 from './islands/entryDetailPage.tsx';
+import * as $$2 from './islands/queueManagement.tsx';
 
 const manifest = {
   routes: {
@@ -16,7 +17,8 @@ const manifest = {
   },
   islands: {
     './islands/entriesManagement.tsx': $$0,
-    './islands/queueManagement.tsx': $$1,
+    './islands/entryDetailPage.tsx': $$1,
+    './islands/queueManagement.tsx': $$2,
   },
   baseUrl: import.meta.url,
 };
