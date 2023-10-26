@@ -105,6 +105,10 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     onSelectMany(entries.entries.filter((entry) => newSelectedCursors.has(entry.cursor)));
   };
 
+  const openEntryDetailPage = (cursor: string) => {
+    window.location = `/kv-insights/entries/${cursor}`;
+  };
+
   return (
     <div class='entries-list' onScroll={loadMoreEntriesOnScrollEnd}>
       {entries.entries.length === 0
@@ -114,7 +118,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
           </div>
         )
         : (
-          <table class='table'>
+          <table class='table table-hover'>
             <thead class='table-header table-light'>
               <tr>
                 <th class='select-col' scope='col'>
@@ -127,7 +131,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                 </th>
                 <th class='type-col' scope='col'>Type</th>
                 <th class='key-col' scope='col'>Key</th>
-                <th class='actions-col' scope='col'></th>
               </tr>
             </thead>
 
@@ -136,6 +139,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                 <tr
                   key={entry.cursor}
                   class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
+                  onClick={() => openEntryDetailPage(entry.cursor)}
                 >
                   <td>
                     <input
@@ -150,11 +154,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                     <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
                   </td>
                   <td class='text-truncate'>{convertKeyToString(entry.key)}</td>
-                  <td class='text-center'>
-                    <a class='btn btn-outline-primary edit-btn' href={`/kv-insights/entries/${entry.cursor}`}>
-                      <PencilIcon />
-                    </a>
-                  </td>
                 </tr>
               ))}
             </tbody>

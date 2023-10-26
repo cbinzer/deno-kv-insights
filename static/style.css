@@ -183,6 +183,10 @@ body {
     width: 70px;
 }
 
+.entries-list tr {
+    cursor: pointer;
+}
+
 .entries-list td {
     vertical-align: middle;
 }
