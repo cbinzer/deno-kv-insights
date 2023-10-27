@@ -6,7 +6,7 @@ body {
 .page {
     height: 100%;
     display: grid;
-    grid-template-columns: 80px 1fr;
+    grid-template-columns: 200px 1fr;
 }
 
 .header {
@@ -20,9 +20,18 @@ body {
     font-weight: bold;
 }
 
+.logo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 4px;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .deno-logo {
-    height: 65px;
-    width: 65px;
+    height: 55px;
+    width: 55px;
 }
 
 .footer {
@@ -45,15 +54,14 @@ body {
 .sidebar {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    justify-items: center;
+    grid-row-gap: 24px;
 
-    padding: 20px 0;
+    padding: 24px 12px;
     border-right: solid var(--bs-border-color) 1px;
 }
 
 .sidebar .navigation {
     width: 100%;
-    margin: 15px 0;
 }
 
 .sidebar .navigation-list {
@@ -61,43 +69,46 @@ body {
 }
 
 .sidebar .navigation-list-item {
-    display: grid;
-    align-items: center;
-    justify-items: center;
-
     border: none;
-    height: 60px;
-    cursor: pointer;
+    border-radius: 4px;
 
-    transition: background-color 0.5s;
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.sidebar .navigation-list-item a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 16px;
+    padding: 8px 16px;
+    color: var(--bs-text-color);
 }
 
 .sidebar .navigation-list-item:hover {
-    background-color: var(--bs-list-group-active-bg);
-    opacity: 0.6;
+    cursor: pointer;
+    background-color: var(--bs-secondary-bg);
+}
+
+.sidebar .navigation-list-item.active:hover {
+    background-color: var(--bs-list-group-active-bg)
 }
 
 .sidebar .navigation-list-item svg {
     color: #000000;
-    transition: color 0.5s;
 }
 
-.sidebar .navigation-list-item:hover svg,
-.sidebar .navigation-list-item.active svg {
+.sidebar .navigation-list-item.active svg,
+.sidebar .navigation-list-item.active a {
     color: #FFFFFF;
 }
 
 .sidebar .second-navigation {
     width: 100%;
-    text-align: center;
-}
-
-.sidebar .second-navigation .divider {
-    padding: 0 15px;
 }
 
 .sidebar .github-link {
-    color: #000000;
+    cursor: pointer;
 }
 
 /*#endregion*/
