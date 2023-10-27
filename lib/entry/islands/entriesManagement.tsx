@@ -171,6 +171,10 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
           </div>
         </div>
 
+        <div class='selected-information'>
+          {selectedEntries.length} {selectedEntries.length === 1 ? 'entry' : 'entries'} selected
+        </div>
+
         <div class='entries-list-container'>
           <EntriesList
             initialEntries={initialEntries}

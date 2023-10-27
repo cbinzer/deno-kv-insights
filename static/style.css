@@ -56,7 +56,7 @@ body {
     grid-template-rows: auto 1fr auto;
     grid-row-gap: 24px;
 
-    padding: 24px 12px;
+    padding: 24px 12px 12px 12px;
     border-right: solid var(--bs-border-color) 1px;
 }
 
@@ -107,6 +107,10 @@ body {
     width: 100%;
 }
 
+.sidebar .second-navigation .divider hr {
+    margin: 14px 0;
+}
+
 .sidebar .github-link {
     cursor: pointer;
 }
@@ -116,9 +120,8 @@ body {
 /*#region entriesManagement*/
 .entries-management {
     height: 100%;
-
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
 }
 
 .entries-management .action-container {
@@ -128,6 +131,12 @@ body {
 
     border-bottom: solid var(--bs-border-color) 1px;
     padding: 24px;
+}
+
+.entries-management .selected-information {
+    border-bottom: solid var(--bs-border-color) 1px;
+    padding: 6px 24px;
+    font-size: 14px;
 }
 
 .entries-management .entries-list-container {
@@ -173,7 +182,7 @@ body {
 }
 
 .entries-list .select-col {
-    width: 35px;
+    width: 47px;
 }
 
 .entries-list .type-col {

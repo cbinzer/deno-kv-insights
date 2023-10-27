@@ -121,7 +121,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
           <table class='table table-hover'>
             <thead class='table-header table-light'>
               <tr>
-                <th class='select-col' scope='col'>
+                <th class='select-col text-end' scope='col'>
                   <input
                     class='form-check-input'
                     type='checkbox'
@@ -141,7 +141,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
                   class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
                   onClick={() => openEntryDetailPage(entry.cursor)}
                 >
-                  <td>
+                  <td class='text-end' onClick={(event) => event.stopPropagation()}>
                     <input
                       class='form-check-input'
                       type='checkbox'
