@@ -5,14 +5,7 @@ const Page: FunctionComponent<PageProps> = ({ currentRoute, children }) => {
   return (
     <div class='page'>
       <Sidebar currentRoute={currentRoute} />
-
-      <div class='main'>
-        <header class='header'>
-          <span class='title'>Deno KV Insights</span>
-        </header>
-
-        <main>{children}</main>
-      </div>
+      <main class='main'>{children}</main>
     </div>
   );
 };

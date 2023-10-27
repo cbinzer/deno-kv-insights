@@ -106,84 +106,80 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
   return (
     <>
       <div class='entries-management'>
-        <div class='panel'>
-          <div class='left-panel-container'>
-            <div class='action-container'>
-              <div class='input-group search-form-control'>
-                <span class='input-group-text'>
-                  <SearchIcon />
-                </span>
-                <input
-                  type='search'
-                  class='form-control'
-                  placeholder='Filter by key (eg. users alice)'
-                  onSearch={changePrefix}
-                />
-              </div>
-
-              <div class='btn-group'>
-                <button class='btn btn-primary' onClick={openCreateEntryModal}>+ Entry</button>
-                <button
-                  type='button'
-                  class='btn btn-outline-primary dropdown-toggle dropdown-toggle-split'
-                  onClick={() => setIsActionsMenuVisible(!isActionsMenuVisible)}
-                >
-                  <span class='visually-hidden'>Toggle Dropdown</span>
-                </button>
-                <input
-                  class='d-none'
-                  type='file'
-                  accept='.jsonl'
-                  ref={fileInputRef}
-                  onChange={openEntriesImportModal}
-                />
-                <ul
-                  class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`}
-                  style={{ top: '40px', right: 0 }}
-                  ref={actionsMenuRef}
-                >
-                  <li>
-                    <a
-                      class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
-                      href='#'
-                      onClick={openDeleteEntriesModal}
-                    >
-                      Delete selected
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
-                      href={entriesExportLink}
-                      onClick={() => setIsActionsMenuVisible(false)}
-                    >
-                      Export selected
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class={`dropdown-item`}
-                      href='#'
-                      onClick={openFilePicker}
-                    >
-                      Import entries
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class='entries-list-container'>
-              <EntriesList
-                initialEntries={initialEntries}
-                keyPrefix={keyPrefix}
-                selectedEntries={selectedEntries}
-                onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
-                onSelectMany={toggleActionsEnabled}
-                doReload={doReloadEntries}
-              />
-            </div>
+        <div class='action-container'>
+          <div class='input-group search-form-control'>
+            <span class='input-group-text'>
+              <SearchIcon />
+            </span>
+            <input
+              type='search'
+              class='form-control'
+              placeholder='Filter by key (eg. users alice)'
+              onSearch={changePrefix}
+            />
           </div>
+
+          <div class='btn-group'>
+            <button class='btn btn-primary' onClick={openCreateEntryModal}>+ Entry</button>
+            <button
+              type='button'
+              class='btn btn-outline-primary dropdown-toggle dropdown-toggle-split'
+              onClick={() => setIsActionsMenuVisible(!isActionsMenuVisible)}
+            >
+              <span class='visually-hidden'>Toggle Dropdown</span>
+            </button>
+            <input
+              class='d-none'
+              type='file'
+              accept='.jsonl'
+              ref={fileInputRef}
+              onChange={openEntriesImportModal}
+            />
+            <ul
+              class={`dropdown-menu ${isActionsMenuVisible ? 'show' : ''}`}
+              style={{ top: '40px', right: 0 }}
+              ref={actionsMenuRef}
+            >
+              <li>
+                <a
+                  class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
+                  href='#'
+                  onClick={openDeleteEntriesModal}
+                >
+                  Delete selected
+                </a>
+              </li>
+              <li>
+                <a
+                  class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
+                  href={entriesExportLink}
+                  onClick={() => setIsActionsMenuVisible(false)}
+                >
+                  Export selected
+                </a>
+              </li>
+              <li>
+                <a
+                  class={`dropdown-item`}
+                  href='#'
+                  onClick={openFilePicker}
+                >
+                  Import entries
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class='entries-list-container'>
+          <EntriesList
+            initialEntries={initialEntries}
+            keyPrefix={keyPrefix}
+            selectedEntries={selectedEntries}
+            onSelect={(entry) => changeSelectedEntryCursor(entry.cursor)}
+            onSelectMany={toggleActionsEnabled}
+            doReload={doReloadEntries}
+          />
         </div>
       </div>
 

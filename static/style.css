@@ -10,9 +10,7 @@ body {
 }
 
 .main {
-    display: grid;
-    grid-template-rows: 100px 1fr;
-    padding: 0 20px 20px 20px;
+    padding: 20px 5px;
 }
 
 .header {
@@ -111,12 +109,7 @@ body {
 /*#region entriesManagement*/
 .entries-management {
     height: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-}
 
-.entries-management .left-panel-container {
-    height: 100%;
     display: grid;
     grid-template-rows: auto 1fr;
     grid-row-gap: 24px;
@@ -138,7 +131,7 @@ body {
 }
 
 .entries-management .search-form-control {
-    max-width: 290px;
+    max-width: 350px;
 }
 
 /*#endregion*/
