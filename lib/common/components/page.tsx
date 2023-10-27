@@ -5,7 +5,7 @@ const Page: FunctionComponent<PageProps> = ({ currentRoute, children }) => {
   return (
     <div class='page'>
       <Sidebar currentRoute={currentRoute} />
-      <main class='main'>{children}</main>
+      <main>{children}</main>
     </div>
   );
 };

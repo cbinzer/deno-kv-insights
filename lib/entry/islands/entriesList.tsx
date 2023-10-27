@@ -29,7 +29,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
 
   useEffect(() => {
     if (initialized) {
-      reloadEntries(25).then();
+      reloadEntries(35).then();
       setSelectedEntry(undefined);
     } else {
       setInitialized(true);
@@ -42,7 +42,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     if (entries.pageInfo.hasNextPage && !isLoading) {
       setIsLoading(true);
       getAllEntries({
-        first: 25,
+        first: 35,
         after: entries.pageInfo.endCursor,
       }, { keyPrefix }).then((nextEntries) => {
         setEntries({
@@ -57,7 +57,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
   const reloadEntries = async (size?: number) => {
     setIsLoading(true);
 
-    let first = entries.entries.length > 25 ? entries.entries.length : 25;
+    let first = entries.entries.length > 35 ? entries.entries.length : 35;
     if (size) {
       first = size;
     }
