@@ -46,6 +46,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) =>
 
   const deleteEntry = () => {
     setIsDeleteEntryModalOpen(false);
+    window.location.href = '/kv-insights/entries';
   };
 
   const changeEntry = async () => {
