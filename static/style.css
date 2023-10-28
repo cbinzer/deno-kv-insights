@@ -48,6 +48,15 @@ body {
     border-radius: var(--bs-border-radius);
 }
 
+.action-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 24px;
+
+    border-bottom: solid var(--bs-border-color) 1px;
+    padding: 24px;
+}
+
 /*#endregion*/
 
 /*#region sidebar*/
@@ -122,15 +131,6 @@ body {
     height: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
-}
-
-.entries-management .action-container {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    column-gap: 24px;
-
-    border-bottom: solid var(--bs-border-color) 1px;
-    padding: 24px;
 }
 
 .entries-management .selected-information {
@@ -225,7 +225,15 @@ body {
 
 .entry-detail {
     grid-template-rows: auto 1fr;
-    row-gap: 24px;
+}
+
+.entry-detail .back-btn {
+    line-height: 1;
+}
+
+.entry-detail .back-btn:hover {
+    cursor: pointer;
+    background-color: var(--bs-secondary-bg);
 }
 
 .entry-detail-empty .info-text {
@@ -233,18 +241,17 @@ body {
     justify-self: center;
 }
 
-.entry-detail .header,
-.entry-detail .form {
-    padding: 0 15px;
-}
-
-.entry-detail .header {
+.entry-detail .btn-container {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto auto;
+    grid-column-gap: 8px;
 }
 
-.entry-detail .header .h5 {
-    margin-bottom: 0;
+.entry-detail .detail-container {
+    padding: 24px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 992px;
 }
 
 .entry-detail .remove-btn {
@@ -259,7 +266,7 @@ body {
 }
 
 .entry-detail .value-form-control {
-    height: calc(100% - 50px);
+    height: 240px;
 }
 
 /*#endregion*/

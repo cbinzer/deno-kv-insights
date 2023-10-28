@@ -4,7 +4,7 @@ import { KeyPart } from '../models.ts';
 import { convertReadableKeyStringToKey } from '../utils.ts';
 
 const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
-  { id, value = [], keyAlreadyExists = false, inputRef, onChange = () => {}, onInvalid = () => {} },
+  { id, value = [], keyAlreadyExists = false, inputRef, disabled, onChange = () => {}, onInvalid = () => {} },
 ) => {
   const [isKeyInvalid, setIsKeyInvalid] = useState(false);
   const [internalKey, setInternalKey] = useState<KeyPart[]>(value);
@@ -59,6 +59,7 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
         type='text'
         class={`form-control ${isKeyInvalid || keyAlreadyExists ? 'is-invalid' : ''}`}
         id={id}
+        disabled={disabled}
         value={convertKeyToReadableString(internalKey)}
         ref={inputRef}
         onChange={validateAndChangeKey}
@@ -76,6 +77,7 @@ export interface KeyFormControlProps {
   value: KeyPart[];
   keyAlreadyExists?: boolean;
   inputRef?: Ref<HTMLInputElement>;
+  disabled?: boolean;
   onChange?: (key: KeyPart[]) => void;
   onInvalid?: () => void;
 }

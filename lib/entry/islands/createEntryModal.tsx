@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'preact';
+import { FunctionComponent, Ref } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { createEntry } from '../services/entryClientService.ts';
-import { Entry, EntryValue, KeyPart, ValueType } from '../models.ts';
-import ValueTypeDropdown from './valueTypeDropdown.tsx';
-import EntryValueFormControl from './entryValueFormControl.tsx';
 import Modal from '../../common/islands/modal.tsx';
+import { Entry, EntryValue, KeyPart, ValueType } from '../models.ts';
+import { createEntry } from '../services/entryClientService.ts';
+import EntryValueFormControl from './entryValueFormControl.tsx';
 import KeyFormControl from './keyFormControl.tsx';
+import ValueTypeDropdown from './valueTypeDropdown.tsx';
 
 const CreateEntryModal: FunctionComponent<
   { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
@@ -107,7 +107,7 @@ const CreateEntryModal: FunctionComponent<
   };
 
   return (
-    <Modal open={isOpen} onOpen={() => keyInputRef.current.focus()} onClose={closeModal}>
+    <Modal open={isOpen} onOpen={() => keyInputRef.current?.focus()} onClose={closeModal}>
       <div class='modal-header'>
         <h1 class='modal-title fs-5'>New entry</h1>
         <button class='btn-close' onClick={closeModal} disabled={isCreating}></button>
@@ -121,7 +121,7 @@ const CreateEntryModal: FunctionComponent<
               id='key'
               value={key}
               keyAlreadyExists={keyAlreadyExists}
-              inputRef={keyInputRef}
+              inputRef={keyInputRef as Ref<HTMLInputElement>}
               onChange={setEntryKey}
             />
           </div>

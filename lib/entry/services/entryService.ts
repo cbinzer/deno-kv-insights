@@ -46,6 +46,7 @@ export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   await assertEntryForCreation(entry);
 
   const newEntry = await saveEntry(entry.key, entry.value);
+  console.log(newEntry);
   return mapToNewEntry(newEntry);
 }
 

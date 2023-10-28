@@ -24,6 +24,11 @@ export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin 
         component: EntriesPageRoute,
       },
       {
+        path: `${basePath}/entries`,
+        handler: EntriesPageRouteHandlers,
+        component: EntriesPageRoute,
+      },
+      {
         path: `${basePath}/entries/[cursor]`,
         component: EntryPageRoute,
       },
