@@ -9,7 +9,7 @@ import { handler as APIEntryRouteHandler } from './entry/routes/apiEntryRoute.ts
 import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesPageRoute.tsx';
 import EntryDetailPageRoute from './entry/routes/entryDetailPageRoute.tsx';
 import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts';
-import { QueuePageRoute } from './queue/routes/queueRoute.tsx';
+import { QueuePageRoute } from './queue/routes/queuePageRoute.tsx';
 
 export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin {
   initKv(options.kv);
