@@ -1,48 +1,20 @@
 import { FunctionComponent } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import ArrowLeftIcon from '../../common/components/icon/arrowLeftIcon.tsx';
 import TrashIcon from '../../common/components/icon/trashIcon.tsx';
-import EntryDetailLoadingPlaceholder from '../components/entryDetailLoadingPlaceholder.tsx';
 import { Entry, EntryValue } from '../models.ts';
-import { getEntryByCursor, updateEntry } from '../services/entryClientService.ts';
+import { updateEntry } from '../services/entryClientService.ts';
 import { getValueType } from '../utils.ts';
 import DeleteEntryModal from './deleteEntryModal.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 import KeyFormControl from './keyFormControl.tsx';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 
-const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) => {
-  const [entry, setEntry] = useState<Entry | undefined>();
+const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry }) => {
+  const [entry, setEntry] = useState<Entry>(initialEntry);
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
   const [isValueInvalid, setIsValueInvalid] = useState(false);
-  const [isLoadingEntry, setIsLoadingEntry] = useState(false);
   const [isUpdatingEntry, setIsUpdatingEntry] = useState(false);
-
-  useEffect(() => {
-    if (cursor) {
-      setIsLoadingEntry(true);
-      getEntryByCursor(cursor).then((entry) => {
-        setEntry(entry);
-        setIsLoadingEntry(false);
-      });
-    }
-  }, [cursor]);
-
-  if (isLoadingEntry) {
-    return <EntryDetailLoadingPlaceholder />;
-  }
-
-  if (!cursor || !entry) {
-    return (
-      <div class='entry-detail-empty'>
-        <p class='info-text fs-4'>No entry selected</p>
-      </div>
-    );
-  }
-
-  const saveEntry = (event: Event) => {
-    event.preventDefault();
-  };
 
   const deleteEntry = () => {
     setIsDeleteEntryModalOpen(false);
@@ -63,7 +35,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) =>
     setIsValueInvalid(false);
   };
 
-  const valueType = getValueType(entry.value);
+  const valueType = getValueType(entry?.value);
 
   return (
     <div class='entry-detail'>
@@ -95,7 +67,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) =>
       </div>
 
       <div class='detail-container'>
-        <form id='entry-update-form' class='form' onSubmit={saveEntry}>
+        <form id='entry-update-form' class='form' onSubmit={(event) => event.preventDefault()}>
           <div class='mb-3'>
             <label for='cursor' class='form-label'>Cursor</label>
             <input type='text' class='form-control' id='cursor' disabled={true} value={entry.cursor} />
@@ -149,7 +121,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ cursor }) =>
 };
 
 export interface EntryDetailPageProps {
-  cursor?: string;
+  initialEntry: Entry;
 }
 
 export default EntryDetailPage;
