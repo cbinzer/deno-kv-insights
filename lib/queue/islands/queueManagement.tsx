@@ -16,23 +16,24 @@ const QueueManagement: FunctionComponent = () => {
 
   return (
     <div class='queue-management'>
-      <div class='panel'>
-        <div class='top-panel-container'>
-          <div class='action-container'>
-            <button class='btn btn-primary float-end' disabled={subscribed} onClick={subscribe}>
-              {subscribed ? <span class='spinner-border spinner-border-sm' /> : 'Subscribe'}
-            </button>
-          </div>
-
-          <div class='queue-data-list-container'>
-            <QueueDataList data={queueData} />
-          </div>
+      <div class='action-container'>
+        <div></div>
+        <div>
+          <button class='btn btn-primary float-end' disabled={subscribed} onClick={subscribe}>
+            {subscribed ? <span class='spinner-border spinner-border-sm' /> : 'Subscribe'}
+          </button>
         </div>
       </div>
 
-      <div class='panel'>
-        <QueueValuePublisher />
+      <div class='received-information'>
+        {queueData.length} {queueData.length === 1 ? 'value' : 'values'} received
       </div>
+
+      <div class='queue-data-list-container'>
+        <QueueDataList data={queueData} />
+      </div>
+
+      <QueueValuePublisher />
     </div>
   );
 };

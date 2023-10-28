@@ -275,8 +275,13 @@ body {
 .queue-management {
     height: 100%;
     display: grid;
-    grid-template-rows: 1fr 462px;
-    row-gap: 25px;
+    grid-template-rows: auto auto 1fr 450px;
+}
+
+.queue-management .received-information {
+    border-bottom: solid var(--bs-border-color) 1px;
+    padding: 6px 24px;
+    font-size: 14px;
 }
 
 .queue-management .top-panel-container {
@@ -286,12 +291,9 @@ body {
     grid-row-gap: 24px;
 }
 
-.queue-management .action-container {
-    padding: 0 15px;
-}
-
 .queue-management .queue-data-list-container {
     position: relative;
+    border-bottom: solid var(--bs-border-color) 1px;
 }
 
 .queue-management .queue-data-list-container .queue-data-list {
@@ -305,7 +307,7 @@ body {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-    padding: 0 15px;
+    padding: 0 8px 8px 0;
 }
 
 .queue-data-list .empty-table {
@@ -330,27 +332,32 @@ body {
 }
 
 .queue-data-list .received-date-col {
-    width: 185px;
+    width: 200px;
+    padding-left: 24px;
 }
 
 .queue-data-list .type-col {
     width: 115px;
 }
 
+.queue-data-list td:first-child {
+    padding-left: 24px;
+}
+
 /*#endregion*/
 
 /*#region queueValuePublisher*/
 .queue-value-publisher {
-    padding: 0 15px;
+    padding: 24px;
 }
 
 .queue-value-publisher form {
     display: grid;
-    grid-template-rows: auto 288px auto;
+    grid-template-rows: auto 278px auto;
 }
 
 .queue-value-publisher .value-form-control {
-    min-height: 210px;
+    min-height: 200px;
 }
 
 /*#endregion*/
