@@ -6,7 +6,7 @@ import { getAllEntries } from '../services/entryService.ts';
 import { createHTTPStrippedEntries } from './apiEntriesRoute.ts';
 
 export const EntriesPageRouteHandlers: Handlers = {
-  GET: async (request, context: HandlerContext) => {
+  GET: async (_, context: HandlerContext) => {
     const first = 35;
     const entries = await getAllEntries(undefined, { first: first + 1 });
     const httpEntries = createHTTPStrippedEntries(entries, 0, first);

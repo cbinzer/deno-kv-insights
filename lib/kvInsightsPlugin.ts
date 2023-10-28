@@ -6,8 +6,8 @@ import { handler as APIEntriesExportRouteHandler } from './entry/routes/apiEntri
 import { handler as APIEntriesImportsRouteHandler } from './entry/routes/apiEntriesImportsRoute.ts';
 import { handler as APIEntriesRouteHandler } from './entry/routes/apiEntriesRoute.ts';
 import { handler as APIEntryRouteHandler } from './entry/routes/apiEntryRoute.ts';
-import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesRoute.tsx';
-import EntryPageRoute from './entry/routes/entryRoute.tsx';
+import { EntriesPageRoute, EntriesPageRouteHandlers } from './entry/routes/entriesPageRoute.tsx';
+import EntryDetailPageRoute from './entry/routes/entryDetailPageRoute.tsx';
 import { handler as APIQueueRouteHandler } from './queue/routes/apiQueueRoute.ts';
 import { QueuePageRoute } from './queue/routes/queueRoute.tsx';
 
@@ -30,7 +30,7 @@ export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin 
       },
       {
         path: `${basePath}/entries/[cursor]`,
-        component: EntryPageRoute,
+        component: EntryDetailPageRoute,
       },
       {
         path: `${basePath}/queue`,
