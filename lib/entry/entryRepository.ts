@@ -89,7 +89,7 @@ export async function saveEntry(
 
 export async function saveEntries(entries: DBEntry[]): Promise<void> {
   const atomicOperation = db.atomic();
-  entries.forEach(entry => atomicOperation.set(entry.key, entry.value))
+  entries.forEach((entry) => atomicOperation.set(entry.key, entry.value));
 
   const commitResult: { ok: boolean } = await atomicOperation.commit();
   if (!commitResult.ok) {
@@ -115,7 +115,7 @@ export async function deleteAllEntriesByKeys(keys: EntryKey[]): Promise<void> {
 
       const commitResult = await atomicOperation.commit();
       if (!commitResult.ok) {
-        console.log('An error occurred on deleting entries by keys.');
+        console.error('An error occurred on deleting entries by keys.');
         throw new UnknownError();
       }
     }

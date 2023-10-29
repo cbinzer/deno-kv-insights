@@ -86,7 +86,7 @@ const CreateEntryModal: FunctionComponent<
       setCreatedEntry(createdEntry);
       setIsOpen(false);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       setKeyAlreadyExists(true);
     } finally {
       setIsCreating(false);

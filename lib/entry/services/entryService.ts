@@ -44,9 +44,7 @@ export async function getEntryByCursor(cursor: string): Promise<Entry> {
 
 export async function createEntry(entry: EntryForCreation): Promise<NewEntry> {
   await assertEntryForCreation(entry);
-
   const newEntry = await saveEntry(entry.key, entry.value);
-  console.log(newEntry);
   return mapToNewEntry(newEntry);
 }
 
