@@ -11,7 +11,7 @@ import KeyFormControl from './keyFormControl.tsx';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
 import { IS_BROWSER } from '$fresh/runtime.ts';
 
-const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry }) => {
+const EntryManagement: FunctionComponent<EntryDetailPageProps> = ({ initialEntry }) => {
   const [entry, setEntry] = useState<Entry>(initialEntry);
   const [isDeleteEntryModalOpen, setIsDeleteEntryModalOpen] = useState(false);
   const [isValueInvalid, setIsValueInvalid] = useState(false);
@@ -135,4 +135,4 @@ export interface EntryDetailPageProps {
   initialEntry: Entry;
 }
 
-export default EntryDetailPage;
+export default EntryManagement;
