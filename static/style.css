@@ -57,6 +57,12 @@ body {
     padding: 24px;
 }
 
+.bi {
+    display: inline-block;
+    vertical-align: -.125em;
+    fill: currentcolor
+}
+
 /*#endregion*/
 
 /*#region sidebar*/
@@ -133,10 +139,20 @@ body {
     grid-template-rows: auto auto 1fr;
 }
 
-.entries-management .selected-information {
+.entries-management .selected-container {
+    height: 44px;
     border-bottom: solid var(--bs-border-color) 1px;
     padding: 6px 24px;
     font-size: 14px;
+}
+
+.entries-management .selected-container div {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    grid-column-gap: 8px;
+
+    height: 100%;
 }
 
 .entries-management .entries-list-container {
@@ -279,6 +295,10 @@ body {
 }
 
 .queue-management .received-information {
+    display: grid;
+    align-items: center;
+
+    height: 44px;
     border-bottom: solid var(--bs-border-color) 1px;
     padding: 6px 24px;
     font-size: 14px;

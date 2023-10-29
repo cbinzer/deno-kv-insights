@@ -57,7 +57,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry
             {isUpdatingEntry ? <span class='spinner-border spinner-border-sm' /> : 'Save'}
           </button>
           <button
-            class='btn btn-danger lh-1'
+            class='btn btn-danger'
             onClick={() => setIsDeleteEntryModalOpen(true)}
             disabled={isUpdatingEntry}
           >

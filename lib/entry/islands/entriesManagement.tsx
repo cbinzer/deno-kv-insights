@@ -1,6 +1,8 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import BoxArrowDownIcon from '../../common/components/icon/boxArrowDownIcon.tsx';
 import SearchIcon from '../../common/components/icon/searchIcon.tsx';
+import TrashIcon from '../../common/components/icon/trashIcon.tsx';
 import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { createEntriesExportLink } from '../services/entryExportClientService.ts';
 import CreateEntryModal from './createEntryModal.tsx';
@@ -120,7 +122,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
           </div>
 
           <div class='btn-group'>
-            <button class='btn btn-primary' onClick={openCreateEntryModal}>+ Entry</button>
+            <button class='btn btn-primary' onClick={openCreateEntryModal}>+ New Entry</button>
             <button
               type='button'
               class='btn btn-outline-primary dropdown-toggle dropdown-toggle-split'
@@ -142,24 +144,6 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
             >
               <li>
                 <a
-                  class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
-                  href='#'
-                  onClick={openDeleteEntriesModal}
-                >
-                  Delete selected
-                </a>
-              </li>
-              <li>
-                <a
-                  class={`dropdown-item ${actionsEnabled ? '' : 'disabled'}`}
-                  href={entriesExportLink}
-                  onClick={() => setIsActionsMenuVisible(false)}
-                >
-                  Export selected
-                </a>
-              </li>
-              <li>
-                <a
                   class={`dropdown-item`}
                   href='#'
                   onClick={openFilePicker}
@@ -171,8 +155,32 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
           </div>
         </div>
 
-        <div class='selected-information'>
-          {selectedEntries.length} {selectedEntries.length === 1 ? 'entry' : 'entries'} selected
+        <div class='selected-container'>
+          <div>
+            <span>
+              {selectedEntries.length} {selectedEntries.length === 1 ? 'entry' : 'entries'} selected
+            </span>
+            <div>
+              {actionsEnabled
+                ? (
+                  <>
+                    <a
+                      class='btn btn-outline-success btn-sm'
+                      href={entriesExportLink}
+                    >
+                      <BoxArrowDownIcon width={14} height={14} /> Export
+                    </a>
+                    <button
+                      class={`btn btn-outline-danger btn-sm`}
+                      onClick={openDeleteEntriesModal}
+                    >
+                      <TrashIcon width={14} height={14} /> Delete
+                    </button>
+                  </>
+                )
+                : null}
+            </div>
+          </div>
         </div>
 
         <div class='entries-list-container'>
