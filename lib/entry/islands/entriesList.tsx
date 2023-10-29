@@ -3,7 +3,6 @@ import { useEffect, useState } from 'preact/hooks';
 import { getAllEntries } from '../services/entryClientService.ts';
 import { HTTPStrippedEntries, StrippedEntry } from '../models.ts';
 import { convertKeyToString, getValueTypeColorClass } from '../utils.ts';
-import PencilIcon from '../../common/components/icon/pencilIcon.tsx';
 
 const EntriesList: FunctionComponent<EntriesListProps> = (
   {
@@ -106,7 +105,7 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
   };
 
   const openEntryDetailPage = (cursor: string) => {
-    window.location = `/kv-insights/entries/${cursor}`;
+    window.location.href = `/kv-insights/entries/${cursor}`;
   };
 
   return (

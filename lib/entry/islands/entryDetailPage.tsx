@@ -9,6 +9,7 @@ import DeleteEntryModal from './deleteEntryModal.tsx';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 import KeyFormControl from './keyFormControl.tsx';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
+import { IS_BROWSER } from '$fresh/runtime.ts';
 
 const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry }) => {
   const [entry, setEntry] = useState<Entry>(initialEntry);
@@ -18,7 +19,7 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry
 
   const deleteEntry = () => {
     setIsDeleteEntryModalOpen(false);
-    window.location.href = '/kv-insights/entries';
+    window.location.href = getReferrer();
   };
 
   const changeEntry = async () => {
@@ -35,13 +36,23 @@ const EntryDetailPage: FunctionComponent<EntryDetailPageProps> = ({ initialEntry
     setIsValueInvalid(false);
   };
 
+  const getReferrer = () => {
+    if (IS_BROWSER) {
+      if (document.referrer != window.location.href) {
+        return document.referrer;
+      }
+    }
+
+    return '/kv-insights/entries';
+  };
+
   const valueType = getValueType(entry?.value);
 
   return (
     <div class='entry-detail'>
       <div class='action-container'>
         <div>
-          <a class='btn back-btn' href='/kv-insights/entries'>
+          <a class='btn back-btn' href={getReferrer()}>
             <ArrowLeftIcon width={24} height={24} />
           </a>
         </div>

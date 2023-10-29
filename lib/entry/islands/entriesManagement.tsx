@@ -10,8 +10,8 @@ import DeleteEntriesModal from './deleteEntriesModal.tsx';
 import EntriesList from './entriesList.tsx';
 import ImportEntriesModal from './importEntriesModal.tsx';
 
-const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries }) => {
-  const [keyPrefix, setKeyPrefix] = useState<string>('');
+const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialEntries, initialKeyPrefix = '' }) => {
+  const [keyPrefix, setKeyPrefix] = useState<string>(initialKeyPrefix);
   const [selectedEntryCursor, setSelectedEntryCursor] = useState<string | undefined>(undefined);
   const [selectedEntries, setSelectedEntries] = useState<StrippedEntry[]>([]);
   const [isCreateEntryModalOpen, setIsCreateEntryModalOpen] = useState(false);
@@ -49,6 +49,22 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
     const input = event.target as HTMLInputElement;
     setKeyPrefix(input.value);
     setSelectedEntryCursor(undefined);
+    updateKeyPrefixInUrl(input.value);
+  };
+
+  const updateKeyPrefixInUrl = (keyPrefix: string) => {
+    const currentUrl = new URL(window.location.href);
+    if (keyPrefix) {
+      currentUrl.searchParams.set('keyPrefix', keyPrefix);
+    } else {
+      currentUrl.searchParams.delete('keyPrefix');
+    }
+
+    const nextURL = currentUrl.toString();
+    const nextTitle = document.title;
+    const nextState = { additionalInformation: 'Filter updated' };
+
+    window.history.replaceState(nextState, nextTitle, nextURL);
   };
 
   const changeSelectedEntryCursor = (cursor: string) => {
@@ -117,6 +133,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
               type='search'
               class='form-control'
               placeholder='Filter by key (eg. users alice)'
+              value={keyPrefix}
               onSearch={changePrefix}
             />
           </div>
@@ -220,6 +237,7 @@ const EntriesManagement: FunctionComponent<EntriesManagementProps> = ({ initialE
 
 export interface EntriesManagementProps {
   initialEntries: HTTPStrippedEntries;
+  initialKeyPrefix?: string;
 }
 
 export default EntriesManagement;
