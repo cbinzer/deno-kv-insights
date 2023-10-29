@@ -5,7 +5,7 @@
 import * as $0 from './routes/index.tsx';
 import * as $1 from './routes/queue/index.tsx';
 import * as $$0 from './islands/entriesManagement.tsx';
-import * as $$1 from './islands/entryDetailPage.tsx';
+import * as $$1 from './islands/entryManagement.tsx';
 import * as $$2 from './islands/queueManagement.tsx';
 
 const manifest = {
@@ -15,7 +15,7 @@ const manifest = {
   },
   islands: {
     './islands/entriesManagement.tsx': $$0,
-    './islands/entryDetailPage.tsx': $$1,
+    './islands/entryManagement.tsx': $$1,
     './islands/queueManagement.tsx': $$2,
   },
   baseUrl: import.meta.url,
