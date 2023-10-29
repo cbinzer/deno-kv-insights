@@ -24,7 +24,7 @@ https://kv-insights.deno.dev/
 ## Setup
 
 KV insights was implemented with Deno Fresh and can currently only be integrated into applications based on Deno Fresh
-1.3 and above. Unfortunately, at the moment Deno Fresh does not offer the possibility to create plugins with islands.
+1.5 and above. Unfortunately, at the moment Deno Fresh does not offer the possibility to create plugins with islands.
 Therefore, in your application, the islands for kv-insights must be re-exported from this repository.
 
 ### 1. Import kvInsightsPlugin
@@ -44,7 +44,7 @@ Now you should be able to access the tool via /kv-insights and see your first KV
 currently fixed and cannot be changed. However, you cannot create, edit or delete any entries yet. For this you have to
 re-export two islands.
 
-### 2. Re-export entriesManagement and queueManagement islands
+### 2. Re-export entriesManagement, entryManagement and queueManagement islands
 
 In the islands folder create an entriesManagement.tsx with the following content:
 
@@ -56,7 +56,17 @@ import EntriesManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib
 export default EntriesManagement;
 ```
 
-and create a queueManagement.tsx with the following content:
+Then create an entryManagement.tsx:
+
+```ts
+// islands/entryManagement.tsx
+
+import EntryManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/islands/entryManagement.tsx';
+
+export default EntryManagement;
+```
+
+And create a queueManagement.tsx:
 
 ```ts
 // islands/queueManagement.tsx
