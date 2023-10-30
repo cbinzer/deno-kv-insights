@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "rs_lib",
+  "src-tauri"
 ]
 
 [profile.release]
