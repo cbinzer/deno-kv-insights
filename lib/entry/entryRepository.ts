@@ -1,9 +1,9 @@
+import { chunk } from '../../deps.ts';
 import { db } from '../common/db.ts';
-import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryKey, EntryValue, KeyPart } from './models.ts';
 import { UnknownError, VersionConflictError } from '../common/errors.ts';
 import { Pagination } from '../common/models.ts';
+import { CursorBasedDBEntry, DBEntry, EntryFilter, EntryKey, EntryValue, KeyPart } from './models.ts';
 import { encodeCursor } from './services/cursorService.ts';
-import { chunk } from '../../deps.ts';
 
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
@@ -18,7 +18,9 @@ export async function findAllEntries(filter?: EntryFilter, pagination?: Paginati
   for await (const entry of entriesIterator) {
     entries.push({
       ...entry,
-      cursor: encodeCursor(entry.key),
+      key: entry.key as EntryKey,
+      value: entry.value as EntryValue,
+      cursor: encodeCursor(entry.key as EntryKey),
       prefixedCursor: entriesIterator.cursor,
     });
   }
@@ -35,7 +37,10 @@ export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEn
     for await (const entry of entriesIterator) {
       return {
         ...entry,
+        key: entry.key as EntryKey,
+        value: entry.value as EntryValue,
         cursor: cursor,
+        prefixedCursor: entriesIterator.cursor,
       };
     }
   } catch (e) {
@@ -68,7 +73,7 @@ export async function saveEntry(
   value: EntryValue,
   versionstamp: string | null = null,
 ): Promise<DBEntry> {
-  const commitResult: { ok: boolean; versionstamp: string } = await db.atomic()
+  const commitResult = await db.atomic()
     .check({ key, versionstamp })
     .set(
       key,
@@ -76,7 +81,7 @@ export async function saveEntry(
     ).commit();
   if (!commitResult.ok) {
     throw new VersionConflictError(
-      `Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'. DB version stamp ${commitResult.versionstamp}.`,
+      `Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'.`,
     );
   }
 

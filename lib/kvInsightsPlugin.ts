@@ -20,15 +20,15 @@ export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin 
     routes: [
       {
         path: basePath,
-        component: EntriesPageRoute,
+        component: EntriesPageRoute as any,
       },
       {
         path: `${basePath}/entries`,
-        component: EntriesPageRoute,
+        component: EntriesPageRoute as any,
       },
       {
         path: `${basePath}/entries/[cursor]`,
-        component: EntryPageRoute,
+        component: EntryPageRoute as any,
       },
       {
         path: `${basePath}/queue`,

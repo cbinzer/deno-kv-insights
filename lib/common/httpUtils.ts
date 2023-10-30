@@ -51,7 +51,9 @@ export function replace(key: string, value: any): any {
     return replaceMap(value);
   }
 
+  //@ts-ignore
   if (this[key] instanceof Date) {
+    //@ts-ignore
     return replaceDate(this[key]);
   }
 

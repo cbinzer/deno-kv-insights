@@ -68,7 +68,7 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
         ? (
           <SetValueFormControl
             id={id}
-            value={value as Set}
+            value={value as Set<unknown>}
             disabled={disabled}
             onChange={onChange}
             onInvalid={onInvalid}
@@ -79,7 +79,7 @@ const EntryValueFormControl: FunctionComponent<EntryValueFormControlProps> = (
         ? (
           <MapValueFormControl
             id={id}
-            value={value as Map}
+            value={value as Map<unknown, unknown>}
             disabled={disabled}
             onChange={onChange}
             onInvalid={onInvalid}

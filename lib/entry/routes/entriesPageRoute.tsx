@@ -1,6 +1,6 @@
 import Page from '../../common/components/page.tsx';
 import EntriesManagement from '../islands/entriesManagement.tsx';
-import { EntryFilter, EntryKey } from '../models.ts';
+import { EntryFilter } from '../models.ts';
 import { getAllEntries } from '../services/entryService.ts';
 import { convertReadableKeyStringToKey } from '../utils.ts';
 import { createHTTPStrippedEntries } from './apiEntriesRoute.ts';

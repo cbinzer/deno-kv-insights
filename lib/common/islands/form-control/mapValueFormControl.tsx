@@ -49,9 +49,9 @@ const MapValueFormControl: FunctionComponent<MapValueFormControlProps> = (
 
 export interface MapValueFormControlProps {
   id?: string;
-  value: Map;
+  value: Map<unknown, unknown>;
   disabled?: boolean;
-  onChange?: (value: Map) => void;
+  onChange?: (value: Map<unknown, unknown>) => void;
   onInvalid?: () => void;
 }
 

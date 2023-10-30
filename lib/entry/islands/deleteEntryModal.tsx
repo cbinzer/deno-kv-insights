@@ -26,7 +26,7 @@ const DeleteEntryModal: FunctionComponent<DeleteEntryModalProps> = (
       </div>
 
       <div class='modal-body'>
-        <p>Do you wanna really delete the entry with key [{convertKeyToString(entry.key)}]?</p>
+        <p>Do you wanna really delete the entry with key [{convertKeyToString(entry?.key ?? [])}]?</p>
       </div>
 
       <div class='modal-footer'>

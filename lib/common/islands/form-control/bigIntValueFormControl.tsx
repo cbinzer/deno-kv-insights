@@ -45,7 +45,7 @@ const BigIntValueFormControl: FunctionComponent<BigIntValueFormControlProps> = (
         type='text'
         class='form-control'
         id={id}
-        value={internalValue}
+        value={internalValue.toString()}
         disabled={disabled}
         onChange={changeValue}
       />
