@@ -71,7 +71,7 @@ And create a queueManagement.tsx:
 ```ts
 // islands/queueManagement.tsx
 
-import QueueManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/entry/islands/queueManagement.tsx';
+import QueueManagement from 'https://deno.land/x/deno_kv_insights@$VERSION/lib/queue/islands/queueManagement.tsx';
 
 export default QueueManagement;
 ```
