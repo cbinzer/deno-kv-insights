@@ -2,23 +2,26 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from './routes/index.tsx';
-import * as $1 from './routes/queue/index.tsx';
-import * as $$0 from './islands/entriesManagement.tsx';
-import * as $$1 from './islands/entryManagement.tsx';
-import * as $$2 from './islands/queueManagement.tsx';
+import * as $_app from './routes/_app.tsx';
+import * as $index from './routes/index.tsx';
+import * as $queue_index from './routes/queue/index.tsx';
+import * as $entriesManagement from './islands/entriesManagement.tsx';
+import * as $entryManagement from './islands/entryManagement.tsx';
+import * as $queueManagement from './islands/queueManagement.tsx';
+import { type Manifest } from '$fresh/server.ts';
 
 const manifest = {
   routes: {
-    './routes/index.tsx': $0,
-    './routes/queue/index.tsx': $1,
+    './routes/_app.tsx': $_app,
+    './routes/index.tsx': $index,
+    './routes/queue/index.tsx': $queue_index,
   },
   islands: {
-    './islands/entriesManagement.tsx': $$0,
-    './islands/entryManagement.tsx': $$1,
-    './islands/queueManagement.tsx': $$2,
+    './islands/entriesManagement.tsx': $entriesManagement,
+    './islands/entryManagement.tsx': $entryManagement,
+    './islands/queueManagement.tsx': $queueManagement,
   },
   baseUrl: import.meta.url,
-};
+} satisfies Manifest;
 
 export default manifest;
