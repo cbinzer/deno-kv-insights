@@ -2,8 +2,8 @@
   "tasks": {
     "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
     "build_wasm_codec": "deno run -A https://deno.land/x/wasmbuild@0.14.1/main.ts --out lib/entry/codec",
-    "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts"
+    "build": "deno run -A --unstable dev.ts build",
+    "preview": "deno run -A --unstable main.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "fmt": { "lineWidth": 120, "singleQuote": true },
