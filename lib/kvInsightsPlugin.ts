@@ -59,6 +59,14 @@ export function kvInsightsPlugin(options: KVInsightsPluginOptions = {}): Plugin 
         handler: APIQueueRouteHandler,
       },
     ],
+    islands: {
+      baseLocation: import.meta.url,
+      paths: [
+        './entry/islands/entriesManagement.tsx',
+        './entry/islands/entryManagement.tsx',
+        './queue/islands/queueManagement.tsx',
+      ],
+    },
   };
 }
 
