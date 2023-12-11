@@ -77,11 +77,6 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     }
   };
 
-  const selectEntry = (entry: StrippedEntry) => {
-    setSelectedEntry(entry);
-    onSelect(entry);
-  };
-
   const toggleAllSelectedEntryCursors = () => {
     if (selectedEntryCursors.size === entries.entries.length) {
       setSelectedEntryCursors(new Set());
@@ -108,56 +103,59 @@ const EntriesList: FunctionComponent<EntriesListProps> = (
     window.location.href = `/kv-insights/entries/${cursor}`;
   };
 
+  if (entries.entries.length === 0) {
+    return (
+      <div class='entries-list' onScroll={loadMoreEntriesOnScrollEnd}>
+        <div class='empty-table'>
+          <p class='info-text fs-4'>No entries available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div class='entries-list' onScroll={loadMoreEntriesOnScrollEnd}>
-      {entries.entries.length === 0
-        ? (
-          <div class='empty-table'>
-            <p class='info-text fs-4'>No entries available</p>
-          </div>
-        )
-        : (
-          <table class='table table-hover'>
-            <thead class='table-header table-light'>
-              <tr>
-                <th class='select-col text-end' scope='col'>
-                  <input
-                    class='form-check-input'
-                    type='checkbox'
-                    checked={selectedEntryCursors.size === entries.entries.length}
-                    onChange={toggleAllSelectedEntryCursors}
-                  />
-                </th>
-                <th class='type-col' scope='col'>Type</th>
-                <th class='key-col' scope='col'>Key</th>
-              </tr>
-            </thead>
+      <table class='table table-hover'>
+        <thead class='table-header table-light'>
+          <tr>
+            <th class='select-col text-end' scope='col'>
+              <input
+                class='form-check-input'
+                type='checkbox'
+                checked={selectedEntryCursors.size === entries.entries.length}
+                onChange={toggleAllSelectedEntryCursors}
+              />
+            </th>
+            <th class='type-col' scope='col'>Type</th>
+            <th class='key-col' scope='col'>Key</th>
+          </tr>
+        </thead>
 
-            <tbody>
-              {entries.entries.map((entry) => (
-                <tr
-                  key={entry.cursor}
-                  class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
-                  onClick={() => openEntryDetailPage(entry.cursor)}
-                >
-                  <td class='text-end' onClick={(event) => event.stopPropagation()}>
-                    <input
-                      class='form-check-input'
-                      type='checkbox'
-                      checked={selectedEntryCursors.has(entry.cursor)}
-                      onClick={(event) => event.stopPropagation()}
-                      onChange={() => toggleSelectedEntryCursor(entry.cursor)}
-                    />
-                  </td>
-                  <td>
-                    <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
-                  </td>
-                  <td class='text-truncate'>{convertKeyToString(entry.key)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <tbody>
+          {entries.entries.map((entry) => (
+            <tr
+              key={entry.cursor}
+              class={`table-row ${entry.cursor === selectedEntry?.cursor ? 'table-active' : ''}`}
+              onClick={() => openEntryDetailPage(entry.cursor)}
+            >
+              <td class='text-end' onClick={(event) => event.stopPropagation()}>
+                <input
+                  class='form-check-input'
+                  type='checkbox'
+                  checked={selectedEntryCursors.has(entry.cursor)}
+                  onClick={(event) => event.stopPropagation()}
+                  onChange={() => toggleSelectedEntryCursor(entry.cursor)}
+                />
+              </td>
+              <td>
+                <span class={`badge ${getValueTypeColorClass(entry.valueType)}`}>{entry.valueType}</span>
+              </td>
+              <td class='text-truncate'>{convertKeyToString(entry.key)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       {isLoading
         ? (
           <div class='text-center'>
