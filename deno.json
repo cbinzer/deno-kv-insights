@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
+    "start": "deno run -A --watch=static/,routes/ dev.ts",
     "build_wasm_codec": "deno run -A https://deno.land/x/wasmbuild@0.14.1/main.ts --out lib/entry/codec",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
@@ -18,5 +18,6 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0"
   },
   "lint": { "rules": { "tags": ["fresh", "recommended"] } },
+  "unstable": ["kv", "broadcast-channel"],
   "exclude": ["**/_fresh/*"]
 }
