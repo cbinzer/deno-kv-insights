@@ -8,13 +8,23 @@ import { chunk } from '../../deps.ts';
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
   let prefix: KeyPart[] = [];
-  let start: KeyPart[] | undefined = undefined;
   if (filter?.keyPrefix) {
+    if (!pagination?.after) {
+      const keyPrefixEntry = await db.get(filter.keyPrefix);
+      if (keyPrefixEntry.versionstamp) {
+        const cursor = encodeCursor(keyPrefixEntry.key);
+        entries.push({
+          ...keyPrefixEntry,
+          cursor,
+          prefixedCursor: cursor,
+        });
+      }
+    }
+
     prefix = filter.keyPrefix;
-    start = filter.keyPrefix;
   }
 
-  const entriesIterator = await db.list({ prefix, start }, { limit: pagination?.first, cursor: pagination?.after });
+  const entriesIterator = await db.list({ prefix }, { limit: pagination?.first, cursor: pagination?.after });
   for await (const entry of entriesIterator) {
     entries.push({
       ...entry,
