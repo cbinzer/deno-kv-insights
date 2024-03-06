@@ -1,4 +1,4 @@
-import { KeyPart } from '../models.ts';
+import { encode } from '../../../deps.ts';
 import {
   encodeBigIntKeyPart,
   encodeBooleanKeyPart,
@@ -7,11 +7,11 @@ import {
   encodeStringKeyPart,
   instantiate,
 } from '../codec/codec.generated.js';
-import { encode } from '../../../deps.ts';
+import { EntryKey } from '../models.ts';
 
 await instantiate();
 
-export function encodeCursor(key: KeyPart[]): string {
+export function encodeCursor(key: EntryKey): string {
   const uInt8Arrays: Uint8Array[] = [];
 
   key.forEach((keyPart) => {

@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { replace, revive } from "../../httpUtils.ts";
+import { replace, revive } from '../../httpUtils.ts';
 
 const SetValueFormControl: FunctionComponent<SetValueFormControlProps> = (
   { id, value = new Set(), disabled, onChange = () => {}, onInvalid = () => {} },
@@ -49,9 +49,9 @@ const SetValueFormControl: FunctionComponent<SetValueFormControlProps> = (
 
 export interface SetValueFormControlProps {
   id?: string;
-  value: Set;
+  value: Set<unknown>;
   disabled?: boolean;
-  onChange?: (value: Set) => void;
+  onChange?: (value: Set<unknown>) => void;
   onInvalid?: () => void;
 }
 

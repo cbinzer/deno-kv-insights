@@ -38,7 +38,7 @@ export function convertKeyToString(key: KeyPart[]): string {
         case 'object':
           return `[${(keyPart as Uint8Array).join(',')}]`;
         default:
-          return `"${keyPart}"`;
+          return `"${keyPart.toString()}"`;
       }
     }).join(', ')
   }]`;

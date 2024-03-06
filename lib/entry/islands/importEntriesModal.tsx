@@ -13,7 +13,7 @@ const ImportEntriesModal: FunctionComponent<EntriesImportModalProps> = (
 
   const startEntriesImport = async () => {
     setIsImporting(true);
-    await importEntries(entriesImportFile);
+    await importEntries(entriesImportFile as File);
     setIsImporting(false);
 
     onImport();

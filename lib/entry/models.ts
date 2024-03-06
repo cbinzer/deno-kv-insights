@@ -1,4 +1,4 @@
-import {PageInfo} from '../common/models.ts';
+import { PageInfo } from '../common/models.ts';
 
 export interface StrippedEntry {
   cursor: string;
@@ -31,7 +31,7 @@ export interface EntriesForDeletion {
   keys: EntryKey[];
 }
 
-export type KeyPart = Uint8Array | string | number | bigint | boolean;
+export type KeyPart = Uint8Array | string | number | bigint | boolean | symbol;
 export type EntryKey = KeyPart[];
 export type EntryValue =
   | undefined
@@ -106,6 +106,6 @@ export interface EntriesImportResult {
 }
 
 export enum EntriesImportStatus {
-  SUCCEEDED= 'SUCCEEDED',
-  FAILED = 'FAILED'
+  SUCCEEDED = 'SUCCEEDED',
+  FAILED = 'FAILED',
 }

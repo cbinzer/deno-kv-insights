@@ -6,9 +6,10 @@ import { createEntry } from '../services/entryClientService.ts';
 import EntryValueFormControl from './entryValueFormControl.tsx';
 import KeyFormControl from './keyFormControl.tsx';
 import ValueTypeDropdown from './valueTypeDropdown.tsx';
+import { NewEntry } from '../models.ts';
 
 const CreateEntryModal: FunctionComponent<
-  { open: boolean; onClose?: () => void; onCreate?: (entry: Entry) => void }
+  { open: boolean; onClose?: () => void; onCreate?: (entry: Entry | NewEntry) => void }
 > = (
   { open = false, onClose = () => {}, onCreate = () => {} },
 ) => {
@@ -18,7 +19,7 @@ const CreateEntryModal: FunctionComponent<
   const [keyAlreadyExists, setKeyAlreadyExists] = useState(false);
   const [valueType, setValueType] = useState(ValueType.STRING);
   const [value, setValue] = useState<EntryValue>('');
-  const [createdEntry, setCreatedEntry] = useState<Entry | undefined>(undefined);
+  const [createdEntry, setCreatedEntry] = useState<Entry | NewEntry | undefined>(undefined);
 
   const keyInputRef = useRef<HTMLInputElement>();
 

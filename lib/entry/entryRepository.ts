@@ -7,14 +7,14 @@ import { chunk } from '../../deps.ts';
 
 export async function findAllEntries(filter?: EntryFilter, pagination?: Pagination): Promise<CursorBasedDBEntry[]> {
   const entries: CursorBasedDBEntry[] = [];
-  let prefix: KeyPart[] = [];
+  let prefix: EntryKey = [];
   if (filter?.keyPrefix) {
     if (!pagination?.after) {
-      const keyPrefixEntry = await db.get(filter.keyPrefix);
+      const keyPrefixEntry = await db.get<EntryValue>(filter.keyPrefix);
       if (keyPrefixEntry.versionstamp) {
-        const cursor = encodeCursor(keyPrefixEntry.key);
+        const cursor = encodeCursor(keyPrefixEntry.key as EntryKey);
         entries.push({
-          ...keyPrefixEntry,
+          ...keyPrefixEntry as DBEntry,
           cursor,
           prefixedCursor: cursor,
         });
@@ -24,11 +24,14 @@ export async function findAllEntries(filter?: EntryFilter, pagination?: Paginati
     prefix = filter.keyPrefix;
   }
 
-  const entriesIterator = await db.list({ prefix }, { limit: pagination?.first, cursor: pagination?.after });
+  const entriesIterator = await db.list<EntryValue>({ prefix }, {
+    limit: pagination?.first,
+    cursor: pagination?.after,
+  });
   for await (const entry of entriesIterator) {
     entries.push({
-      ...entry,
-      cursor: encodeCursor(entry.key),
+      ...entry as DBEntry,
+      cursor: encodeCursor(entry.key as EntryKey),
       prefixedCursor: entriesIterator.cursor,
     });
   }
@@ -38,14 +41,19 @@ export async function findAllEntries(filter?: EntryFilter, pagination?: Paginati
 
 export async function findEntryByCursor(cursor: string): Promise<CursorBasedDBEntry | null> {
   try {
-    let entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor });
+    let entriesIterator = db.list<EntryValue>({ prefix: [] }, { limit: 1, cursor });
     await entriesIterator.next();
 
-    entriesIterator = await db.list({ prefix: [] }, { limit: 1, cursor: entriesIterator.cursor, reverse: true });
+    entriesIterator = db.list<EntryValue>({ prefix: [] }, {
+      limit: 1,
+      cursor: entriesIterator.cursor,
+      reverse: true,
+    });
     for await (const entry of entriesIterator) {
       return {
-        ...entry,
+        ...entry as DBEntry,
         cursor: cursor,
+        prefixedCursor: cursor,
       };
     }
   } catch (e) {
@@ -78,7 +86,7 @@ export async function saveEntry(
   value: EntryValue,
   versionstamp: string | null = null,
 ): Promise<DBEntry> {
-  const commitResult: { ok: boolean; versionstamp: string } = await db.atomic()
+  const commitResult = await db.atomic()
     .check({ key, versionstamp })
     .set(
       key,
@@ -86,7 +94,7 @@ export async function saveEntry(
     ).commit();
   if (!commitResult.ok) {
     throw new VersionConflictError(
-      `Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'. DB version stamp ${commitResult.versionstamp}.`,
+      `Version conflict while setting entry with key '${key}' and version stamp '${versionstamp}'.`,
     );
   }
 

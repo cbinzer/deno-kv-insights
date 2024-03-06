@@ -21,18 +21,20 @@ const KeyFormControl: FunctionComponent<KeyFormControlProps> = (
             return `${keyPart.toString()}n`;
           case 'number':
           case 'boolean':
+          case 'symbol':
             return keyPart.toString();
           case 'object':
             return `[${(keyPart as Uint8Array).join(',')}]`;
-          default:
+          default: {
             const isNumber = !isNaN(Number(keyPart)) || (keyPart.startsWith('"') && keyPart.endsWith('"'));
             const isBoolean = keyPart === 'true' || keyPart === 'false';
 
             if (isNumber || isBoolean) {
-              return `"${keyPart}"`;
+              return `"${keyPart.toString()}"`;
             }
 
             return keyPart;
+          }
         }
       }).join(' ')
     }`;
