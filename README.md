@@ -1,6 +1,12 @@
-# Deno KV Insights
+<br>
 
-Deno KV Insights is a tool for managing Deno KV database entries.
+<p align="left">
+  <img width="550" alt="deno kv insights logo" src="https://github.com/zemili-group/deno-kv-insights/assets/65465380/33d8606f-837d-4fc7-9ac5-79c3c92f1131">
+</p>
+
+<br>
+
+**Deno KV Insights** is a tool for managing Deno KV database entries.
 
 ## Features:
 
