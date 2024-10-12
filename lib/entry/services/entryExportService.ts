@@ -1,4 +1,4 @@
-import { chunk } from '@std/collections/chunk';
+import { chunk } from 'jsr:@std/collections@1.0.8/chunk';
 import { replace } from '../../common/httpUtils.ts';
 import { EntriesExportForCreation, EntriesExportHeader } from '../models.ts';
 import { getEntriesByKeys } from './entryService.ts';

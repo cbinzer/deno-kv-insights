@@ -412,10 +412,5 @@
     "https://esm.sh/v135/clean-css@5.3.1/denonext/clean-css.mjs": "30251b996819d5a9ab86dd1c39d305a70984fae6d44e2a43d20d93aae28031ef",
     "https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs": "bcaceb8c3938310aee3dd4f7b6f2136cf0b2b890988c2e6679485e052e76e920",
     "https://esm.sh/v135/source-map@0.6.1/denonext/source-map.mjs": "ccff3bb06dea7c01a2c83cf12113697592e418fd06b55ae2bb4cb0a4e51a98b8"
-  },
-  "workspace": {
-    "dependencies": [
-      "jsr:@std/collections@1.0.8"
-    ]
   }
 }
