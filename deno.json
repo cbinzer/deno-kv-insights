@@ -9,13 +9,14 @@
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "fmt": { "lineWidth": 120, "singleQuote": true },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.6.8/",
-    "clean-css": "https://esm.sh/clean-css@5.3.1",
-    "preact": "https://esm.sh/preact@10.19.6",
-    "preact/": "https://esm.sh/preact@10.19.6/",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
+    "$fresh/": "https://deno.land/x/fresh@1.7.2/",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1"
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "@std/collections": "jsr:@std/collections@1.0.8",
+    "clean-css": "https://esm.sh/clean-css@5.3.1",
+    "preact": "https://esm.sh/preact@10.22.0",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
+    "preact/": "https://esm.sh/preact@10.22.0/"
   },
   "lint": { "rules": { "tags": ["fresh", "recommended"] } },
   "unstable": ["kv", "broadcast-channel"],
